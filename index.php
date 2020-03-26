@@ -6,6 +6,8 @@ $params = array_merge([
 
 $out = '';
 $timestamp = null;
+$sourceUrl = null;
+$metaTable = [];
 
 if (is_null($params['date'])) :
 	$files = glob(dirname(__FILE__) . "/covid-data/*.json");
@@ -19,8 +21,10 @@ if (is_null($params['date'])) :
 	var_dump($timestamps);
 else :
 	$DATESTAMP = $params['date'];
-	$JSON_FILE = dirname(__FILE__) . "/covid-data/capture-${DATESTAMP}.json";
-
+	$DATA_PREFIX = "/covid-data/capture-";
+	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
+	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	
 	$json = file_get_contents($JSON_FILE);
 	$hash = json_decode($json);
 	if (is_null($hash)) :
@@ -29,6 +33,8 @@ else :
 	else :
 		header("Content-type: text/html");
 
+		// Timestamp of snapshot: Parse the slug into its component parts
+		// and convert into a Unix-epoch timestamp
 		$got_the_time = preg_match('/^
 			([0-9]{4})
 			([0-9]{2})
@@ -42,9 +48,23 @@ else :
 			$timestamp = mktime($ts_matches[4], $ts_matches[5], $ts_matches[6], $ts_matches[2], $ts_matches[3], $ts_matches[1]);
 		endif;
 
+		// URL of snapshot: Get it from the file, if available
+		if (is_readable($URL_FILE)) :
+			$sourceUrl = file_get_contents($URL_FILE);
+		endif;
+		
+		if (!is_null($sourceUrl)) :
+			$source = parse_url($sourceUrl);
+			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
+		endif;
+		if (!is_null($timestamp)) :
+			$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
+		endif;
+		
 		ob_start();
 		print "<table border='1'>\n";
 		print "<thead>\n";
+		
 		print "<tr>\n";
 		
 		$props = ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED"];
@@ -84,7 +104,31 @@ if (strlen($out) == 0) exit;
 </head>
 <body>
 <?php
-	print "<h1>" . date('r', $timestamp) . "</h1>\n";
+	print "<h1>Alabama Covid-19 Data Snapshot: " . date('m/d/y H:i:s', $timestamp) . "</h1>\n";
+
+	if (count($metaTable) > 0) :
+?>
+	<table border="1">
+	<tbody>
+<?php
+		foreach ($metaTable as $row) :
+			print "<tr>";
+			$i = 0;
+			foreach ($row as $col) :
+				print ($i>0) ? "<td>" : "<th>";
+				print $col;
+				print ($i>0) ? "</td>" : "</th>";
+				$i++;
+			endforeach;
+			print "</tr>\n";
+		endforeach;
+?>
+	</tbody>
+	</table>
+	
+<?php
+	endif;
+
 	print $out;
 ?>
 <hr/>
