@@ -3,6 +3,7 @@
 $params = array_merge([
 "date" => null,
 "slug" => "capture",
+"mirrored" => null,
 ], $_REQUEST);
 
 $out = '';
@@ -35,11 +36,39 @@ $rawDataOut = null;
 $dataTHEAD = null;
 $dataTBODY = null;
 
-if (is_null($params['date'])) :
-	$files = glob(dirname(__FILE__) . "/covid-data/*.json");
+if (!is_null($params['mirrored'])) :
+	$slug = $params['slug'];
+	$DATESTAMP = $params['date'];
+
+	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
+	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
+	if (is_readable($mirrorFile)) :
+		$timestamp = get_the_timestamp($DATESTAMP);
+			
+		$mirrorHtml = file_get_contents($mirrorFile);
+		$mirrorHtml = str_replace(
+			"<head>",
+			'<head><base href="' . $mirrorUrl . '" />',
+			$mirrorHtml
+		);
+		
+		$mirrorHtml = str_replace(
+			"https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson",
+			$params['json-url'],
+			$mirrorHtml
+		);
+		echo $mirrorHtml;
+	endif;
+	exit;
+
+elseif (is_null($params['date'])) :
+	$files = glob(dirname(__FILE__) . "/covid-data/*.url.txt");
 	$basenames = array_map(function ($filename) { return basename($filename); }, $files);
-	$slugs = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]json$|i", "$1", $f); }, $basenames);
-	$timestamps = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]json$|i", "$1;$3", $f); }, $basenames);
+	$slugs = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", "$1", $f); }, $basenames);
+	$timestamps = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", "$1;$3", $f); }, $basenames);
+	
+	$outWhat = "Listing";
+	$timestamp = time();
 	
 	$rawDataOut = $files;
 	$dataTHEAD = ["Type", "Timestamp"];
@@ -49,12 +78,55 @@ if (is_null($params['date'])) :
 		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.date('r', get_the_timestamp($ts)).'</a>'];
 	endforeach;
 
+	
+elseif ("html" == $params['slug'] ) :
+
+	$slug = $params['slug'];
+	$DATESTAMP = $params['date'];
+	$DATA_PREFIX = "/covid-data/${slug}-";
+	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${slug}";
+	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+		$timestamp = get_the_timestamp($DATESTAMP);
+
+	// URL of snapshot: Get it from the file, if available
+	if (is_readable($URL_FILE)) :
+		$sourceUrl = trim(file_get_contents($URL_FILE));
+		$sourceParts = parse_url($sourceUrl);
+	endif;
+
+	if (!is_null($sourceUrl)) :
+		$source = parse_url($sourceUrl);
+		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
+	endif;
+	if (!is_null($timestamp)) :
+		date_default_timezone_set('America/Chicago');
+		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
+	endif;
+	$metaTable[] = ["View", '<a href="#view-raw-html">raw html</a> <a href="#mirror-html">page snapshot</a>'];
+	
+	$mirrorUrl = $DATA_PREFIX . $DATESTAMP . '.mirror/' . $sourceParts['host'] . "/" . $sourceParts['path'];
+	
+	$captureUrl = "/covid-data/capture-${DATESTAMP}.json";
+	
+	header("Content-type: text/html");
+
+	$timestamp = get_the_timestamp($DATESTAMP);
+
+	$html = file_get_contents($JSON_FILE);
+	$rawDataOut = [];
+	$out = "<pre id='view-raw-html'>".htmlspecialchars($html)."</pre>\n";
+	
+	$out .= '<iframe id="mirror-html" src="/?date=' . $DATESTAMP . '&mirrored=' . $mirrorUrl . '&json-url=' . $captureUrl .  '" width="95%" height="800">';
+	$out .= "</iframe>";
+	$outWhat = "HTML Front Page";
+	
 elseif ("testsites" == $params['slug']) :
 	$slug = $params['slug'];
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/${slug}-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$outWhat = "Test Sites Data Snapshot";
 	
 	$json = file_get_contents($JSON_FILE);
 	$hash = json_decode($json);
@@ -68,7 +140,7 @@ elseif ("testsites" == $params['slug']) :
 
 		// URL of snapshot: Get it from the file, if available
 		if (is_readable($URL_FILE)) :
-			$sourceUrl = file_get_contents($URL_FILE);
+			$sourceUrl = trim(file_get_contents($URL_FILE));
 		endif;
 		
 		if (!is_null($sourceUrl)) :
@@ -102,6 +174,7 @@ elseif ("capture" == $params['slug']) :
 	$DATA_PREFIX = "/covid-data/capture-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$outWhat = "Data Snapshot";
 	
 	$json = file_get_contents($JSON_FILE);
 	$hash = json_decode($json);
@@ -115,7 +188,7 @@ elseif ("capture" == $params['slug']) :
 		
 		// URL of snapshot: Get it from the file, if available
 		if (is_readable($URL_FILE)) :
-			$sourceUrl = file_get_contents($URL_FILE);
+			$sourceUrl = trim(file_get_contents($URL_FILE));
 		endif;
 		
 		if (!is_null($sourceUrl)) :
@@ -162,7 +235,7 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 </head>
 <body>
 <?php
-	print "<h1>Alabama Covid-19 Data Snapshot: " . date('m/d/y H:i:s', $timestamp) . "</h1>\n";
+	print "<h1>Alabama Covid-19 ${outWhat} Snapshot: " . date('m/d/y H:i:s', $timestamp) . "</h1>\n";
 
 	if (count($metaTable) > 0) :
 ?>
