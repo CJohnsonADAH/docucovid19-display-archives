@@ -79,12 +79,14 @@ elseif (is_null($params['date'])) :
 	endforeach;
 
 	
-elseif ("html" == $params['slug'] ) :
+elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
 
-	$slug = $params['slug'];
+	$slug = $refs[0];
+	$ext = $refs[1];
+	
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/${slug}-";
-	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${slug}";
+	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
 		$timestamp = get_the_timestamp($DATESTAMP);
 
