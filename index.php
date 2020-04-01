@@ -2,7 +2,7 @@
 
 $params = array_merge([
 "date" => null,
-"slug" => "capture",
+"slug" => null,
 "mirrored" => null,
 ], $_REQUEST);
 
@@ -10,6 +10,30 @@ $out = '';
 $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
+
+function get_snapshot_lists ($dir) {
+	global $params;
+
+	$files = glob("${dir}/*.url.txt");
+	$basenames = array_map(function ($filename) { return basename($filename); }, $files);
+	
+	$pairs = []; $allSlugs = [];
+	foreach ($basenames as $base) :
+		if (preg_match("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", $base, $m)) :
+			$allSlugs[] = $m[1];
+			if (is_null($params['slug']) or ($m[1]==$params['slug'])) :
+				$pairs[] = [$m[1], $m[3]];
+			endif;
+		endif;
+	endforeach;
+
+	return [
+	"files" => $files,
+	"sets" => $pairs,
+	"available slugs" => $allSlugs,
+	];
+	
+} /* get_snapshot_lists () */
 
 function getJsonUrl ($slug) {
 	global $params;
@@ -101,18 +125,34 @@ if (!is_null($params['mirrored'])) :
 	exit;
 
 elseif (is_null($params['date'])) :
-	$files = glob(dirname(__FILE__) . "/covid-data/*.url.txt");
-	$basenames = array_map(function ($filename) { return basename($filename); }, $files);
-	$slugs = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", "$1", $f); }, $basenames);
-	$timestamps = array_map(function ($f) { return preg_replace("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", "$1;$3", $f); }, $basenames);
+
+	$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
+	$files = $lists['files'];
+	$slugs = array_map(function ($e) { return $e[0]; }, $lists['sets']);
+	$timestamps = array_map(function ($e) { return $e[1]; }, $lists['sets']);
 	
+	$availableSlugs = array_unique($lists['available slugs']);
+	$slugLinks = array_map(function ($s) { return [$s, '<a href="?slug='.urlencode($s).'">'.htmlspecialchars($s).'</a>']; }, $availableSlugs);
+	
+	foreach ($slugLinks as $slugLink) :
+		list($slug, $link) = $slugLink;
+		if ($slug==$params['slug']) :
+			$metaTable[] = ["Current", "<strong>".$slug."</strong>"];
+		else :
+			$metaTable[] = ["Type", $link];
+		endif;
+	endforeach;
+
+	date_default_timezone_set('America/Chicago');
+	$metaTable[] = ["Time", date('r')];
+
 	$outWhat = "Listing";
 	$timestamp = time();
 	
 	$rawDataOut = $files;
 	$dataTHEAD = ["Type", "Timestamp"];
-	foreach ($timestamps as $ts_slug) :
-		list($slug, $ts) = explode(";", $ts_slug, 2);
+	foreach ($lists['sets'] as $pair) :
+		list($slug, $ts) = $pair;
 		date_default_timezone_set('America/Chicago');
 		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.date('r', get_the_timestamp($ts)).'</a>'];
 	endforeach;
