@@ -11,6 +11,23 @@ $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
 
+function getJsonUrl ($slug) {
+	global $params;
+	
+	$DATESTAMP = $params['date'];
+	
+	if (strlen($slug) > 0) :
+		$capturePrefix = "data_${slug}";
+	else :
+		$capturePrefix = "capture";
+	endif;
+	
+	$captureUrl = "/covid-data/${capturePrefix}-${DATESTAMP}.json";
+	return $captureUrl;
+
+} /* getJsonUrl () */	
+
+
 function get_the_timestamp($DATESTAMP) {
 	// Timestamp of snapshot: Parse the slug into its component parts
 	// and convert into a Unix-epoch timestamp
@@ -42,22 +59,44 @@ if (!is_null($params['mirrored'])) :
 
 	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
 	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
+
+	if (is_dir($mirrorFile) and is_readable("${mirrorFile}/index.html")) :
+		$mirrorFile = "${mirrorFile}/index.html";
+	endif;
+
+	$ext = "html";
+	if (!is_readable($mirrorFile) and is_readable("{$mirrorFile}.${ext}")) :
+		$mirrorFile = "${mirrorFile}.${ext}";
+	endif;
+	
 	if (is_readable($mirrorFile)) :
 		$timestamp = get_the_timestamp($DATESTAMP);
 			
 		$mirrorHtml = file_get_contents($mirrorFile);
+
 		$mirrorHtml = str_replace(
 			"<head>",
 			'<head><base href="' . $mirrorUrl . '" />',
 			$mirrorHtml
 		);
 		
-		$mirrorHtml = str_replace(
-			"https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson",
-			$params['json-url'],
-			$mirrorHtml
-		);
+		$dataMirrorUrls = [
+		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson' => getJsonUrl(''),
+		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED%2Creported_death&returnGeometry=false&f=pjson' => getJsonUrl('confirmeddiedreported'),
+		];
+		
+		foreach ($dataMirrorUrls as $from => $to) :
+			
+			$mirrorHtml = str_replace(
+				$from, $to,
+				$mirrorHtml
+			);
+		
+		endforeach;
+		
 		echo $mirrorHtml;
+	else :
+		print "<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>Missing component: <code>${mirrorFile}</code></p></body></html>";
 	endif;
 	exit;
 
