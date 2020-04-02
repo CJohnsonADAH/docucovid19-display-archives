@@ -11,6 +11,22 @@ $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
 
+function get_most_recent_timestamp ($timestamps) {
+	rsort($timestamps);
+	return $timestamps[0];
+}
+
+function get_slug_timestamps ($what, $where) {
+	$aWhere = array_reduce($where, function ($a, $e) use ($what) {
+		if ($what == $e[1]) :
+			$a[] = $e[3];
+		endif;
+		return $a;
+	}, []);
+	
+	return $aWhere;
+} /* get_most_recent () */
+
 function get_snapshot_lists ($dir) {
 	global $params;
 
@@ -20,7 +36,7 @@ function get_snapshot_lists ($dir) {
 	$pairs = []; $allSlugs = [];
 	foreach ($basenames as $base) :
 		if (preg_match("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", $base, $m)) :
-			$allSlugs[] = $m[1];
+			$allSlugs[] = $m;
 			if (is_null($params['slug']) or ($m[1]==$params['slug'])) :
 				$pairs[] = [$m[1], $m[3]];
 			endif;
@@ -131,20 +147,29 @@ elseif (is_null($params['date'])) :
 	$slugs = array_map(function ($e) { return $e[0]; }, $lists['sets']);
 	$timestamps = array_map(function ($e) { return $e[1]; }, $lists['sets']);
 	
-	$availableSlugs = array_unique($lists['available slugs']);
-	$slugLinks = array_map(function ($s) { return [$s, '<a href="?slug='.urlencode($s).'">'.htmlspecialchars($s).'</a>']; }, $availableSlugs);
+	$allSlugs = $lists['available slugs'];
+	$availableSlugs = array_unique(array_map(function ($e) { return $e[1]; }, $lists['available slugs']));
 	
+	$slugLinks = array_map(function ($s) use ($allSlugs) { return [
+		$s,
+		'<a href="?slug='.urlencode($s).'">'.htmlspecialchars($s).'</a>',
+		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
+	]; }, $availableSlugs);
+
 	foreach ($slugLinks as $slugLink) :
-		list($slug, $link) = $slugLink;
+		list($slug, $link, $ts) = $slugLink;
+
+		date_default_timezone_set('America/Chicago');
+		$latest = "latest: ".date('M d Y H:i', get_the_timestamp($ts));
 		if ($slug==$params['slug']) :
-			$metaTable[] = ["Current", "<strong>".$slug."</strong>"];
+			$metaTable[] = ["Current", "<strong>".$slug."</strong>", $latest];
 		else :
-			$metaTable[] = ["Type", $link];
+			$metaTable[] = ["Type", $link, $latest];
 		endif;
 	endforeach;
 
 	date_default_timezone_set('America/Chicago');
-	$metaTable[] = ["Time", date('r')];
+	$metaTable[] = ["Time", date('r'), "now"];
 
 	$outWhat = "Listing";
 	$timestamp = time();
