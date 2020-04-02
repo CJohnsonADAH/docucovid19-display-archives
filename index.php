@@ -275,7 +275,7 @@ elseif ("testsites" == $params['slug']) :
 		$rawDataOut = $hash;
 		
 	endif;
-elseif ("capture" == $params['slug']) :
+elseif ("capture" == $params['slug'] or preg_match('/^data_.*$/i', $params['slug'])) :
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/capture-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
@@ -309,7 +309,7 @@ elseif ("capture" == $params['slug']) :
 		$dataTHEAD = [];
 		$dataTBODY = [];
 		
-		$props = ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED"];
+		$props = ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED", "REPORTED_DEATH"];
 		foreach ($hash->fields as $field) :
 			if (in_array($field->name, $props)) :
 				$dataTHEAD[] = [$field->name, $field->alias];
