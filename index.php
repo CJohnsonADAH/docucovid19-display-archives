@@ -209,10 +209,16 @@ elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
 		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
 	endif;
 	$metaTable[] = ["View", '<a href="#view-raw-html">raw html</a> <a href="#mirror-html">page snapshot</a>'];
-	
-	$mirrorUrl = $DATA_PREFIX . $DATESTAMP . '.mirror/' . $sourceParts['host'] . "/" . $sourceParts['path'];
-	
-	$captureUrl = "/covid-data/capture-${DATESTAMP}.json";
+	$sourceParts = array_merge([
+	"scheme" => "file",
+	"host" => "localhost",
+	"path" => "",
+	"query" => "",
+	"fragment" => "",
+	], $sourceParts);
+
+	$mirrorUrl = $DATA_PREFIX . $DATESTAMP . '.mirror/' . $sourceParts['host'] . "/" . $sourceParts['path'] . (strlen($sourceParts['query']) > 0 ? '?' . $sourceParts['query'] : "");
+	$mirrorUrl = "/?date=${DATESTAMP}&mirrored=".urlencode($mirrorUrl);
 	
 	header("Content-type: text/html");
 
@@ -222,7 +228,7 @@ elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
 	$rawDataOut = [];
 	$out = "<pre id='view-raw-html'>".htmlspecialchars($html)."</pre>\n";
 	
-	$out .= '<iframe id="mirror-html" src="/?date=' . $DATESTAMP . '&mirrored=' . $mirrorUrl . '&json-url=' . $captureUrl .  '" width="95%" height="800">';
+	$out .= '<iframe id="mirror-html" src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
 	$out .= "</iframe>";
 	$outWhat = "HTML Front Page";
 	
