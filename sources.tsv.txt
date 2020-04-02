@@ -1,0 +1,16 @@
+1	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
+4	auburnalabama	https://www.auburnalabama.org/coronavirus/
+4	gov	https://governor.alabama.gov/newsroom/covid-19/
+4	sos	https://www.sos.alabama.gov/newsroom
+4	alsde	https://www.alsde.edu/covid-19
+4	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
+4	albme	https://www.albme.org/c19.html
+4	lab	https://www.labor.alabama.gov/covid19resources.aspx
+4	aub	https://ocm.auburn.edu/news/coronavirus/
+4	ua	https://healthinfo.ua.edu/
+4	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/
+4	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center
+4	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ
+4	cor	http://www.doc.alabama.gov/COVID19News
+4	cortesting	http://www.doc.alabama.gov/covid19testing
+
