@@ -1,4 +1,5 @@
 1	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
+1	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
 4	auburnalabama	https://www.auburnalabama.org/coronavirus/
 4	gov	https://governor.alabama.gov/newsroom/covid-19/
 4	sos	https://www.sos.alabama.gov/newsroom

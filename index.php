@@ -4,6 +4,7 @@ $params = array_merge([
 "date" => null,
 "slug" => null,
 "mirrored" => null,
+"test" => null,
 ], $_REQUEST);
 
 $out = '';
@@ -11,15 +12,44 @@ $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
 
+function get_json_to_table ($hash, $slug) {
+	$data = ['THEAD' => [], 'TBODY' => []];
+	
+	$props[$slug] = null;
+	$props = array_merge($props, [
+		"capture" => ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED", "REPORTED_DEATH"],
+		"testsites" => null,
+	]);
+	
+	foreach ($hash->fields as $field) :
+		if (is_null($props[$slug]) or in_array($field->name, $props[$slug])) :
+			$data['THEAD'][] = [$field->name, $field->alias];
+		endif;
+	endforeach;
+
+	foreach ($hash->features as $feat) :
+		$tr = [];
+		foreach ($feat->attributes as $key => $value) :
+			if (is_null($props[$slug]) or in_array($key, $props[$slug])) :
+				$tr[$key] = $value;
+			endif;
+		endforeach;		
+		$data['TBODY'][] = $tr;
+	endforeach;
+
+	return $data;
+
+} /* get_json_to_table () */
+
 function get_most_recent_timestamp ($timestamps) {
 	rsort($timestamps);
-	return $timestamps[0];
+	return (count($timestamps)>0 ? $timestamps[0] : null);
 }
 
 function get_slug_timestamps ($what, $where) {
 	$aWhere = array_reduce($where, function ($a, $e) use ($what) {
-		if ($what == $e[1]) :
-			$a[] = $e[3];
+		if ($what == $e[0]) :
+			$a[] = $e[1];
 		endif;
 		return $a;
 	}, []);
@@ -30,18 +60,34 @@ function get_slug_timestamps ($what, $where) {
 function get_snapshot_lists ($dir) {
 	global $params;
 
-	$files = glob("${dir}/*.url.txt");
-	$basenames = array_map(function ($filename) { return basename($filename); }, $files);
+	$files = array_merge(
+		glob("${dir}/*.url.txt"),
+		glob("${dir}/data/*.url.txt"),
+		glob("${dir}/html/*.url.txt")
+	);
 	
 	$pairs = []; $allSlugs = [];
-	foreach ($basenames as $base) :
+	foreach ($files as $file) :
+		$basedir = preg_replace("|^".preg_quote($dir)."|i", "", dirname($file));
+		$base = basename($file);
 		if (preg_match("|^([^-]+)(-([0-9]+Z))?[.]url[.]txt$|i", $base, $m)) :
-			$allSlugs[] = $m;
-			if (is_null($params['slug']) or ($m[1]==$params['slug'])) :
-				$pairs[] = [$m[1], $m[3]];
+			$set = [(strlen($basedir) > 0 ? "${basedir}/" : "") . $m[1], $m[3], $basedir];
+			$allSlugs[] = $set;
+			if (is_null($params['slug']) or ($set[0]==$params['slug'])) :
+				$pairs[] = $set;
 			endif;
 		endif;
 	endforeach;
+
+	if ($params['test'] == 'files') :
+		header("Content-type: text/plain");
+		echo "--- files ---\n";
+		var_dump($files);
+		echo "--- pairs ---\n";
+		var_dump($pairs);
+		exit;
+	endif;
+	
 
 	return [
 	"files" => $files,
@@ -57,7 +103,7 @@ function getJsonUrl ($slug) {
 	$DATESTAMP = $params['date'];
 	
 	if (strlen($slug) > 0) :
-		$capturePrefix = "data_${slug}";
+		$capturePrefix = "data/${slug}";
 	else :
 		$capturePrefix = "capture";
 	endif;
@@ -92,6 +138,9 @@ function get_the_timestamp($DATESTAMP) {
 $rawDataOut = null;
 $dataTHEAD = null;
 $dataTBODY = null;
+$metaInput = [
+	'file' => null,
+];
 
 if (!is_null($params['mirrored'])) :
 	$slug = $params['slug'];
@@ -121,7 +170,7 @@ if (!is_null($params['mirrored'])) :
 		);
 		
 		$dataMirrorUrls = [
-		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson' => getJsonUrl(''),
+		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson' => getJsonUrl('confirmeddied'),
 		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED%2Creported_death&returnGeometry=false&f=pjson' => getJsonUrl('confirmeddiedreported'),
 		];
 		
@@ -148,23 +197,26 @@ elseif (is_null($params['date'])) :
 	$timestamps = array_map(function ($e) { return $e[1]; }, $lists['sets']);
 	
 	$allSlugs = $lists['available slugs'];
-	$availableSlugs = array_unique(array_map(function ($e) { return $e[1]; }, $lists['available slugs']));
+	$availableSlugs = array_unique(array_map(function ($e) { return $e[0]; }, $lists['available slugs']));
 	
-	$slugLinks = array_map(function ($s) use ($allSlugs) { return [
+	$slugLinks = array_map(function ($s) use ($allSlugs) {
+		$bits = explode("/", trim($s, "/"), 2);
+		return [
 		$s,
-		'<a href="?slug='.urlencode($s).'">'.htmlspecialchars($s).'</a>',
+		$bits[0],
+		'<a href="?slug='.urlencode($s).'">'.htmlspecialchars($bits[1]).'</a>',
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
 	]; }, $availableSlugs);
 
 	foreach ($slugLinks as $slugLink) :
-		list($slug, $link, $ts) = $slugLink;
+		list($slug, $snapType, $link, $ts) = $slugLink;
 
 		date_default_timezone_set('America/Chicago');
 		$latest = "latest: ".date('M d Y H:i', get_the_timestamp($ts));
 		if ($slug==$params['slug']) :
-			$metaTable[] = ["Current", "<strong>".$slug."</strong>", $latest];
+			$metaTable[] = [$snapType, "<strong>".$slug."</strong>*", $latest];
 		else :
-			$metaTable[] = ["Type", $link, $latest];
+			$metaTable[] = [$snapType, $link, $latest];
 		endif;
 	endforeach;
 
@@ -174,7 +226,7 @@ elseif (is_null($params['date'])) :
 	$outWhat = "Listing";
 	$timestamp = time();
 	
-	$rawDataOut = $files;
+	$rawDataOut = null;
 	$dataTHEAD = ["Type", "Timestamp"];
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
@@ -183,7 +235,7 @@ elseif (is_null($params['date'])) :
 	endforeach;
 
 	
-elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
+elseif (preg_match("|^/*(html)([_/](.*)+)?$|i", $params['slug'], $refs)) :
 
 	$slug = $refs[0];
 	$ext = $refs[1];
@@ -208,7 +260,7 @@ elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
 		date_default_timezone_set('America/Chicago');
 		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
 	endif;
-	$metaTable[] = ["View", '<a href="#view-raw-html">raw html</a> <a href="#mirror-html">page snapshot</a>'];
+	$metaTable[] = ["View", '<a class="tab" href="#html-view-snapshot">webpage snapshot</a> <a class="tab" href="#html-view-source">view source (html)</a> '];
 	$sourceParts = array_merge([
 	"scheme" => "file",
 	"host" => "localhost",
@@ -225,67 +277,21 @@ elseif (preg_match("/^(html)(_(.*)+)?$/i", $params['slug'], $refs)) :
 	$timestamp = get_the_timestamp($DATESTAMP);
 
 	$html = file_get_contents($JSON_FILE);
-	$rawDataOut = [];
-	$out = "<pre id='view-raw-html'>".htmlspecialchars($html)."</pre>\n";
+	$rawDataOut = null;
+	$out = "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
 	
-	$out .= '<iframe id="mirror-html" src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
-	$out .= "</iframe>";
+	$out .= '<section id="html-view-snapshot"><iframe src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
+	$out .= "</iframe></section>";
 	$outWhat = "HTML Front Page";
 	
-elseif ("testsites" == $params['slug']) :
-	$slug = $params['slug'];
+elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug'])) :
+
 	$DATESTAMP = $params['date'];
-	$DATA_PREFIX = "/covid-data/${slug}-";
+	$DATA_PREFIX = "/covid-data/".$params['slug']."-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
-	$outWhat = "Test Sites Data Snapshot";
-	
-	$json = file_get_contents($JSON_FILE);
-	$hash = json_decode($json);
-	if (is_null($hash)) :
-		header("Content-type: text/plain");
-		echo $json;
-	else :
-		header("Content-type: text/html");
 
-		$timestamp = get_the_timestamp($DATESTAMP);
-
-		// URL of snapshot: Get it from the file, if available
-		if (is_readable($URL_FILE)) :
-			$sourceUrl = trim(file_get_contents($URL_FILE));
-		endif;
-		
-		if (!is_null($sourceUrl)) :
-			$source = parse_url($sourceUrl);
-			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
-		endif;
-		if (!is_null($timestamp)) :
-			date_default_timezone_set('America/Chicago');
-			$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
-		endif;
-
-		$dataTHEAD = [];
-		$dataTBODY = [];
-		
-		foreach ($hash->fields as $field) :
-			$dataTHEAD[] = $field->name;
-		endforeach;
-		foreach ($hash->features as $feat) :
-			$tr = [];
-			foreach ($feat->attributes as $key => $value) :
-				$tr[$key] = $value;
-			endforeach;
-			$dataTBODY[] = $tr;
-		endforeach;
-		
-		$rawDataOut = $hash;
-		
-	endif;
-elseif ("capture" == $params['slug'] or preg_match('/^data_.*$/i', $params['slug'])) :
-	$DATESTAMP = $params['date'];
-	$DATA_PREFIX = "/covid-data/capture-";
-	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
-	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$metaInput['file'] = $JSON_FILE;
 	$outWhat = "Data Snapshot";
 	
 	$json = file_get_contents($JSON_FILE);
@@ -312,46 +318,75 @@ elseif ("capture" == $params['slug'] or preg_match('/^data_.*$/i', $params['slug
 			$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
 		endif;
 		
-		$dataTHEAD = [];
-		$dataTBODY = [];
-		
-		$props = ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED", "REPORTED_DEATH"];
-		foreach ($hash->fields as $field) :
-			if (in_array($field->name, $props)) :
-				$dataTHEAD[] = [$field->name, $field->alias];
-			endif;
-		endforeach;
-
-		foreach ($hash->features as $feat) :
-			$tr = [];
-			foreach ($feat->attributes as $key => $value) :
-				if (in_array($key, $props)) :
-					$tr[$key] = $value;
-				endif;
-			endforeach;		
-			$dataTBODY[] = $tr;
-		endforeach;
+		$dataTable = get_json_to_table($hash, $params['slug']);
+		$dataTHEAD = $dataTable['THEAD'];
+		$dataTBODY = $dataTable['TBODY'];		
 
 		$rawDataOut = $hash;
 	endif;
 	
 endif;
 
-date_default_timezone_set('America/Chicago');
 
 if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
+	date_default_timezone_set('America/Chicago');
+	$sTimestamp = date('m/d/y H:i:s', $timestamp);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+<title>Documenting Covid-19: Alabama's Responses</title>
+<style type="text/css">
+#html-view-source pre {
+	padding: 1.0em;
+	background-color: #eee;
+	color: #000;
+	width: 96%;
+	overflow: auto;
+}
+
+#meta-table {
+	margin-bottom: 1.0em;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function isHTMLSnapshot () {
+	return ($('#html-view-source').length > 0);
+}
+function activateTabFromLink (e) {
+	e.preventDefault();
+	
+	var htmlId = e.target.hash;
+
+	$('section').fadeOut( { duration: 250 } ).promise().then( function () { $(htmlId).fadeIn( { duration: 250 } ); } );
+}
+function setupSnapshotTabLinks () {
+	$('a[href="#html-view-source"]').click( activateTabFromLink );
+	$('a[href="#html-view-snapshot"]').click( activateTabFromLink );
+}
+function hideSnapshotTabs () {
+	$('section').hide().promise().then( function () { $('#html-view-snapshot').show(); } );
+}
+
+$(document).ready( function () {
+	if (isHTMLSnapshot()) {
+		setupSnapshotTabLinks();
+		hideSnapshotTabs();
+	} /* if */
+});
+//]>
+</script>
 </head>
 <body>
+<h1><a href="/">Documenting Covid-19: Alabama's Responses</a></h1>
+<h2><?=$outWhat?> Snapshot: <?=$sTimestamp?></h1>;
 <?php
-	print "<h1>Alabama Covid-19 ${outWhat} Snapshot: " . date('m/d/y H:i:s', $timestamp) . "</h1>\n";
-
 	if (count($metaTable) > 0) :
 ?>
-	<table border="1">
+	<table border="1" id="meta-table">
 	<tbody>
 <?php
 		foreach ($metaTable as $row) :
@@ -415,11 +450,23 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 	endif;
 	
 	print $out;
+	
+	if (!is_null($rawDataOut)) :
 ?>
 <hr/>
+<section id="json-source">
 <?php
-		print "<h2>JSON Source:</h2>\n";
+
+		print "<h2>JSON Source";
+		if (!is_null($metaInput['file'])) :
+			print " (<code>".htmlspecialchars(basename($metaInput['file']))."</code>) ";
+		endif;
+		print ":</h2>\n";
 		echo "<pre>"; var_dump($rawDataOut); echo "</pre>";
+?>
+</section>
+<?php
+	endif;
 ?>
 </body>
 </html>
