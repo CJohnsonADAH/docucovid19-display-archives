@@ -1,5 +1,7 @@
 <?php
-
+	$myDir = dirname(__FILE__);
+	require_once("${myDir}/mirroredurl.class.php");
+	
 $params = array_merge([
 "date" => null,
 "slug" => null,
@@ -127,7 +129,7 @@ function get_the_timestamp($DATESTAMP) {
 		Z$
 	/ix', $DATESTAMP, $ts_matches);
 	if ($got_the_time) :
-		$timestamp = mktime($ts_matches[4], $ts_matches[5], $ts_matches[6], $ts_matches[2], $ts_matches[3], $ts_matches[1]);
+		$timestamp = gmmktime($ts_matches[4], $ts_matches[5], $ts_matches[6], $ts_matches[2], $ts_matches[3], $ts_matches[1]);
 	else :
 		$timestamp = null;
 	endif;
@@ -148,48 +150,11 @@ if (!is_null($params['mirrored'])) :
 
 	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
 	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
+	$oFile = new MirroredURL(["file" => $params['mirrored'], "ts" => $DATESTAMP]);
 
-	if (!is_readable($mirrorFile)) :
-		// check whether we've got a screwy timestamp
-		$mirrorDir = dirname($mirrorFile);
-		while (strlen($mirrorDir) > 1) :
-			if (preg_match("|^(.*/html/snapshots/[a-z]+/)([0-9]+Z)$|", $mirrorDir, $ref)) :
-				$mirrorDir = $ref[1];
-				$mirrorBase = $ref[2];
-				break;
-			endif;
-			
-			$mirrorBase = basename($mirrorDir);
-			$mirrorDir = dirname($mirrorDir);
-			
-		endwhile;
-
-		$ts = array_map(function ($e) { return basename($e); }, glob($mirrorDir . "/[0-9]*Z"));
-		sort($ts);
-		$ts = array_filter($ts, function ($e) use ($mirrorBase) { return ($e >= $mirrorBase); }); 
-
-		if (count($ts) >= 1) :
-			$ts = array_values($ts);
-			$testFile = str_replace($mirrorBase, $ts[0], $mirrorFile);
-			if (is_readable($testFile)) :
-				$mirrorFile = $testFile;
-			endif;
-		endif;
-	endif;
-	
-	if (is_dir($mirrorFile) and is_readable("${mirrorFile}/index.html")) :
-		$mirrorFile = "${mirrorFile}/index.html";
-	endif;
-
-	$ext = "html";
-	if (!is_readable($mirrorFile) and is_readable("{$mirrorFile}.${ext}")) :
-		$mirrorFile = "${mirrorFile}.${ext}";
-	endif;
-	
-	if (is_readable($mirrorFile)) :
+	if (is_readable($oFile->get_readable())) :
 		$timestamp = get_the_timestamp($DATESTAMP);
-			
-		$mirrorHtml = file_get_contents($mirrorFile);
+		$mirrorHtml = $oFile->get_contents();
 
 		$mirrorHtml = str_replace(
 			"<head>",
@@ -214,7 +179,8 @@ if (!is_null($params['mirrored'])) :
 		
 		echo $mirrorHtml;
 	else :
-		print "<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>Missing component: <code>${mirrorFile}</code></p></body></html>";
+		$readable = $oFile->get_readable();
+		print "<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>Missing component: <code>${mirrorFile}</code> =&gt; <code>${readable}</code></p></body></html>";
 	endif;
 	exit;
 
