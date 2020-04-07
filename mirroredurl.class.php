@@ -1,10 +1,12 @@
 <?php
 class MirroredURL {
 	private $_sBaseDir;
+	private $_sDataBase;
 	private $_sSnapBase;
 	private $_sUrl;
 	private $_sFile;
 	private $_sTs;
+	private $_sSlug;
 	private $_vTest;
 	
 	public function __construct ($params = array()) {
@@ -13,8 +15,10 @@ class MirroredURL {
 		$params = array_merge([
 		"url" => null,
 		"file" => null,
+		"slug" => null,
 		"ts" => null,
 		"base dir" => dirname(__FILE__),
+		"data base" => "/covid-data",
 		"snap base" => "/html/snapshots/",
 		"test" => (isset($_REQUEST['MirroredURL-Test']) ? $_REQUEST['MirroredURL-Test'] : null),
 		], $params);
@@ -22,14 +26,21 @@ class MirroredURL {
 		$this->_vTest = $params['test'];
 		
 		$this->_sBaseDir = $params['base dir'];
+		$this->_sDataBase = $params['data base'];
 		$this->_sSnapBase = $params['snap base'];
 
 		$this->_sTs = $params['ts'];
-		if (is_null($this->_sTs)) :
-			$this->_sTs = $this->get_ts($params['file']);
-		endif;
+		$this->_sSlug = $params['slug'];
 		
+		if (!is_null($params['url'])) :
+			$this->set_url($params['url']);
+		endif;
+
 		if (!is_null($params['file'])) :
+			if (is_null($this->_sTs)) :
+				$this->_sTs = $this->get_ts($params['file']);
+			endif;
+			
 			$this->set_file($params['file']);
 		endif;
 	} /* MirroredURL::__construct () */
@@ -90,6 +101,24 @@ class MirroredURL {
 		$filepath = $this->get_readable();
 		return file_get_contents($filepath);
 	}
+
+	protected function to_get_params ($params) {
+		$http_params = [];
+		foreach ($params as $key => $value) :
+			$http_params[] = urlencode($key) . "=" . urlencode($value);
+		endforeach;
+		
+		return (count($http_params)==0 ? '' : '?' . implode("&", $http_params));
+	}
+	
+	public function get_mirror_url () {
+		$params = [
+		"date" => $this->ts(),
+		"mirrored" => $this->file(),
+		];
+
+		return "/" . $this->to_get_params($params);
+	}
 	
 	public function get_readable () {
 		$filepath = $this->get_path($this->_sFile);
@@ -115,8 +144,43 @@ class MirroredURL {
 		return $path;
 	}
 	
+	public function file () {
+		return $this->_sFile;
+	}
+	
 	public function filepath () {
 		return $this->get_path($this->_sFile);
+	}
+	
+	protected function set_url (string $url) {
+		$this->_sUrl = $url;
+		
+		$source = [];
+		if (strlen($this->_sUrl) > 0) :
+			$source = parse_url($this->_sUrl);
+		endif;
+		
+		$source = array_merge([
+		"scheme" => "file",
+		"host" => "localhost",
+		"path" => "",
+		"query" => "",
+		"fragment" => "",
+		], $source);
+
+		if (strlen($source['path']) > 0) :
+			$base = rtrim($this->_sDataBase, "/")."/".trim($this->_sSnapBase, "/");
+			$slug = $this->_sSlug;
+			$ts = $this->_sTs;
+			$host = rtrim($source['host'], "/");
+			$path = ltrim($source['path'], "/");
+			$query = (strlen($source['query']) > 0 ? '?'.$source['query'] : "");
+			$file = "${base}/${slug}/${ts}/${host}/${path}${query}";
+			
+			$this->console_log($file, "set_url.file");
+			$this->set_file($file);
+		endif;
+		
 	}
 	
 	protected function set_file (string $file) {

@@ -245,33 +245,24 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 		$timestamp = get_the_timestamp($DATESTAMP);
 
 	// URL of snapshot: Get it from the file, if available
-	$sourceParts = [];
 	if (is_readable($URL_FILE)) :
 		$sourceUrl = trim(file_get_contents($URL_FILE));
-		$sourceParts = parse_url($sourceUrl);
 	endif;
 
 	if (!is_null($sourceUrl)) :
 		$source = parse_url($sourceUrl);
-		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
+		$host = $source['host'];
+		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
 	if (!is_null($timestamp)) :
 		date_default_timezone_set('America/Chicago');
 		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
 	endif;
 
-	$sourceParts = array_merge([
-	"scheme" => "file",
-	"host" => "localhost",
-	"path" => "",
-	"query" => "",
-	"fragment" => "",
-	], $sourceParts);
+	$oFile = new MirroredURL(["url" => $sourceUrl, "ts" => $DATESTAMP, "slug" => $site]);
 
-	$mirrorUrl = $SNAP_PREFIX . $DATESTAMP . '/' . $sourceParts['host'] . "/" . $sourceParts['path'] . (strlen($sourceParts['query']) > 0 ? '?' . $sourceParts['query'] : "");
-	$oFile = new MirroredURL(["file" => $mirrorUrl, "ts" => $DATESTAMP]);
-
-	$mirrorUrl = "/?date=${DATESTAMP}&mirrored=".urlencode($mirrorUrl);
+	$mirrorUrl = $oFile->get_mirror_url();
+	
 	$snapshotSection = '';
 	$viewOptions = ['<a class="tab" href="#html-view-source">view source (html)</a>'];
 	if (is_readable($oFile->get_readable())) :
