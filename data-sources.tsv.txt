@@ -1,0 +1,15 @@
+confirmeddiedreported	https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query	where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED%2Creported_death&returnGeometry=false
+confirmeddied	https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query	returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outSR=102100&resultOffset=0&resultRecordCount=69&cacheHint=true&where=CONFIRMED%20%3E=%200
+testsites	https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COVID19_testsites_READ_ONLY/FeatureServer/0/query	where=1%3D1&returnGeometry=true&spatialRel=esriSpatialRelIntersects&outFields=*&maxRecordCountFactor=4&outSR=102100&resultOffset=0&resultRecordCount=8000&cacheHint=true&quantizationParameters=%7B%22mode%22%3A%22view%22%2C%22originPosition%22%3A%22upperLeft%22%2C%22tolerance%22%3A1.0583333333333338%2C%22extent%22%3A%7B%22xmin%22%3A-9821126.399120873%2C%22ymin%22%3A3483922.583299004%2C%22xmax%22%3A-9478628.407981059%2C%22ymax%22%3A4616413.594372874%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%2C%22latestWkid%22%3A3857%7D%7D%7D
+statewide	https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Statewide_Summary/FeatureServer/0/query	where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&outStatistics=%5B%7B%22statisticType%22%3A%22sum%22%2C%22onStatisticField%22%3A%22hospitalized%22%2C%22outStatisticFieldName%22%3A%22value%22%7D%5D&cacheHint=true
+uabstates	https://covid.shrp.uab.edu/laravel/open/covid/states/latest.json
+uabsymptoms2	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-two/latest.json
+uabsymptoms0	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-zero/latest.json
+uabsymptoms1	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-one/latest.json
+uabsymptoms3	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-three/latest.json
+uabsymptoms4	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-four/latest.json
+uabcomorbidities	https://covid.shrp.uab.edu/laravel/open/covid/comorbidities/latest.json
+uabgeo	https://get.geojs.io/v1/ip/geo.json
+uabgeocode	https://maps.googleapis.com/maps/api/geocode/json?latlng=32.5484,-85.4682&language=en&key=AIzaSyDhITOJJPXdscLxnmQToloqkKLB7XlW9wA
+	
+	
