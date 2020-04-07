@@ -1,6 +1,8 @@
 <?php
 	$myDir = dirname(__FILE__);
 	require_once("${myDir}/mirroredurl.class.php");
+
+define('ALACOVDAT_TZ', 'America/Chicago');
 	
 $params = array_merge([
 "date" => null,
@@ -115,19 +117,35 @@ function getJsonUrl ($slug) {
 
 } /* getJsonUrl () */	
 
-
-function get_the_timestamp($DATESTAMP) {
-	// Timestamp of snapshot: Parse the slug into its component parts
-	// and convert into a Unix-epoch timestamp
-	$got_the_time = preg_match('/^
+function alacovdat_datestamp_regex () {
+	return "/^
 		([0-9]{4})
 		([0-9]{2})
 		([0-9]{2})
 		([0-9]{2})
 		([0-9]{2})
-		([0-9]+)
-		Z$
-	/ix', $DATESTAMP, $ts_matches);
+		([0-9]{2})
+		Z
+	$/ix";
+} /* alacovdat_datestamp_regex () */
+
+function is_alacovdat_datestamp ($ts) {
+	return preg_match(alacovdat_datestamp_regex(), trim($ts));
+} /* is_alacovdat_datestamp () */
+
+function human_datetime ($ts, $fmt = 'M d Y H:i') {
+	$vTs = $ts;
+	if (is_string($ts) and is_alacovdat_datestamp(trim($ts))) :
+		$vTs = get_the_timestamp($ts);
+	endif;
+	date_default_timezone_set(ALACOVDAT_TZ);
+	return date($fmt, $vTs);
+} /* human_datetime() */
+
+function get_the_timestamp($DATESTAMP) {
+	// Timestamp of snapshot: Parse the slug into its component parts
+	// and convert into a Unix-epoch timestamp
+	$got_the_time = preg_match(alacovdat_datestamp_regex(), $DATESTAMP, $ts_matches);
 	if ($got_the_time) :
 		$timestamp = gmmktime($ts_matches[4], $ts_matches[5], $ts_matches[6], $ts_matches[2], $ts_matches[3], $ts_matches[1]);
 	else :
@@ -206,8 +224,7 @@ elseif (is_null($params['date'])) :
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
 
-		date_default_timezone_set('America/Chicago');
-		$latest = "latest: ".date('M d Y H:i', get_the_timestamp($ts));
+		$latest = "latest: ".human_datetime($ts);
 		if ($slug==$params['slug']) :
 			$metaTable[] = [$snapType, "<strong>".$slug."</strong>*", $latest];
 		else :
@@ -215,8 +232,7 @@ elseif (is_null($params['date'])) :
 		endif;
 	endforeach;
 
-	date_default_timezone_set('America/Chicago');
-	$metaTable[] = ["Time", date('r'), "now"];
+	$metaTable[] = ["Time", human_datetime(time()), "now"];
 
 	$outWhat = "Listing";
 	$timestamp = time();
@@ -225,8 +241,7 @@ elseif (is_null($params['date'])) :
 	$dataTHEAD = ["Type", "Timestamp"];
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
-		date_default_timezone_set('America/Chicago');
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.date('M d Y H:i', get_the_timestamp($ts)).'</a>'];
+		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.human_datetime($ts).'</a>'];
 	endforeach;
 
 	
@@ -255,8 +270,7 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
 	if (!is_null($timestamp)) :
-		date_default_timezone_set('America/Chicago');
-		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
+		$metaTable[] = ["Timestamp", human_datetime($timestamp)];
 	endif;
 
 	$oFile = new MirroredURL(["url" => $sourceUrl, "ts" => $DATESTAMP, "slug" => $site]);
@@ -316,8 +330,7 @@ elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?d
 			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
 		endif;
 		if (!is_null($timestamp)) :
-			date_default_timezone_set('America/Chicago');
-			$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
+			$metaTable[] = ["Timestamp", human_datetime($timestamp)];
 		endif;
 		
 		$dataTable = get_json_to_table($hash, $params['slug']);
@@ -331,8 +344,7 @@ endif;
 
 
 if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
-	date_default_timezone_set('America/Chicago');
-	$sTimestamp = date('m/d/y H:i:s', $timestamp);
+	$sTimestamp = human_datetime($timestamp);
 ?>
 <!DOCTYPE html>
 <html>
