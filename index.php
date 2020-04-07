@@ -149,6 +149,34 @@ if (!is_null($params['mirrored'])) :
 	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
 	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
 
+	if (!is_readable($mirrorFile)) :
+		// check whether we've got a screwy timestamp
+		$mirrorDir = dirname($mirrorFile);
+		while (strlen($mirrorDir) > 1) :
+			if (preg_match("|^(.*/html/snapshots/[a-z]+/)([0-9]+Z)$|", $mirrorDir, $ref)) :
+				$mirrorDir = $ref[1];
+				$mirrorBase = $ref[2];
+				break;
+			endif;
+			
+			$mirrorBase = basename($mirrorDir);
+			$mirrorDir = dirname($mirrorDir);
+			
+		endwhile;
+
+		$ts = array_map(function ($e) { return basename($e); }, glob($mirrorDir . "/[0-9]*Z"));
+		sort($ts);
+		$ts = array_filter($ts, function ($e) use ($mirrorBase) { return ($e >= $mirrorBase); }); 
+
+		if (count($ts) >= 1) :
+			$ts = array_values($ts);
+			$testFile = str_replace($mirrorBase, $ts[0], $mirrorFile);
+			if (is_readable($testFile)) :
+				$mirrorFile = $testFile;
+			endif;
+		endif;
+	endif;
+	
 	if (is_dir($mirrorFile) and is_readable("${mirrorFile}/index.html")) :
 		$mirrorFile = "${mirrorFile}/index.html";
 	endif;
@@ -235,18 +263,22 @@ elseif (is_null($params['date'])) :
 	endforeach;
 
 	
-elseif (preg_match("|^/*(html)([_/](.*)+)?$|i", $params['slug'], $refs)) :
+elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 
 	$slug = $refs[0];
 	$ext = $refs[1];
+	$site = $refs[3];
 	
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/${slug}-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$SNAP_PREFIX = "/covid-data/${ext}/snapshots/${site}/";
+	
 		$timestamp = get_the_timestamp($DATESTAMP);
 
 	// URL of snapshot: Get it from the file, if available
+	$sourceParts = [];
 	if (is_readable($URL_FILE)) :
 		$sourceUrl = trim(file_get_contents($URL_FILE));
 		$sourceParts = parse_url($sourceUrl);
@@ -269,7 +301,7 @@ elseif (preg_match("|^/*(html)([_/](.*)+)?$|i", $params['slug'], $refs)) :
 	"fragment" => "",
 	], $sourceParts);
 
-	$mirrorUrl = $DATA_PREFIX . $DATESTAMP . '.mirror/' . $sourceParts['host'] . "/" . $sourceParts['path'] . (strlen($sourceParts['query']) > 0 ? '?' . $sourceParts['query'] : "");
+	$mirrorUrl = $SNAP_PREFIX . $DATESTAMP . '/' . $sourceParts['host'] . "/" . $sourceParts['path'] . (strlen($sourceParts['query']) > 0 ? '?' . $sourceParts['query'] : "");
 	$mirrorUrl = "/?date=${DATESTAMP}&mirrored=".urlencode($mirrorUrl);
 	
 	header("Content-type: text/html");
