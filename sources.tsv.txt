@@ -1,17 +1,28 @@
 1	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
 1	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
 4	auburnalabama	https://www.auburnalabama.org/coronavirus/
-4	gov	https://governor.alabama.gov/newsroom/covid-19/
+4	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
 4	sos	https://www.sos.alabama.gov/newsroom
 4	alsde	https://www.alsde.edu/covid-19
 4	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
 4	albme	https://www.albme.org/c19.html
 4	lab	https://www.labor.alabama.gov/covid19resources.aspx
+4	bop	https://www.albop.com/
+4	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
 4	aub	https://ocm.auburn.edu/news/coronavirus/
+4	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
 4	ua	https://healthinfo.ua.edu/
-4	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/
+4	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
 4	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center
 4	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ
 4	cor	http://www.doc.alabama.gov/COVID19News
 4	cortesting	http://www.doc.alabama.gov/covid19testing
-
+4	uab	https://www.uab.edu/news/coronavirus/
+4	uabfight	https://www.uab.edu/fightcovid19/
+4	uabhelpbeat	https://www.helpbeatcovid19.org/
+4	tsk	https://www.tuskegee.edu/coronavirus-resources
+4	troy	https://www.troy.edu/coronavirus/
+4	aum	http://www.aum.edu/coronavirus
+4	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
+4	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
+4	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
