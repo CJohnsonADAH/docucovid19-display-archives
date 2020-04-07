@@ -259,7 +259,7 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 		date_default_timezone_set('America/Chicago');
 		$metaTable[] = ["Timestamp", date("m/d/Y H:i:s", $timestamp)];
 	endif;
-	$metaTable[] = ["View", '<a class="tab" href="#html-view-snapshot">webpage snapshot</a> <a class="tab" href="#html-view-source">view source (html)</a> '];
+
 	$sourceParts = array_merge([
 	"scheme" => "file",
 	"host" => "localhost",
@@ -269,7 +269,20 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 	], $sourceParts);
 
 	$mirrorUrl = $SNAP_PREFIX . $DATESTAMP . '/' . $sourceParts['host'] . "/" . $sourceParts['path'] . (strlen($sourceParts['query']) > 0 ? '?' . $sourceParts['query'] : "");
+	$oFile = new MirroredURL(["file" => $mirrorUrl, "ts" => $DATESTAMP]);
+
 	$mirrorUrl = "/?date=${DATESTAMP}&mirrored=".urlencode($mirrorUrl);
+	$snapshotSection = '';
+	$viewOptions = ['<a class="tab" href="#html-view-source">view source (html)</a>'];
+	if (is_readable($oFile->get_readable())) :
+		$snapshotSection .= '<section id="html-view-snapshot"><iframe src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
+		$snapshotSection .= "</iframe></section>";
+		$viewOptions = array_merge(
+			['<a class="tab" href="#html-view-snapshot">webpage snapshot</a>'],
+			$viewOptions
+		);
+	endif;
+	$metaTable[] = ["View", implode(" ", $viewOptions)];
 	
 	header("Content-type: text/html");
 
@@ -278,9 +291,8 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 	$html = file_get_contents($JSON_FILE);
 	$rawDataOut = null;
 	$out = "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
+	$out .= $snapshotSection;
 	
-	$out .= '<section id="html-view-snapshot"><iframe src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
-	$out .= "</iframe></section>";
 	$outWhat = "HTML Front Page";
 	
 elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug'])) :
@@ -367,7 +379,7 @@ function setupSnapshotTabLinks () {
 	$('a[href="#html-view-snapshot"]').click( activateTabFromLink );
 }
 function hideSnapshotTabs () {
-	$('section').hide().promise().then( function () { $('#html-view-snapshot').show(); } );
+	$('section').hide().promise().then( function () { var tab = $('.tab').eq(0).attr('href'); $(tab).show(); } );
 }
 
 $(document).ready( function () {
