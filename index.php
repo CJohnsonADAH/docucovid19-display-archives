@@ -196,20 +196,21 @@ if (!is_null($params['mirrored'])) :
 			'<head><base href="' . $mirrorUrl . '" />',
 			$mirrorHtml
 		);
+
+		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
+		$dataMirrorUrls = json_decode($jsonMirrorUrls);
+
+		if (is_object($dataMirrorUrls)) :
+
+			$dataMirrorUrls = (array) $dataMirrorUrls;
+			foreach ($dataMirrorUrls as $to => $from) :
+				$mirrorHtml = str_replace(
+					$from, getJsonUrl($to),
+					$mirrorHtml
+				);
 		
-		$dataMirrorUrls = [
-		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson' => getJsonUrl('confirmeddied'),
-		'https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED%2Creported_death&returnGeometry=false&f=pjson' => getJsonUrl('confirmeddiedreported'),
-		];
-		
-		foreach ($dataMirrorUrls as $from => $to) :
-			
-			$mirrorHtml = str_replace(
-				$from, $to,
-				$mirrorHtml
-			);
-		
-		endforeach;
+			endforeach;
+		endif;
 		
 		echo $mirrorHtml;
 	else :
