@@ -4,6 +4,7 @@
 4	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
 4	sos	https://www.sos.alabama.gov/newsroom
 4	alsde	https://www.alsde.edu/covid-19
+4	mobilealabama	https://www.cityofmobile.org/COVID-19
 4	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
 4	albme	https://www.albme.org/c19.html
 4	lab	https://www.labor.alabama.gov/covid19resources.aspx
@@ -26,3 +27,5 @@
 4	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
 4	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
 4	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
+4	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
+4	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
