@@ -226,7 +226,7 @@ elseif (is_null($params['date'])) :
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
 		date_default_timezone_set('America/Chicago');
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.date('r', get_the_timestamp($ts)).'</a>'];
+		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.date('M d Y H:i', get_the_timestamp($ts)).'</a>'];
 	endforeach;
 
 	
