@@ -156,6 +156,10 @@ class MirroredURL {
 		return $this->get_path($this->_sFile);
 	}
 	
+	public function url () {
+		return $this->_sUrl;
+	}
+	
 	protected function set_url (string $url) {
 		$this->_sUrl = $url;
 		
