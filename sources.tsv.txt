@@ -16,11 +16,11 @@
 4	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
 4	5	cor	http://www.doc.alabama.gov/COVID19News
 4	5	cortesting	http://www.doc.alabama.gov/covid19testing
-4	5	adah	https://archives.alabama.org/
+8	5	adah	https://archives.alabama.org/
 4	5	accs	https://www.accs.edu/coronavirus/
 
 # City Governments & Agencies
-4	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
+8	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
 #4	5	andalusiaalabama	http://www.cityofandalusia.com/	--header="Accept-Encoding: identity"
 4	5	auburnalabama	https://www.auburnalabama.org/coronavirus/
 4	5	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
@@ -29,36 +29,37 @@
 4	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
 4	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
 4	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
-4	10	selmaalabama	https://www.selma-al.gov/
+8	10	selmaalabama	https://www.selma-al.gov/
 4	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
 
 # County Governments & Agencies
 4	5	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate
 4	5	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate
 4	20	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/
-4	5	leeco	http://www.leeco.us/covid-19_information/index.php
+8	5	leeco	http://www.leeco.us/covid-19_information/index.php
 4	5	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates
 4	5	mobilecohealth	http://mchd.org/	--domains=mchd.org
 4	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org
 
 # Colleges & Universities
-4	5	aub	https://ocm.auburn.edu/news/coronavirus/
-4	5	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
-4	5	ua	https://healthinfo.ua.edu/
-4	5	uab	https://www.uab.edu/news/coronavirus/
+8	5	aub	https://ocm.auburn.edu/news/coronavirus/
+8	5	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
+8	5	ua	https://healthinfo.ua.edu/
+8	5	uab	https://www.uab.edu/news/coronavirus/
 4	5	uabfight	https://www.uab.edu/fightcovid19/
 4	30	uabhelpbeat	https://www.helpbeatcovid19.org/
-4	5	tsk	https://www.tuskegee.edu/coronavirus-resources
-4	5	troy	https://www.troy.edu/coronavirus/
-4	5	aum	http://www.aum.edu/coronavirus
-4	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
-4	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
+8	5	tsk	https://www.tuskegee.edu/coronavirus-resources
+8	5	troy	https://www.troy.edu/coronavirus/
+8	5	aum	http://www.aum.edu/coronavirus
+8	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
+8	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
 
 # Hospitals & Non-Profits
-4	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
-4	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
-4	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
-4	5	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
-4	5	huntsvillehospital	https://www.huntsvillehospital.org/
-4	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
+8	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
+8	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
+8	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
+8	5	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
+8	5	huntsvillehospital	https://www.huntsvillehospital.org/
+8	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
+4	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
 
