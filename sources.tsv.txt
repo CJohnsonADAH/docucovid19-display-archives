@@ -5,6 +5,7 @@
 4	5	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
 4	10	govservealabama	https://www.servealabama.gov/covid19
 4	10	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
+4	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf
 4	5	sos	https://www.sos.alabama.gov/newsroom
 4	5	alsde	https://www.alsde.edu/covid-19
 4	5	albme	https://www.albme.org/c19.html
