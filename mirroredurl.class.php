@@ -122,16 +122,20 @@ class MirroredURL {
 	
 	public function get_readable () {
 		$filepath = $this->get_path($this->_sFile);
-
-		if (is_dir($filepath) and is_readable("${filepath}/index.html")) :
-			$filepath = "${filepath}/index.html";
-		endif;
+		
+		$bReadable = is_readable($filepath);
+		$bDir = is_dir($filepath);
+		$bFile = ($bReadable and !$bDir);
 		
 		$ext = "html";
-		if (!is_readable($filepath) and is_readable("${filepath}.${ext}")) :
+		if (!$bFile and is_readable("${filepath}.${ext}")) :
 			$filepath = "${filepath}.${ext}";
 		endif;
-		
+
+		if ($bDir and is_readable("${filepath}/index.html")) :
+			$filepath = "${filepath}/index.html";
+		endif;
+						
 		return $filepath;
 	}
 	
