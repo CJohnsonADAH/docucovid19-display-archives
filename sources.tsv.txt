@@ -18,6 +18,16 @@
 4	5	cortesting	http://www.doc.alabama.gov/covid19testing
 8	5	adah	https://archives.alabama.org/
 4	5	accs	https://www.accs.edu/coronavirus/
+4	5	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
+4	5	comalabamaworks	https://alabamaworks.com/coronavirus/
+4	5	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
+4	5	alnineoneone	https://al911board.com/news
+4	5	alea	https://www.alea.gov/covid-19-response
+4	5	agi	https://agi.alabama.gov/
+4	5	abc	http://alabcboard.gov/covid19
+4	5	con	https://www.outdooralabama.com/COVID-19
+8	5	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
+4	5	bnk	http://banking.alabama.gov/Covid_info.aspx
 
 # City Governments & Agencies
 8	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
