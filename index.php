@@ -241,7 +241,8 @@ elseif (is_null($params['date'])) :
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
 
-		$latest = "latest: ".human_datetime($ts);
+		$latestUrl = "/?date=" . $ts . "&slug=" . $slug;
+		$latest = "latest: <a href='${latestUrl}'>".human_datetime($ts).'</a>';
 		if ($slug==$params['slug']) :
 			$metaTable[] = [$snapType, "<strong>".$slug."</strong>*", $latest];
 		else :
