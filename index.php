@@ -273,6 +273,9 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 	$DATA_PREFIX = "/covid-data/${slug}-";
 	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$PNG_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.png";
+	$PNG_URL = "${DATA_PREFIX}{$DATESTAMP}.png";
+	
 	$SNAP_PREFIX = "/covid-data/${ext}/snapshots/${site}/";
 	
 		$timestamp = get_the_timestamp($DATESTAMP);
@@ -297,6 +300,14 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 	
 	$snapshotSection = '';
 	$viewOptions = ['<a class="tab" href="#html-view-source">view source (html)</a>'];
+	if (is_readable($PNG_FILE)) :
+		$snapshotSection .= '<section id="html-view-screenshot"><div><img src="' . htmlspecialchars($PNG_URL) . '" /></div></section>';
+		$viewOptions = array_merge(
+			['<a class="tab" href="#html-view-screenshot">screen shot (png)</a>'],
+			$viewOptions
+		);
+	endif;
+	
 	if (is_readable($oFile->get_readable())) :
 		$snapshotSection .= '<section id="html-view-snapshot"><iframe src="' . htmlspecialchars($mirrorUrl) . '" width="95%" height="800">';
 		$snapshotSection .= "</iframe></section>";
@@ -305,7 +316,7 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 			$viewOptions
 		);
 	endif;
-	$metaTable[] = ["View", implode(" ", $viewOptions)];
+	$metaTable[] = ["View", implode(" / ", $viewOptions)];
 	
 	header("Content-type: text/html");
 
@@ -380,6 +391,19 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 #meta-table {
 	margin-bottom: 1.0em;
 }
+
+#html-view-screenshot div {
+	margin: 10px; border: 1px dotted black;
+}
+#html-view-screenshot img {
+	max-width: 100%; height: auto;
+}
+
+.tab.current {
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+}
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -392,15 +416,19 @@ function activateTabFromLink (e) {
 	e.preventDefault();
 	
 	var htmlId = e.target.hash;
-
+	$('.tab').removeClass('current');
+	$(e.target).addClass('current');
 	$('section').fadeOut( { duration: 250 } ).promise().then( function () { $(htmlId).fadeIn( { duration: 250 } ); } );
 }
 function setupSnapshotTabLinks () {
-	$('a[href="#html-view-source"]').click( activateTabFromLink );
-	$('a[href="#html-view-snapshot"]').click( activateTabFromLink );
+	$('a.tab').click( activateTabFromLink );
 }
 function hideSnapshotTabs () {
-	$('section').hide().promise().then( function () { var tab = $('.tab').eq(0).attr('href'); $(tab).show(); } );
+	$('section').hide().promise().then( function () {
+		var tab = $('.tab').eq(0).attr('href');
+		$('.tab').eq(0).addClass('current');
+		$(tab).show();
+	});
 }
 
 $(document).ready( function () {
