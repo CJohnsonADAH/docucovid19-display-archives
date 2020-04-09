@@ -1,6 +1,7 @@
 {
 "confirmeddied": "https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED&returnGeometry=false&f=pjson",
 "confirmeddiedreported": "https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/arcgis/rest/services/COV19_Public_Dashboard_ReadOnly/FeatureServer/0/query?where=1%3D1&outFields=CNTYNAME%2CCNTYFIPS%2CCONFIRMED%2CDIED%2Creported_death&returnGeometry=false&f=pjson",
+"testsites": "https://services7.arcgis.com/4RQmZZ0yaZkGR1zy/ArcGIS/rest/services/COVID19_testsites_READ_ONLY/FeatureServer/0/query?where=1%3D1&outFields=NAME%2CADDRESS%2CPHONE%2CCALLFORAPPT%2CWEBAPPT%2CCOUNTY%2CHOURS%2CDAYSOPEN%2C&returnGeometry=false&f=pjson",
 "uabcomorbidities": "https://covid.shrp.uab.edu/laravel/open/covid/comorbidities/latest.json",
 "uabstates": "https://covid.shrp.uab.edu/laravel/open/covid/states/latest.json",
 "uabsymptoms0": "https://covid.shrp.uab.edu/laravel/open/covid/symptoms-zero/latest.json",
