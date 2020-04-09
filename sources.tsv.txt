@@ -32,8 +32,12 @@
 # City Governments & Agencies
 8	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
 #4	5	andalusiaalabama	http://www.cityofandalusia.com/	--header="Accept-Encoding: identity"
+8	5	annistonalabama	http://www.annistonal.gov/
 4	5	auburnalabama	https://www.auburnalabama.org/coronavirus/
+4	5	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*
+8	5	gasdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*
 4	5	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
+8	5	jasperalabama	https://www.jaspercity.com/
 4	5	mobilealabama	https://www.cityofmobile.org/COVID-19
 4	5	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19
 4	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
