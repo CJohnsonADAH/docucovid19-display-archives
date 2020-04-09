@@ -1,31 +1,63 @@
-1	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
-1	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
-4	auburnalabama	https://www.auburnalabama.org/coronavirus/
-4	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
-4	sos	https://www.sos.alabama.gov/newsroom
-4	alsde	https://www.alsde.edu/covid-19
-4	mobilealabama	https://www.cityofmobile.org/COVID-19
-4	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
-4	albme	https://www.albme.org/c19.html
-4	lab	https://www.labor.alabama.gov/covid19resources.aspx
-4	bop	https://www.albop.com/
-4	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
-4	aub	https://ocm.auburn.edu/news/coronavirus/
-4	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
-4	ua	https://healthinfo.ua.edu/
-4	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
-4	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center
-4	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ
-4	cor	http://www.doc.alabama.gov/COVID19News
-4	cortesting	http://www.doc.alabama.gov/covid19testing
-4	uab	https://www.uab.edu/news/coronavirus/
-4	uabfight	https://www.uab.edu/fightcovid19/
-4	uabhelpbeat	https://www.helpbeatcovid19.org/
-4	tsk	https://www.tuskegee.edu/coronavirus-resources
-4	troy	https://www.troy.edu/coronavirus/
-4	aum	http://www.aum.edu/coronavirus
-4	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
-4	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
-4	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
-4	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
-4	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
+# State Agencies
+2	10	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
+2	10	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
+4	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7
+4	5	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
+4	10	govservealabama	https://www.servealabama.gov/covid19
+4	10	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
+4	5	sos	https://www.sos.alabama.gov/newsroom
+4	5	alsde	https://www.alsde.edu/covid-19
+4	5	albme	https://www.albme.org/c19.html
+4	5	lab	https://www.labor.alabama.gov/covid19resources.aspx
+4	5	bop	https://www.albop.com/
+4	5	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
+4	5	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
+4	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
+4	5	cor	http://www.doc.alabama.gov/COVID19News
+4	5	cortesting	http://www.doc.alabama.gov/covid19testing
+4	5	adah	https://archives.alabama.org/
+4	5	accs	https://www.accs.edu/coronavirus/
+
+# City Governments & Agencies
+4	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
+#4	5	andalusiaalabama	http://www.cityofandalusia.com/	--header="Accept-Encoding: identity"
+4	5	auburnalabama	https://www.auburnalabama.org/coronavirus/
+4	5	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
+4	5	mobilealabama	https://www.cityofmobile.org/COVID-19
+4	5	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19
+4	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
+4	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
+4	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
+4	10	selmaalabama	https://www.selma-al.gov/
+4	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
+
+# County Governments & Agencies
+4	5	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate
+4	5	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate
+4	20	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/
+4	5	leeco	http://www.leeco.us/covid-19_information/index.php
+4	5	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates
+4	5	mobilecohealth	http://mchd.org/	--domains=mchd.org
+4	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org
+
+# Colleges & Universities
+4	5	aub	https://ocm.auburn.edu/news/coronavirus/
+4	5	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
+4	5	ua	https://healthinfo.ua.edu/
+4	5	uab	https://www.uab.edu/news/coronavirus/
+4	5	uabfight	https://www.uab.edu/fightcovid19/
+4	30	uabhelpbeat	https://www.helpbeatcovid19.org/
+4	5	tsk	https://www.tuskegee.edu/coronavirus-resources
+4	5	troy	https://www.troy.edu/coronavirus/
+4	5	aum	http://www.aum.edu/coronavirus
+4	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
+4	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
+
+# Hospitals & Non-Profits
+4	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
+4	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
+4	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
+4	5	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
+4	5	huntsvillehospital	https://www.huntsvillehospital.org/
+4	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
+
