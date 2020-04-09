@@ -16,6 +16,29 @@ $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
 
+function MirrorHTML_filter ($file, $datestamp) {
+	$mirrorHtml = $file->get_contents();
+	$mirrorHtml = str_replace(
+		"<head>",
+		'<head><base href="' . $file->url() . '" />',
+		$mirrorHtml
+	);
+	$mirrorHtml = str_replace(
+		'Has COVID-19 affected your business? <a href="https://altogetheralabama.org/\&quot;/join-the-list\&quot;"',
+		'Has COVID-19 affected your business? <a href=\"/join-the-list\"',
+		$mirrorHtml
+	);
+	$adph_munged=<<<EOH
+'<a href="https://www.alabamapublichealth.gov/infectiousdiseases/'+&#32;WEBAPPT&#32;+'"
+EOH;
+	$adph_unmunged=<<<EOH
+'<a href="'+ WEBAPPT +'"
+EOH;
+	$mirrorHtml = str_replace(trim($adph_munged), trim($adph_unmunged), $mirrorHtml);
+	
+	return $mirrorHtml;
+}
+
 function get_json_to_table ($hash, $slug) {
 	$data = ['THEAD' => [], 'TBODY' => []];
 	
@@ -168,18 +191,12 @@ if (!is_null($params['mirrored'])) :
 
 	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
 	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
-	$oFile = new MirroredURL(["file" => $params['mirrored'], "ts" => $DATESTAMP]);
+	$oFile = new MirroredURL(["file" => $params['mirrored'], "url" => $mirrorUrl, "ts" => $DATESTAMP]);
 
 	if (is_readable($oFile->get_readable())) :
 		$timestamp = get_the_timestamp($DATESTAMP);
-		$mirrorHtml = $oFile->get_contents();
 
-		$mirrorHtml = str_replace(
-			"<head>",
-			'<head><base href="' . $mirrorUrl . '" />',
-			$mirrorHtml
-		);
-
+		$mirrorHtml = MirrorHTML_filter($oFile, $DATESTAMP);
 		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
 		$dataMirrorUrls = json_decode($jsonMirrorUrls);
 
