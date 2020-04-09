@@ -230,7 +230,7 @@ elseif (is_null($params['date'])) :
 	$availableSlugs = array_unique(array_map(function ($e) { return $e[0]; }, $lists['available slugs']));
 	
 	$slugLinks = array_map(function ($s) use ($allSlugs) {
-		$bits = explode("/", trim($s, "/"), 2);
+		$bits = explode("/", trim($s, "/"), 2) + ['', ''];
 		return [
 		$s,
 		$bits[0],
