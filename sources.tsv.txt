@@ -62,11 +62,19 @@
 8	5	uab	https://www.uab.edu/news/coronavirus/
 4	5	uabfight	https://www.uab.edu/fightcovid19/
 4	30	uabhelpbeat	https://www.helpbeatcovid19.org/
+8	5	uah	https://www.uah.edu/news/news/coronavirus-precaution	--include-directories=*
 8	5	tsk	https://www.tuskegee.edu/coronavirus-resources
 8	5	troy	https://www.troy.edu/coronavirus/
 8	5	aum	http://www.aum.edu/coronavirus
 8	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
+8	5	jsu	http://www.jsu.edu/coronavirus
+8	5	una	https://www.una.edu/university-communications/covid-19.html
+8	5	usa	https://www.southalabama.edu/coronavirus
+8	5	uwa	https://www.uwa.edu/coronavirus
 8	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
+8	5	suscc	https://www.suscc.edu/covid.cms
+8	5	cvcc	https://www.cv.edu/covid-19-general-updates
+8	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
 
 # Hospitals & Non-Profits
 8	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
