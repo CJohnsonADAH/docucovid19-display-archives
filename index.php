@@ -238,19 +238,21 @@ elseif (is_null($params['date'])) :
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
 	]; }, $availableSlugs);
 
+	$metaTable[] = ["Time", human_datetime(time()), "now"];
+
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
-
+		$slugpath = explode("/", $slug);
+		
 		$latestUrl = "/?date=" . $ts . "&slug=" . $slug;
 		$latest = "latest: <a href='${latestUrl}'>".human_datetime($ts).'</a>';
+		
 		if ($slug==$params['slug']) :
-			$metaTable[] = [$snapType, "<strong>".$slug."</strong>*", $latest];
+			$metaTable[] = [$snapType, "<strong>".end($slugpath)."</strong>", "<small>${latest}</small>"];
 		else :
-			$metaTable[] = [$snapType, $link, $latest];
+			$metaTable[] = [$snapType, $link, "<small>${latest}</small>"];
 		endif;
 	endforeach;
-
-	$metaTable[] = ["Time", human_datetime(time()), "now"];
 
 	$outWhat = "Listing";
 	$timestamp = time();
@@ -404,6 +406,16 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 	color: #000;
 	text-decoration: none;
 }
+
+table {
+	float: left;
+	margin-right: 20px;
+}
+
+section {
+	clear: both;
+}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -442,7 +454,7 @@ $(document).ready( function () {
 </head>
 <body>
 <h1><a href="/">Documenting Covid-19: Alabama's Responses</a></h1>
-<h2><?=$outWhat?> Snapshot: <?=$sTimestamp?></h1>;
+<h2><?=$outWhat?> Snapshot: <?=$sTimestamp?></h1>
 <?php
 	if (count($metaTable) > 0) :
 ?>
