@@ -196,7 +196,7 @@ function is_alacovdat_datestamp ($ts) {
 	return preg_match(alacovdat_datestamp_regex(), trim($ts));
 } /* is_alacovdat_datestamp () */
 
-function human_datetime ($ts, $fmt = 'M d Y H:i') {
+function human_datetime ($ts, $fmt = 'M d, Y H:i') {
 	$vTs = $ts;
 	if (is_string($ts) and is_alacovdat_datestamp(trim($ts))) :
 		$vTs = get_the_timestamp($ts);
