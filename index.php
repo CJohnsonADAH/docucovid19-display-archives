@@ -48,13 +48,14 @@ function get_json_to_table ($hash, $slug) {
 		"testsites" => null,
 	]);
 	
-	foreach ($hash->fields as $field) :
+	if (property_exists($hash, "fields")) :
+		foreach ($hash->fields as $field) :
 		if (is_null($props[$slug]) or in_array($field->name, $props[$slug])) :
 			$data['THEAD'][] = [$field->name, $field->alias];
 		endif;
-	endforeach;
+		endforeach;
 
-	foreach ($hash->features as $feat) :
+		foreach ($hash->features as $feat) :
 		$tr = [];
 		foreach ($feat->attributes as $key => $value) :
 			if (is_null($props[$slug]) or in_array($key, $props[$slug])) :
@@ -62,8 +63,47 @@ function get_json_to_table ($hash, $slug) {
 			endif;
 		endforeach;		
 		$data['TBODY'][] = $tr;
-	endforeach;
+		endforeach;
+	elseif (property_exists($hash, 'type') and "FeatureCollection" == $hash->type) :
+	
+		if (property_exists($hash, "features")) :
+			$props = array_reduce($hash->features, function ($carry, $feat) {
+				$props = $carry;
+				if (property_exists($feat, "properties")) :
+					$props = array_merge($props, array_map(function ($e) { return "properties." . $e; }, array_keys((array) $feat->properties)));
+				endif;
+				if (property_exists($feat, "geometry")) :
+					$props[] = 'geometry';
+				endif;
+				return array_unique($props);
+			}, []);
 
+			$data['THEAD'] = array_map(function ($e) { $al = explode(".", $e, 2); return [$e, end($al)]; }, $props);
+
+			$data['TBODY'] = array_reduce($hash->features, function ($table, $feat) use ($props) {
+				foreach ($props as $prop) :
+					$obj = $feat;
+					$path = explode(".", $prop, 2);
+					foreach ($path as $part) :
+						$obj = $obj->{$part};
+					endforeach;
+					
+					$row[$prop] = (is_object($obj) ? json_encode($obj) : $obj);
+				endforeach;
+				$table[] = $row;
+				return $table;
+			}, []);
+		endif;
+	
+	else :
+		
+		$data['THEAD'] = ["Property", "Value"];
+		foreach ($hash as $prop => $value) :
+			$data['TBODY'][] = ["Property" => $prop, "Value" => json_encode($value)];
+		endforeach;
+
+	endif;
+	
 	return $data;
 
 } /* get_json_to_table () */
