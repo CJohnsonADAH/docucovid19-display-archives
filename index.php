@@ -406,10 +406,19 @@ elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?d
 		if (!is_null($timestamp)) :
 			$metaTable[] = ["Timestamp", human_datetime($timestamp)];
 		endif;
+		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
 		
 		$dataTable = get_json_to_table($hash, $params['slug']);
 		$dataTHEAD = $dataTable['THEAD'];
 		$dataTBODY = $dataTable['TBODY'];		
+
+		if (count($dataTHEAD) + count($dataTBODY) > 0) :
+			$viewOptions = array_merge(
+			['<a href="#view-data-table" class="tab">data table</a>'],
+			$viewOptions);
+		endif;
+		
+		$metaTable[] = ["View",  implode(" / ", $viewOptions)];
 
 		$rawDataOut = $hash;
 	endif;
@@ -464,6 +473,10 @@ section {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+function isTabbedInterface () {
+	return ($('.tab').length > 0);
+}
+
 function isHTMLSnapshot () {
 	return ($('#html-view-source').length > 0);
 }
@@ -487,7 +500,7 @@ function hideSnapshotTabs () {
 }
 
 $(document).ready( function () {
-	if (isHTMLSnapshot()) {
+	if (isTabbedInterface()) {
 		setupSnapshotTabLinks();
 		hideSnapshotTabs();
 	} /* if */
@@ -523,6 +536,11 @@ $(document).ready( function () {
 	endif;
 
 	if (count($dataTHEAD) > 0) :
+		if ("nav" != $tableClass) :
+?>
+	<section id="view-data-table">
+<?php
+		endif;
 ?>
 	<table border="1" class="<?=$tableClass?>">
 	<thead>
@@ -560,8 +578,12 @@ $(document).ready( function () {
 ?>
 	</tbody>
 	</table>
-	
 <?php
+		if ("nav" != $tableClass) :
+?>
+	</section>	
+<?php
+		endif;
 	endif;
 	
 	print $out;
