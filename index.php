@@ -224,6 +224,7 @@ $dataTBODY = null;
 $metaInput = [
 	'file' => null,
 ];
+$tableClass = "data";
 
 if (!is_null($params['mirrored'])) :
 	$slug = $params['slug'];
@@ -261,6 +262,8 @@ if (!is_null($params['mirrored'])) :
 
 elseif (is_null($params['date'])) :
 
+	$tableClass = "nav";
+	
 	$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
 	$files = $lists['files'];
 	$slugs = array_map(function ($e) { return $e[0]; }, $lists['sets']);
@@ -379,7 +382,7 @@ elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?d
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
 
 	$metaInput['file'] = $JSON_FILE;
-	$outWhat = "Data Snapshot";
+	$outWhat = "Data Set";
 	
 	$json = file_get_contents($JSON_FILE);
 	$hash = json_decode($json);
@@ -447,7 +450,7 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 	text-decoration: none;
 }
 
-table {
+table.nav {
 	float: left;
 	margin-right: 20px;
 }
@@ -498,7 +501,7 @@ $(document).ready( function () {
 <?php
 	if (count($metaTable) > 0) :
 ?>
-	<table border="1" id="meta-table">
+	<table border="1" id="meta-table" class="<?=$tableClass; ?>">
 	<tbody>
 <?php
 		foreach ($metaTable as $row) :
@@ -521,7 +524,7 @@ $(document).ready( function () {
 
 	if (count($dataTHEAD) > 0) :
 ?>
-	<table border="1">
+	<table border="1" class="<?=$tableClass?>">
 	<thead>
 	<tr>
 <?php
@@ -565,8 +568,8 @@ $(document).ready( function () {
 	
 	if (!is_null($rawDataOut)) :
 ?>
-<hr/>
-<section id="json-source">
+
+<section id="view-json-source">
 <?php
 
 		print "<h2>JSON Source";
