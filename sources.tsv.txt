@@ -17,6 +17,7 @@
 4	5	cor	http://www.doc.alabama.gov/COVID19News
 4	5	cortesting	http://www.doc.alabama.gov/covid19testing
 8	5	adah	https://archives.alabama.org/
+8	5	adahhistoryhome	http://www.alabamahistoryhome.org/
 4	5	accs	https://www.accs.edu/coronavirus/
 4	5	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
 4	5	comalabamaworks	https://alabamaworks.com/coronavirus/
@@ -73,7 +74,8 @@
 8	5	uwa	https://www.uwa.edu/coronavirus
 8	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
 8	5	suscc	https://www.suscc.edu/covid.cms
-8	5	cvcc	https://www.cv.edu/covid-19-general-updates
+8	5	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$
+
 8	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
 
 # Hospitals & Non-Profits
