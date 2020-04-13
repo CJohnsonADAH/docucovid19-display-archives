@@ -218,6 +218,11 @@ function get_the_timestamp($DATESTAMP) {
 	return $timestamp;
 } /* get_the_timestamp () */
 
+function is_mirrored_url_request () { global $params; return !is_null($params['mirrored']); }
+function is_data_table_request () { global $params; return in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug']); }
+function is_html_request (&$refs) { global $params; return preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs); }
+function is_index_request () { global $params; return is_null($params['date']); }
+
 $rawDataOut = null;
 $dataTHEAD = null;
 $dataTBODY = null;
@@ -226,7 +231,8 @@ $metaInput = [
 ];
 $tableClass = "data";
 
-if (!is_null($params['mirrored'])) :
+$refs = [];
+if (is_mirrored_url_request()) :
 	$slug = $params['slug'];
 	$DATESTAMP = $params['date'];
 
@@ -260,7 +266,7 @@ if (!is_null($params['mirrored'])) :
 	endif;
 	exit;
 
-elseif (is_null($params['date'])) :
+elseif (is_index_request()) :
 
 	$tableClass = "nav";
 	
@@ -307,8 +313,7 @@ elseif (is_null($params['date'])) :
 		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.human_datetime($ts).'</a>'];
 	endforeach;
 
-	
-elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
+elseif (is_html_request($refs)) :
 
 	$slug = $refs[0];
 	$ext = $refs[1];
@@ -316,12 +321,10 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 	
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/${slug}-";
-	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
+	$HTML_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
 	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
 	$PNG_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.png";
 	$PNG_URL = "${DATA_PREFIX}{$DATESTAMP}.png";
-	
-	$SNAP_PREFIX = "/covid-data/${ext}/snapshots/${site}/";
 	
 		$timestamp = get_the_timestamp($DATESTAMP);
 
@@ -367,14 +370,14 @@ elseif (preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs)) :
 
 	$timestamp = get_the_timestamp($DATESTAMP);
 
-	$html = file_get_contents($JSON_FILE);
+	$html = file_get_contents($HTML_FILE);
 	$rawDataOut = null;
 	$out = "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
 	$out .= $snapshotSection;
 	
 	$outWhat = "HTML Front Page";
 	
-elseif (in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug'])) :
+elseif (is_data_table_request()) :
 
 	$DATESTAMP = $params['date'];
 	$DATA_PREFIX = "/covid-data/".$params['slug']."-";
