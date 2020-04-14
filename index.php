@@ -1,5 +1,6 @@
 <?php
 	$myDir = dirname(__FILE__);
+	require_once("${myDir}/archivedsource.class.php");
 	require_once("${myDir}/mirroredurl.class.php");
 
 define('ALACOVDAT_TZ', 'America/Chicago');
@@ -320,11 +321,12 @@ elseif (is_html_request($refs)) :
 	$site = $refs[3];
 	
 	$DATESTAMP = $params['date'];
+	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
 	$DATA_PREFIX = "/covid-data/${slug}-";
-	$HTML_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
-	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
-	$PNG_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.png";
-	$PNG_URL = "${DATA_PREFIX}{$DATESTAMP}.png";
+	$HTML_FILE = $arX->source_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
+	$URL_FILE = $arX->url_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$PNG_FILE = $arX->screenshot_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.png";
+	$PNG_URL = $arX->screenshot_url(); //"${DATA_PREFIX}{$DATESTAMP}.png";
 	
 		$timestamp = get_the_timestamp($DATESTAMP);
 
