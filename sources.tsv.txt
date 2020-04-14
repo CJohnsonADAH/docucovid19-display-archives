@@ -58,12 +58,18 @@
 24	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
 96	5	monroevillealabama	https://www.monroevilleal.gov/	--span-hosts	--domains=monroevilleal.gov,multiscreensite.com
 96	5	mountainbrookalabama	https://www.mtnbrook.org/
+48	5	oneontaalabama	https://www.cityofoneonta.us/covid-19	--span-hosts	--domains=cityofoneonta.us,parastorage.com,wixstatic.com
 48	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
 24	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
+48	10	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net
 48	10	selmaalabama	https://www.selma-al.gov/
+48	10	troyalabama	https://www.troyal.gov/Coronavirus
 24	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
+96	5	tuscumbiacityschools	http://www.tuscumbia.k12.al.us/?DivisionID=24322
 48	5	tuskegeealabama	https://www.tuskegeealabama.gov/home/news/coronavirus-covid-19	--include-directories=home,node,sites	--level=1
 48	5	vestaviahillsalabama	https://vhal.org/alert-center
+48	5	warrioralabama	https://cityofwarrior.ning.com/	--span-hosts	--domains=cityofwarrior.ning.com,ning.com,googleapis.com,google-analytics.com
+48	5	wetumpkaalabama	http://www.cityofwetumpka.com/	--span-hosts	--domains=cityofwetumpka.com,googleapis.com,google-analytics.com,elocallink.tv
 
 # County Governments & Agencies
 24	5	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate
@@ -78,6 +84,8 @@
 48	5	baldwincoema	https://baldwincountyal.gov/departments/EMA
 24	20	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html
 24	20	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/
+96	5	elmorecoema	https://elmorecoema.com/
+24	30	elmorecodash	https://coronavirus-response-elmorecounty.hub.arcgis.com/
 48	5	tuscaloosaco	https://www.tuscco.com/covid19
 
 # Colleges & Universities
@@ -99,10 +107,11 @@
 48	5	uwa	https://www.uwa.edu/coronavirus
 48	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
 48	5	suscc	https://www.suscc.edu/covid.cms
+48	5	bscc	https://www.bscc.edu/coronavirus
 48	5	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$
 48	5	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*
 48	5	mmi	https://marionmilitary.edu/coronavirus
-48	5	neacc	https://www.nacc.edu/news/covid-19-campus-update	--include-directories=* --level=2
+48	5	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=1	--random-wait	--include-directories=* --level=2
 48	5	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
 48	5	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
 48	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
@@ -123,3 +132,4 @@
 48	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
 48	5	helenkellerhospital	https://www.helenkeller.com/
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
+48	5	pikecococ	http://www.pikecoc.com/covid-19
