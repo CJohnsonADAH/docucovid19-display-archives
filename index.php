@@ -323,21 +323,16 @@ elseif (is_html_request($refs)) :
 	$DATESTAMP = $params['date'];
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
 	$DATA_PREFIX = "/covid-data/${slug}-";
-	$HTML_FILE = $arX->source_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.${ext}";
-	$URL_FILE = $arX->url_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
-	$PNG_FILE = $arX->screenshot_file(); //dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.png";
-	$PNG_URL = $arX->screenshot_url(); //"${DATA_PREFIX}{$DATESTAMP}.png";
+	$HTML_FILE = $arX->payload_file();
+	$URL_FILE = $arX->url_file();
+	$PNG_FILE = $arX->screenshot_file();
+	$PNG_URL = $arX->screenshot_url();
 	
 		$timestamp = get_the_timestamp($DATESTAMP);
 
-	// URL of snapshot: Get it from the file, if available
-	if (is_readable($URL_FILE)) :
-		$sourceUrl = trim(file_get_contents($URL_FILE));
-	endif;
-
+	$sourceUrl = $arX->source_url();
 	if (!is_null($sourceUrl)) :
-		$source = parse_url($sourceUrl);
-		$host = $source['host'];
+		$host = $arX->source_url('host');
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
 	if (!is_null($timestamp)) :
