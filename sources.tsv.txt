@@ -2,34 +2,35 @@
 12	10	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
 12	10	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
 24	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7
-24	5	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
+24	3	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
 24	10	govservealabama	https://www.servealabama.gov/covid19
 24	10	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
 24	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf
 24	5	sos	https://www.sos.alabama.gov/newsroom
-24	5	alsde	https://www.alsde.edu/covid-19
-24	5	albme	https://www.albme.org/c19.html
-24	5	lab	https://www.labor.alabama.gov/covid19resources.aspx
-24	5	bop	https://www.albop.com/
-24	5	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
-24	5	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
+24	3	alsde	https://www.alsde.edu/covid-19
+24	3	albme	https://www.albme.org/c19.html
+24	3	lab	https://www.labor.alabama.gov/covid19resources.aspx
+24	3	bop	https://www.albop.com/
+24	3	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
+24	3	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
 24	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
-24	5	cor	http://www.doc.alabama.gov/COVID19News
-24	5	cortesting	http://www.doc.alabama.gov/covid19testing
-48	5	adah	https://archives.alabama.org/
+24	3	cor	http://www.doc.alabama.gov/COVID19News
+24	3	cortesting	http://www.doc.alabama.gov/covid19testing
+48	3	adah	https://archives.alabama.org/
 48	5	adahhistoryhome	http://www.alabamahistoryhome.org/
-24	5	accs	https://www.accs.edu/coronavirus/
-24	5	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
-24	5	comalabamaworks	https://alabamaworks.com/coronavirus/
-24	5	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
+24	3	accs	https://www.accs.edu/coronavirus/
+24	3	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
+24	3	comalabamaworks	https://alabamaworks.com/coronavirus/
+24	3	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
 24	5	alnineoneone	https://al911board.com/news
-24	5	alea	https://www.alea.gov/covid-19-response
-24	5	agi	https://agi.alabama.gov/
-24	5	abc	http://alabcboard.gov/covid19
-24	5	con	https://www.outdooralabama.com/COVID-19
-48	5	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
-24	5	bnk	http://banking.alabama.gov/Covid_info.aspx
-96	5	ago	https://www.alabamaag.gov/citycounty
+24	3	alea	https://www.alea.gov/covid-19-response
+24	3	agi	https://agi.alabama.gov/
+24	3	abc	http://alabcboard.gov/covid19
+24	3	con	https://www.outdooralabama.com/COVID-19
+48	3	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
+24	3	bnk	http://banking.alabama.gov/Covid_info.aspx
+96	3	ago	https://www.alabamaag.gov/citycounty
+24	3	vet	https://va.alabama.gov/covid-19
 
 # City Governments & Agencies
 48	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
