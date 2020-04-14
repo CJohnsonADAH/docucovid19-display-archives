@@ -1,125 +1,125 @@
 # State Agencies
-2	10	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
-2	10	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
-4	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7
-4	5	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
-4	10	govservealabama	https://www.servealabama.gov/covid19
-4	10	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
-4	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf
-4	5	sos	https://www.sos.alabama.gov/newsroom
-4	5	alsde	https://www.alsde.edu/covid-19
-4	5	albme	https://www.albme.org/c19.html
-4	5	lab	https://www.labor.alabama.gov/covid19resources.aspx
-4	5	bop	https://www.albop.com/
-4	5	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
-4	5	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
-4	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
-4	5	cor	http://www.doc.alabama.gov/COVID19News
-4	5	cortesting	http://www.doc.alabama.gov/covid19testing
-8	5	adah	https://archives.alabama.org/
-8	5	adahhistoryhome	http://www.alabamahistoryhome.org/
-4	5	accs	https://www.accs.edu/coronavirus/
-4	5	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
-4	5	comalabamaworks	https://alabamaworks.com/coronavirus/
-4	5	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
-4	5	alnineoneone	https://al911board.com/news
-4	5	alea	https://www.alea.gov/covid-19-response
-4	5	agi	https://agi.alabama.gov/
-4	5	abc	http://alabcboard.gov/covid19
-4	5	con	https://www.outdooralabama.com/COVID-19
-8	5	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
-4	5	bnk	http://banking.alabama.gov/Covid_info.aspx
-16	5	ago	https://www.alabamaag.gov/citycounty
+12	10	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
+12	10	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
+24	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7
+24	5	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
+24	10	govservealabama	https://www.servealabama.gov/covid19
+24	10	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
+24	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf
+24	5	sos	https://www.sos.alabama.gov/newsroom
+24	5	alsde	https://www.alsde.edu/covid-19
+24	5	albme	https://www.albme.org/c19.html
+24	5	lab	https://www.labor.alabama.gov/covid19resources.aspx
+24	5	bop	https://www.albop.com/
+24	5	rev	https://revenue.alabama.gov/coronavirus-covid-19-outbreak-updates
+24	5	bar	https://www.alabar.org/alabama-state-bar-coronavirus-covid-19-safety-measures/	--include-directories=alabama-state-bar-coronavirus-covid-19-safety-measures,assets,css,images,wp-content,wp-includes
+24	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
+24	5	cor	http://www.doc.alabama.gov/COVID19News
+24	5	cortesting	http://www.doc.alabama.gov/covid19testing
+48	5	adah	https://archives.alabama.org/
+48	5	adahhistoryhome	http://www.alabamahistoryhome.org/
+24	5	accs	https://www.accs.edu/coronavirus/
+24	5	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
+24	5	comalabamaworks	https://alabamaworks.com/coronavirus/
+24	5	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
+24	5	alnineoneone	https://al911board.com/news
+24	5	alea	https://www.alea.gov/covid-19-response
+24	5	agi	https://agi.alabama.gov/
+24	5	abc	http://alabcboard.gov/covid19
+24	5	con	https://www.outdooralabama.com/COVID-19
+48	5	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
+24	5	bnk	http://banking.alabama.gov/Covid_info.aspx
+96	5	ago	https://www.alabamaag.gov/citycounty
 
 # City Governments & Agencies
-8	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
-16	5	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
-8	5	annistonalabama	http://www.annistonal.gov/
-4	5	auburnalabama	https://www.auburnalabama.org/coronavirus/
-8	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org
-4	5	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info
-4	10	birminghamalabama	https://www.birminghamal.gov/coronavirus
-8	5	butleralabama	https://www.butleralabama.org/
-8	10	columbianaalabama	https://cityofcolumbiana.com/
-8	10	cullmanalabama	https://cullmanal.gov/covid-19
-8	5	decaturalabama	https://www.decaturalabamausa.com/covid-19
-8	5	demopoliscityschools	https://www.dcsedu.com/	--domains=dcsedu.com,files.edl.io
-8	5	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*
-8	5	eufaulaalabama	https://eufaulaalabama.com/
-8	5	florencealabama	https://florenceal.org/alert_detail.php
-8	5	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*
-8	5	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com
-4	5	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
-8	5	jasperalabama	https://www.jaspercity.com/
-16	5	livingstonalabama	https://www.cityoflivingstonal.com/	--span-hosts	--domains=cityoflivingstonal.com,squarespace.com	--wait=1	--random-wait
-16	5	luvernealabama	http://luverne.org/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
-4	5	mobilealabama	https://www.cityofmobile.org/COVID-19
-4	5	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19
-4	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
-16	5	monroevillealabama	https://www.monroevilleal.gov/	--span-hosts	--domains=monroevilleal.gov,multiscreensite.com
-16	5	mountainbrookalabama	https://www.mtnbrook.org/
-4	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
-4	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
-8	10	selmaalabama	https://www.selma-al.gov/
-4	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
-8	5	tuskegeealabama	https://www.tuskegeealabama.gov/home/news/coronavirus-covid-19	--include-directories=home,node,sites	--level=1
-8	5	vestaviahillsalabama	https://vhal.org/alert-center
+48	5	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
+96	5	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
+48	5	annistonalabama	http://www.annistonal.gov/
+24	5	auburnalabama	https://www.auburnalabama.org/coronavirus/
+48	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org
+24	5	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info
+24	10	birminghamalabama	https://www.birminghamal.gov/coronavirus
+48	5	butleralabama	https://www.butleralabama.org/
+48	10	columbianaalabama	https://cityofcolumbiana.com/
+48	10	cullmanalabama	https://cullmanal.gov/covid-19
+48	5	decaturalabama	https://www.decaturalabamausa.com/covid-19
+48	5	demopoliscityschools	https://www.dcsedu.com/	--domains=dcsedu.com,files.edl.io
+48	5	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*
+48	5	eufaulaalabama	https://eufaulaalabama.com/
+48	5	florencealabama	https://florenceal.org/alert_detail.php
+48	5	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*
+48	5	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com
+24	5	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
+48	5	jasperalabama	https://www.jaspercity.com/
+96	5	livingstonalabama	https://www.cityoflivingstonal.com/	--span-hosts	--domains=cityoflivingstonal.com,squarespace.com	--wait=1	--random-wait
+96	5	luvernealabama	http://luverne.org/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
+24	5	mobilealabama	https://www.cityofmobile.org/COVID-19
+24	5	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19
+24	5	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus
+96	5	monroevillealabama	https://www.monroevilleal.gov/	--span-hosts	--domains=monroevilleal.gov,multiscreensite.com
+96	5	mountainbrookalabama	https://www.mtnbrook.org/
+48	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
+24	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
+48	10	selmaalabama	https://www.selma-al.gov/
+24	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
+48	5	tuskegeealabama	https://www.tuskegeealabama.gov/home/news/coronavirus-covid-19	--include-directories=home,node,sites	--level=1
+48	5	vestaviahillsalabama	https://vhal.org/alert-center
 
 # County Governments & Agencies
-4	5	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate
-4	5	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate
-4	20	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/
-8	5	leeco	http://www.leeco.us/covid-19_information/index.php
-8	5	marengoco	http://marengocountyal.com/public-notice
-4	5	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates
-4	5	mobilecohealth	http://mchd.org/	--domains=mchd.org
-4	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org
-8	5	baldwinco	https://baldwincountyal.gov/covid19
-8	5	baldwincoema	https://baldwincountyal.gov/departments/EMA
-4	20	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html
-4	20	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/
-8	5	tuscaloosaco	https://www.tuscco.com/covid19
+24	5	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate
+24	5	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate
+24	20	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/
+96	5	leeco	http://www.leeco.us/covid-19_information/index.php
+48	5	marengoco	http://marengocountyal.com/public-notice
+24	5	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates
+24	5	mobilecohealth	http://mchd.org/	--domains=mchd.org
+24	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org
+48	5	baldwinco	https://baldwincountyal.gov/covid19
+48	5	baldwincoema	https://baldwincountyal.gov/departments/EMA
+24	20	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html
+24	20	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/
+48	5	tuscaloosaco	https://www.tuscco.com/covid19
 
 # Colleges & Universities
-8	5	aub	https://ocm.auburn.edu/news/coronavirus/
-8	5	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
-8	5	ua	https://healthinfo.ua.edu/
-8	5	uab	https://www.uab.edu/news/coronavirus/
-4	5	uabfight	https://www.uab.edu/fightcovid19/
-4	30	uabhelpbeat	https://www.helpbeatcovid19.org/
-8	5	uah	https://www.uah.edu/news/news/coronavirus-precaution	--include-directories=*
-8	5	tsk	https://www.tuskegee.edu/coronavirus-resources
-8	5	troy	https://www.troy.edu/coronavirus/
-8	5	aum	http://www.aum.edu/coronavirus
-8	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
-8	5	jsu	http://www.jsu.edu/coronavirus
-8	5	judsoncollege	https://www.judson.edu/coronavirus
-8	5	una	https://www.una.edu/university-communications/covid-19.html
-8	5	usa	https://www.southalabama.edu/coronavirus
-8	5	uwa	https://www.uwa.edu/coronavirus
-8	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
-8	5	suscc	https://www.suscc.edu/covid.cms
-8	5	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$
-8	5	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*
-8	5	mmi	https://marionmilitary.edu/coronavirus
-8	5	neacc	https://www.nacc.edu/news/covid-19-campus-update	--include-directories=* --level=2
-8	5	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
-8	5	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
-8	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
-8	5	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*
-8	5	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*
-8	5	wccselma	http://www.wccs.edu/coronavirus-2
-8	5	wscc	https://www.wallacestate.edu/coronavirus
-8	5	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html
-8	5	asu	https://www.alasu.edu/coronavirus-covid-19-updates
-8	5	athensstate	https://www.athens.edu/coronavirus
+48	5	aub	https://ocm.auburn.edu/news/coronavirus/
+48	5	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts
+48	5	ua	https://healthinfo.ua.edu/
+48	5	uab	https://www.uab.edu/news/coronavirus/
+24	5	uabfight	https://www.uab.edu/fightcovid19/
+24	30	uabhelpbeat	https://www.helpbeatcovid19.org/
+48	5	uah	https://www.uah.edu/news/news/coronavirus-precaution	--include-directories=*
+48	5	tsk	https://www.tuskegee.edu/coronavirus-resources
+48	5	troy	https://www.troy.edu/coronavirus/
+48	5	aum	http://www.aum.edu/coronavirus
+48	5	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/
+48	5	jsu	http://www.jsu.edu/coronavirus
+48	5	judsoncollege	https://www.judson.edu/coronavirus
+48	5	una	https://www.una.edu/university-communications/covid-19.html
+48	5	usa	https://www.southalabama.edu/coronavirus
+48	5	uwa	https://www.uwa.edu/coronavirus
+48	5	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms
+48	5	suscc	https://www.suscc.edu/covid.cms
+48	5	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$
+48	5	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*
+48	5	mmi	https://marionmilitary.edu/coronavirus
+48	5	neacc	https://www.nacc.edu/news/covid-19-campus-update	--include-directories=* --level=2
+48	5	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
+48	5	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
+48	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
+48	5	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*
+48	5	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*
+48	5	wccselma	http://www.wccs.edu/coronavirus-2
+48	5	wscc	https://www.wallacestate.edu/coronavirus
+48	5	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html
+48	5	asu	https://www.alasu.edu/coronavirus-covid-19-updates
+48	5	athensstate	https://www.athens.edu/coronavirus
 
 # Hospitals & Non-Profits
-8	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
-8	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
-8	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
-8	5	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
-8	5	huntsvillehospital	https://www.huntsvillehospital.org/
-8	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
-8	5	helenkellerhospital	https://www.helenkeller.com/
-4	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
+48	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
+48	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
+48	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
+48	5	uabmedicine	https://www.uabmedicine.org/-/important-information-for-uab-patients
+48	5	huntsvillehospital	https://www.huntsvillehospital.org/
+48	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19
+48	5	helenkellerhospital	https://www.helenkeller.com/
+24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
