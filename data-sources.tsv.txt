@@ -11,5 +11,5 @@ uabsymptoms4	https://covid.shrp.uab.edu/laravel/open/covid/symptoms-four/latest.
 uabcomorbidities	https://covid.shrp.uab.edu/laravel/open/covid/comorbidities/latest.json
 uabgeo	https://get.geojs.io/v1/ip/geo.json
 uabgeocode	https://maps.googleapis.com/maps/api/geocode/json?latlng=32.5484,-85.4682&language=en&key=AIzaSyDhITOJJPXdscLxnmQToloqkKLB7XlW9wA
-	
-	
+auburnalabamanewscurrent	https://api2.auburnalabama.org/pressrelease/current
+auburnalabamanewslist	https://api2.auburnalabama.org/pressrelease/list
