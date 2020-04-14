@@ -376,7 +376,7 @@ elseif (is_html_request($refs)) :
 	if (preg_match('|<title>([^<]*)</title>|ix', $html, $ref)) :
 		$out .= "<h2>" . $ref[1] . "</h2>";
 	else :
-		$out .= "<h2>HTML</h2>";
+		$out .= "<h2>" . $host . "</h2>";
 	endif;
 	$out .= "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
 	$out .= $snapshotSection;
