@@ -99,7 +99,7 @@ function get_json_to_table ($hash, $slug) {
 		
 		$data['THEAD'] = ["Property", "Value"];
 		foreach ($hash as $prop => $value) :
-			$data['TBODY'][] = ["Property" => $prop, "Value" => json_encode($value)];
+			$data['TBODY'][] = ["Property" => $prop, "Value" => "<pre>".htmlspecialchars(json_encode($value, JSON_PRETTY_PRINT))."</pre>"];
 		endforeach;
 
 	endif;
@@ -608,7 +608,7 @@ $(document).ready( function () {
 			print " (<code>".htmlspecialchars(basename($metaInput['file']))."</code>) ";
 		endif;
 		print ":</h2>\n";
-		echo "<pre>"; var_dump($rawDataOut); echo "</pre>";
+		echo "<pre><code>"; echo json_encode($rawDataOut, JSON_PRETTY_PRINT); echo "</code></pre>";
 ?>
 </section>
 <?php
