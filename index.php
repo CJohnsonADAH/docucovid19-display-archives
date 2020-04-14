@@ -372,7 +372,13 @@ elseif (is_html_request($refs)) :
 
 	$html = file_get_contents($HTML_FILE);
 	$rawDataOut = null;
-	$out = "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
+	$out = '';
+	if (preg_match('|<title>([^<]*)</title>|ix', $html, $ref)) :
+		$out .= "<h2>" . $ref[1] . "</h2>";
+	else :
+		$out .= "<h2>HTML</h2>";
+	endif;
+	$out .= "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
 	$out .= $snapshotSection;
 	
 	$outWhat = "HTML Front Page";
