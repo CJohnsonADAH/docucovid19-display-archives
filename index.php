@@ -376,22 +376,28 @@ elseif (is_html_request($refs)) :
 	else :
 		$out .= "<h2>" . $host . "</h2>";
 	endif;
-	$out .= "<section id='html-view-source'><code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
+	$out .= "<section id='html-view-source'>";
+	if (!is_null($warc=$arX->payload_warc_url())) :
+		$out .= '[<a href="' . htmlspecialchars($warc) . '">download WARC archive</a>]';
+	endif;
+	$out .= "<code><pre>".htmlspecialchars($html)."</pre></code></section>\n";
 	$out .= $snapshotSection;
 	
 	$outWhat = "HTML Front Page";
 	
 elseif (is_data_table_request()) :
 
+	$slug = $params['slug'];
 	$DATESTAMP = $params['date'];
-	$DATA_PREFIX = "/covid-data/".$params['slug']."-";
-	$JSON_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.json";
-	$URL_FILE = dirname(__FILE__) . "${DATA_PREFIX}${DATESTAMP}.url.txt";
+	$ext = 'json';
+	
+	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
 
-	$metaInput['file'] = $JSON_FILE;
+	$metaInput['file'] = $arX->payload_file();
 	$outWhat = "Data Set";
 	
-	$json = file_get_contents($JSON_FILE);
+	$json = $arX->payload_contents();
+
 	$hash = json_decode($json);
 	if (is_null($hash)) :
 		header("Content-type: text/plain");
@@ -402,9 +408,7 @@ elseif (is_data_table_request()) :
 		$timestamp = get_the_timestamp($DATESTAMP);
 		
 		// URL of snapshot: Get it from the file, if available
-		if (is_readable($URL_FILE)) :
-			$sourceUrl = trim(file_get_contents($URL_FILE));
-		endif;
+		$sourceUrl = $arX->source_url();
 		
 		if (!is_null($sourceUrl)) :
 			$source = parse_url($sourceUrl);
