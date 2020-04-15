@@ -24,7 +24,7 @@
 24	3	adeca	https://census.alabama.gov/adeca/	--span-hosts	--domains=census.alabama.gov,adeca.gov
 24	5	alnineoneone	https://al911board.com/news
 24	3	alea	https://www.alea.gov/covid-19-response
-24	3	agi	https://agi.alabama.gov/
+24	3	agi	http://agi.alabama.gov/
 24	3	abc	http://alabcboard.gov/covid19
 24	3	con	https://www.outdooralabama.com/COVID-19
 48	3	cos	https://aboc.alabama.gov/coronavirus-update-march-27-1130am
