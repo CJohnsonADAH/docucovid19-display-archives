@@ -224,10 +224,13 @@ class MirroredURL {
 		
 		if (!is_readable($this->get_readable())) :
 			// check whether we've got a screwy timestamp
-			$v = $this->seek_file($file, $filepath, $this->ts());
-			$this->console_log($v, "seek_file");
+			$newpath=$filepath;
+			if (!is_null($this->ts())) :
+				$v = $this->seek_file($file, $filepath, $this->ts());
+				$this->console_log($v, "seek_file");
 
-			list($newpath, $newfile, $newparent, $newts) = $v;
+				list($newpath, $newfile, $newparent, $newts) = $v;
+			endif;
 			
 			if ($newpath != $filepath) :
 				$filepath = $newpath;

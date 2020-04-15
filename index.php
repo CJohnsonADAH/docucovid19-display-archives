@@ -5,6 +5,32 @@
 
 define('ALACOVDAT_TZ', 'America/Chicago');
 	
+	$myUrl = parse_url($_SERVER['REQUEST_URI']);
+	$scriptName = basename($_SERVER['PHP_SELF']);
+	if ($myUrl['path'] != '/' and $myUrl['path'] != '/'.$scriptName) :
+		// check for pass-thru
+		$oFile = new MirroredURL(["file" => urldecode($myUrl['path'])]);
+
+		if (is_readable($oFile->get_readable())) :
+			$mime = mime_content_type($oFile->get_readable());
+			if ($mime !== false) :
+				header("Content-type: ${mime}");
+			endif;
+			
+			if ($mime=='text/html') :
+				$out = MirrorHTML_filter($oFile, $oFile->ts());
+			else :
+				$out = $oFile->get_contents();
+			endif;
+			print $out;
+			exit;
+		else :
+			header("HTTP/1.1 404 Not Found");
+			print "<html><head><title>Not Found</title></head><body><h1>Not Found</1><p><code>".$_SERVER['REQUEST_URI']."</code></p></body></html>";
+			exit;
+		endif;
+	endif;
+	
 $params = array_merge([
 "date" => null,
 "slug" => null,
