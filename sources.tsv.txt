@@ -82,7 +82,7 @@
 48	5	marengoco	http://marengocountyal.com/public-notice
 24	5	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates
 24	5	mobilecohealth	http://mchd.org/	--domains=mchd.org
-24	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org
+24	5	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org	--span-hosts
 48	5	baldwinco	https://baldwincountyal.gov/covid19
 48	5	baldwincoema	https://baldwincountyal.gov/departments/EMA
 24	20	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html
@@ -116,10 +116,10 @@
 48	5	mmi	https://marionmilitary.edu/coronavirus
 48	5	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=1	--random-wait	--include-directories=* --level=2
 48	5	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
-48	5	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
+48	5	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=/
 48	5	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
-48	5	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*
-48	5	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*
+48	5	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=/
+48	5	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=/
 48	5	wccselma	http://www.wccs.edu/coronavirus-2
 48	5	wscc	https://www.wallacestate.edu/coronavirus
 48	5	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html
@@ -136,3 +136,5 @@
 48	5	helenkellerhospital	https://www.helenkeller.com/
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
 48	5	pikecococ	http://www.pikecoc.com/covid-19
+96	5	aldemocrats	http://aldemocrats.org/blog
+96	5	algop	https://algop.org/category/press-releases/	--include-directories=/	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$
