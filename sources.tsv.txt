@@ -116,10 +116,10 @@
 48	3	mmi	https://marionmilitary.edu/coronavirus
 48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=1	--random-wait	--include-directories=* --level=2
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
-48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=/
+48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
 48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
-48	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=/
-48	3	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=/
+48	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*
+48	3	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*
 48	3	wccselma	http://www.wccs.edu/coronavirus-2
 48	3	wscc	https://www.wallacestate.edu/coronavirus
 48	3	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html
@@ -137,4 +137,4 @@
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/
 48	5	pikecococ	http://www.pikecoc.com/covid-19
 96	5	aldemocrats	http://aldemocrats.org/blog
-96	5	algop	https://algop.org/category/press-releases/	--include-directories=/	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$
+96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$
