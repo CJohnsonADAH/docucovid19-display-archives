@@ -16,7 +16,7 @@
 24	5	ema	https://ema.alabama.gov/	--span-hosts	--domains=ema.alabama.gov,alabamaema.files.wordpress.com,images.squarespace-cdn.com,www.servealabama.gov	--exclude-domains=emits.ema.alabama.gov
 24	3	cor	http://www.doc.alabama.gov/COVID19News
 24	3	cortesting	http://www.doc.alabama.gov/covid19testing
-48	3	adah	https://archives.alabama.org/
+48	3	adah	https://archives.alabama.gov/
 48	5	adahhistoryhome	http://www.alabamahistoryhome.org/
 24	3	accs	https://www.accs.edu/coronavirus/
 24	3	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/
