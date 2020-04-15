@@ -2,8 +2,7 @@
 	$myDir = dirname(__FILE__);
 	require_once("${myDir}/archivedsource.class.php");
 	require_once("${myDir}/mirroredurl.class.php");
-
-define('ALACOVDAT_TZ', 'America/Chicago');
+	require_once("${myDir}/snapshotdatetime.class.php");
 	
 	$myUrl = parse_url($_SERVER['REQUEST_URI']);
 	$scriptName = basename($_SERVER['PHP_SELF']);
@@ -218,44 +217,6 @@ function getJsonUrl ($slug) {
 
 } /* getJsonUrl () */	
 
-function alacovdat_datestamp_regex () {
-	return "/^
-		([0-9]{4})
-		([0-9]{2})
-		([0-9]{2})
-		([0-9]{2})
-		([0-9]{2})
-		([0-9]{2})
-		Z
-	$/ix";
-} /* alacovdat_datestamp_regex () */
-
-function is_alacovdat_datestamp ($ts) {
-	return preg_match(alacovdat_datestamp_regex(), trim($ts));
-} /* is_alacovdat_datestamp () */
-
-function human_datetime ($ts, $fmt = 'M d, Y H:i') {
-	$vTs = $ts;
-	if (is_string($ts) and is_alacovdat_datestamp(trim($ts))) :
-		$vTs = get_the_timestamp($ts);
-	endif;
-	date_default_timezone_set(ALACOVDAT_TZ);
-	return date($fmt, $vTs);
-} /* human_datetime() */
-
-function get_the_timestamp($DATESTAMP) {
-	// Timestamp of snapshot: Parse the slug into its component parts
-	// and convert into a Unix-epoch timestamp
-	$got_the_time = preg_match(alacovdat_datestamp_regex(), $DATESTAMP, $ts_matches);
-	if ($got_the_time) :
-		$timestamp = gmmktime($ts_matches[4], $ts_matches[5], $ts_matches[6], $ts_matches[2], $ts_matches[3], $ts_matches[1]);
-	else :
-		$timestamp = null;
-	endif;
-	
-	return $timestamp;
-} /* get_the_timestamp () */
-
 function is_mirrored_url_request () { global $params; return !is_null($params['mirrored']); }
 function is_data_table_request () { global $params; return in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug']); }
 function is_html_request (&$refs) { global $params; return preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs); }
@@ -279,7 +240,7 @@ if (is_mirrored_url_request()) :
 	$oFile = new MirroredURL(["file" => $params['mirrored'], "url" => $mirrorUrl, "ts" => $DATESTAMP]);
 
 	if (is_readable($oFile->get_readable())) :
-		$timestamp = get_the_timestamp($DATESTAMP);
+		$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
 
 		$mirrorHtml = MirrorHTML_filter($oFile, $DATESTAMP);
 		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
@@ -325,14 +286,14 @@ elseif (is_index_request()) :
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
 	]; }, $availableSlugs);
 
-	$metaTable[] = ["Time", human_datetime(time()), "now"];
+	$metaTable[] = ["Time", SnapshotDateTime::human_datetime(time()), "now"];
 
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
 		$slugpath = explode("/", $slug);
 		
 		$latestUrl = "/?date=" . $ts . "&slug=" . $slug;
-		$latest = "latest: <a href='${latestUrl}'>".human_datetime($ts).'</a>';
+		$latest = "latest: <a href='${latestUrl}'>".SnapshotDateTime::human_datetime($ts).'</a>';
 		
 		if ($slug==$params['slug']) :
 			$metaTable[] = [$snapType, "<strong>".end($slugpath)."</strong>", "<small>${latest}</small>"];
@@ -348,7 +309,7 @@ elseif (is_index_request()) :
 	$dataTHEAD = ["Type", "Timestamp"];
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.human_datetime($ts).'</a>'];
+		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.SnapshotDateTime::human_datetime($ts).'</a>'];
 	endforeach;
 
 elseif (is_html_request($refs)) :
@@ -365,8 +326,8 @@ elseif (is_html_request($refs)) :
 		$host = $arX->source_url('host');
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
-	if (!is_null($timestamp = get_the_timestamp($DATESTAMP))) :
-		$metaTable[] = ["Timestamp", human_datetime($timestamp)];
+	if (!is_null($timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP))) :
+		$metaTable[] = ["Timestamp", SnapshotDateTime::human_datetime($timestamp)];
 	endif;
 
 	$oFile = new MirroredURL(["archive" => $arX]);
@@ -403,7 +364,7 @@ elseif (is_html_request($refs)) :
 	
 	header("Content-type: text/html");
 
-	$timestamp = get_the_timestamp($DATESTAMP);
+	$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
 
 	$html = $arX->payload_contents();
 	$rawDataOut = null;
@@ -442,7 +403,7 @@ elseif (is_data_table_request()) :
 	else :
 		header("Content-type: text/html");
 
-		$timestamp = get_the_timestamp($DATESTAMP);
+		$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
 		
 		// URL of snapshot: Get it from the file, if available
 		$sourceUrl = $arX->source_url();
@@ -452,7 +413,7 @@ elseif (is_data_table_request()) :
 			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
 		endif;
 		if (!is_null($timestamp)) :
-			$metaTable[] = ["Timestamp", human_datetime($timestamp)];
+			$metaTable[] = ["Timestamp", SnapshotDateTime::human_datetime($timestamp)];
 		endif;
 		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
 		
@@ -475,7 +436,7 @@ endif;
 
 
 if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
-	$sTimestamp = human_datetime($timestamp);
+	$sTimestamp = SnapshotDateTime::human_datetime($timestamp);
 ?>
 <!DOCTYPE html>
 <html>
