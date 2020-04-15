@@ -27,6 +27,10 @@ class ArchivedSource {
 		return (is_null($basedir) ? $this->data_dir() : $basedir) . "/" . $this->_sSlug . "-";
 	}
 	
+	public function slug () {
+		return $this->_sSlug;
+	}
+	
 	public function ts () {
 		return $this->_sTs;
 	}
@@ -51,6 +55,9 @@ class ArchivedSource {
 	public function capture_file ($type) {
 		return $this->data_prefix().$this->ts().".".$type;
 	}
+	public function capture_url ($type) {
+		return $this->data_prefix('/covid-data').$this->ts().".".$type;
+	}
 	
 	public function url_file () {
 		return $this->capture_file('url.txt');
@@ -59,12 +66,40 @@ class ArchivedSource {
 	public function payload_file () {
 		return $this->capture_file($this->_sExt);
 	}
+	public function payload_contents () {
+		$content = null;
+		
+		$file = $this->payload_file();
+		if (is_readable($file)) :
+			$content = file_get_contents($file);
+		endif;
+		return $content;
+	}
+	public function payload_warc_url () {
+		$url = null;
+		
+		$readable = $this->payload_warc_file();
+		if (is_readable($readable)) :
+			$url = $this->capture_url("warc.gz");
+		endif;
+		return $url;
+	}
+	
+	public function payload_warc_file () {
+		return $this->capture_file("warc.gz");
+	}
 	
 	public function screenshot_file () {
 		return $this->capture_file("png");
 	}
 
 	public function screenshot_url () {
-		return $this->data_prefix('/covid-data') . $this->ts() . ".png";
+		$url = null;
+		
+		$file = $this->screenshot_file();
+		if (is_readable($file)) :
+			$url = $this->capture_url("png");
+		endif;
+		return $url;
 	}
 } /* class ArchivedSource */

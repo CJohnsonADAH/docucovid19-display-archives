@@ -13,6 +13,7 @@ class MirroredURL {
 		global $_REQUEST;
 		
 		$params = array_merge([
+		"archive" => null,
 		"url" => null,
 		"file" => null,
 		"slug" => null,
@@ -22,6 +23,12 @@ class MirroredURL {
 		"snap base" => "/html/snapshots/",
 		"test" => (isset($_REQUEST['MirroredURL-Test']) ? $_REQUEST['MirroredURL-Test'] : null),
 		], $params);
+
+		if (!is_null($arX=$params['archive'])) :
+			$params['slug'] = basename($arX->slug());
+			$params['ts'] = $arX->ts();
+			$params['url'] = $arX->source_url();
+		endif;
 		
 		$this->_vTest = $params['test'];
 		
@@ -152,6 +159,24 @@ class MirroredURL {
 		return $this->_sFile;
 	}
 	
+	public function warc_url () {
+		$url=null;
+		if (!is_null($warc=$this->warc_file())) :
+			$db = rtrim($this->_sBaseDir, "/");
+			$url = preg_replace("\007^".preg_quote($db)."\007x", "", $warc);
+		endif;
+		return $url;
+	}
+	public function warc_file () {
+		$db = $this->_sDataBase;
+		$sb = $this->_sSnapBase;
+		$snapDir = rtrim($db, "/") . "/" . trim($sb, "/");
+		$slug = $this->_sSlug;
+		$ts = $this->_sTs;
+		$warc=$this->get_path($snapDir."/".$slug."/".$ts."/".$slug."-".$ts.".warc.gz");
+		return (is_readable($warc) ? $warc : null);
+	}
+	
 	public function filepath () {
 		return $this->get_path($this->_sFile);
 	}
@@ -211,6 +236,15 @@ class MirroredURL {
 			endif;
 		endif;
 		
+		$base = rtrim($this->_sBaseDir, "/") . "/" . trim($this->_sDataBase, "/")."/".trim($this->_sSnapBase, "/");
+		$reUrlPattern = "\007^".preg_quote($base)."/*([^/]+)(/+([0-9Z]+)(/+.*)?)?$\007x";
+		$matched = preg_match($reUrlPattern, $filepath, $ref);
+		if (is_null($this->_sSlug) and $matched) :
+			$this->_sSlug = $ref[1];
+		endif;
+		if (is_null($this->_sTs) and $matched) :
+			$this->_sTs = $ref[3];
+		endif;
 	}
 	
 	protected function seek_file (string $file, string $filepath, string $ts) {
@@ -264,8 +298,10 @@ if (basename($_SERVER['SCRIPT_NAME'])==basename(__FILE__)) :
 	foreach ($files as $file) :
 		$oMirror = new MirroredURL(["file" => $file, "test" => "yes"]);
 		$contents = $oMirror->get_contents();
+		$sWarcFile = $oMirror->warc_file();
 		printf("<%s\n", $file);
 		printf("get_contents(): %d %s\n", strlen($contents), "'" . substr($contents, 0, 10) . "...'");
+		printf("warc_file(): %s\n", $sWarcFile);
 		printf("\n");
 	endforeach;
 	exit;

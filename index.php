@@ -322,31 +322,31 @@ elseif (is_html_request($refs)) :
 	
 	$DATESTAMP = $params['date'];
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
-	$DATA_PREFIX = "/covid-data/${slug}-";
-	$HTML_FILE = $arX->payload_file();
-	$URL_FILE = $arX->url_file();
-	$PNG_FILE = $arX->screenshot_file();
-	$PNG_URL = $arX->screenshot_url();
 	
-		$timestamp = get_the_timestamp($DATESTAMP);
-
 	$sourceUrl = $arX->source_url();
 	if (!is_null($sourceUrl)) :
 		$host = $arX->source_url('host');
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
-	if (!is_null($timestamp)) :
+	if (!is_null($timestamp = get_the_timestamp($DATESTAMP))) :
 		$metaTable[] = ["Timestamp", human_datetime($timestamp)];
 	endif;
 
-	$oFile = new MirroredURL(["url" => $sourceUrl, "ts" => $DATESTAMP, "slug" => $site]);
+	$oFile = new MirroredURL(["archive" => $arX]);
 
 	$mirrorUrl = $oFile->get_mirror_url();
 	
 	$snapshotSection = '';
 	$viewOptions = ['<a class="tab" href="#html-view-source">view source (html)</a>'];
-	if (is_readable($PNG_FILE)) :
-		$snapshotSection .= '<section id="html-view-screenshot"><div><img src="' . htmlspecialchars($PNG_URL) . '" /></div></section>';
+	if (!is_null($warc_url=$oFile->warc_url())) :
+		$viewOptions = array_merge(
+			$viewOptions,
+			['<a href="'.htmlspecialchars($warc_url).'">WARC</a>']
+		);
+	endif;
+	
+	if (!is_null($png_url=$arX->screenshot_url())) :
+		$snapshotSection .= '<section id="html-view-screenshot"><div><img src="' . htmlspecialchars($png_url) . '" /></div></section>';
 		$viewOptions = array_merge(
 			['<a class="tab" href="#html-view-screenshot">screen shot (png)</a>'],
 			$viewOptions
@@ -361,13 +361,14 @@ elseif (is_html_request($refs)) :
 			$viewOptions
 		);
 	endif;
+	
 	$metaTable[] = ["View", implode(" / ", $viewOptions)];
 	
 	header("Content-type: text/html");
 
 	$timestamp = get_the_timestamp($DATESTAMP);
 
-	$html = file_get_contents($HTML_FILE);
+	$html = $arX->payload_contents();
 	$rawDataOut = null;
 	$out = '';
 	if (preg_match('|<title>([^<]*)</title>|ix', $html, $ref)) :
