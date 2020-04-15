@@ -63,7 +63,9 @@
 48	5	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
 24	10	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
 48	10	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net
+48	10	scottsboroalabama	https://www.cityofscottsboro.com/index.php/frontpagenews/	--include-directories=-	--level=2	--span-hosts	--domains=cityofscottsboro.com,cloudfront.net	--execute=robots=off
 48	10	selmaalabama	https://www.selma-al.gov/
+48	10	tallasseealabama	https://www.tallasseeal.gov/front-page-news
 48	10	troyalabama	https://www.troyal.gov/Coronavirus
 24	5	tuscaloosaalabama	https://www.tuscaloosa.com/covid19
 96	5	tuscumbiacityschools	http://www.tuscumbia.k12.al.us/?DivisionID=24322
