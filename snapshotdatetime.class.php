@@ -1,8 +1,25 @@
 <?php
 define('ALACOVDAT_TZ', 'America/Chicago');
+define('ALACOVDAT_XL_FMT', 'M d, Y H:i');
 	
 class SnapshotDateTime {
-		
+	private $_sDateTime;
+	private $_iTs;
+	
+	public function __construct ($ts) {
+		if (self::is_alacovdat_datestamp($ts)) :
+			$this->_sDateTime = $ts;
+			$this->_iTs = self::get_the_timestamp($this->_sDateTime);
+		else :
+			$this->_iTs = $ts;
+			$this->_sDateTime = gmdate('YmdHis', $ts) . "Z";
+		endif;
+	}
+	
+	public function human_readable ($fmt = ALACOVDAT_XL_FMT) {
+		return self::human_datetime($this->_iTs, $fmt);
+	}
+	
 	static public function alacovdat_datestamp_regex () {
 		return "/^
 			([0-9]{4})
@@ -19,7 +36,7 @@ class SnapshotDateTime {
 		return preg_match(self::alacovdat_datestamp_regex(), trim($ts));
 	} /* is_alacovdat_datestamp () */
 
-	static public function human_datetime ($ts, $fmt = 'M d, Y H:i') {
+	static public function human_datetime ($ts, $fmt = ALACOVDAT_XL_FMT) {
 		$vTs = $ts;
 		if (is_string($ts) and self::is_alacovdat_datestamp(trim($ts))) :
 			$vTs = self::get_the_timestamp($ts);

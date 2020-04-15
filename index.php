@@ -286,14 +286,16 @@ elseif (is_index_request()) :
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
 	]; }, $availableSlugs);
 
-	$metaTable[] = ["Time", SnapshotDateTime::human_datetime(time()), "now"];
+	$oNow = new SnapshotDateTime(time());
+	$metaTable[] = ["Time", $oNow->human_readable(), "now"];
 
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
 		$slugpath = explode("/", $slug);
 		
 		$latestUrl = "/?date=" . $ts . "&slug=" . $slug;
-		$latest = "latest: <a href='${latestUrl}'>".SnapshotDateTime::human_datetime($ts).'</a>';
+		$oLatest = new SnapshotDateTime($ts);
+		$latest = "latest: <a href='${latestUrl}'>".$oLatest->human_readable().'</a>';
 		
 		if ($slug==$params['slug']) :
 			$metaTable[] = [$snapType, "<strong>".end($slugpath)."</strong>", "<small>${latest}</small>"];
@@ -309,7 +311,9 @@ elseif (is_index_request()) :
 	$dataTHEAD = ["Type", "Timestamp"];
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.SnapshotDateTime::human_datetime($ts).'</a>'];
+		
+		$oDateTime = new SnapshotDateTime($ts);
+		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.$oDateTime->human_readable().'</a>'];
 	endforeach;
 
 elseif (is_html_request($refs)) :
@@ -319,6 +323,8 @@ elseif (is_html_request($refs)) :
 	$site = $refs[3];
 	
 	$DATESTAMP = $params['date'];
+	$oDateTime = new SnapshotDateTime($DATESTAMP);
+	
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
 	
 	$sourceUrl = $arX->source_url();
@@ -326,9 +332,8 @@ elseif (is_html_request($refs)) :
 		$host = $arX->source_url('host');
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
-	if (!is_null($timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP))) :
-		$metaTable[] = ["Timestamp", SnapshotDateTime::human_datetime($timestamp)];
-	endif;
+	
+	$metaTable[] = ["Timestamp", $oDateTime->human_readable()];
 
 	$oFile = new MirroredURL(["archive" => $arX]);
 
@@ -387,6 +392,7 @@ elseif (is_data_table_request()) :
 
 	$slug = $params['slug'];
 	$DATESTAMP = $params['date'];
+	$oDateTime = new SnapshotDateTime($params['date']);
 	$ext = 'json';
 	
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
@@ -413,7 +419,7 @@ elseif (is_data_table_request()) :
 			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
 		endif;
 		if (!is_null($timestamp)) :
-			$metaTable[] = ["Timestamp", SnapshotDateTime::human_datetime($timestamp)];
+			$metaTable[] = ["Timestamp", $oDateTime->human_readable()];
 		endif;
 		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
 		
@@ -436,7 +442,8 @@ endif;
 
 
 if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
-	$sTimestamp = SnapshotDateTime::human_datetime($timestamp);
+	$oDateTime = new SnapshotDateTime($timestamp);
+	$sTimestamp = $oDateTime->human_readable();
 ?>
 <!DOCTYPE html>
 <html>
