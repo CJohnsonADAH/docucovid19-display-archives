@@ -62,7 +62,18 @@ EOH;
 '<a href="'+ WEBAPPT +'"
 EOH;
 	$mirrorHtml = str_replace(trim($adph_munged), trim($adph_unmunged), $mirrorHtml);
-	
+	$uah_munged=<<<EOH
+<img src="https://www.uah.edu/\&quot;images\/news\/virus_1440.jpg\&quot;"
+EOH;
+	$uah_unmunged=<<<EOH
+<img src=\"images\/news\/virus_1440.jpg\"
+EOH;
+	$mirrorHtml = str_replace(trim($uah_munged), trim($uah_unmunged), $mirrorHtml);
+
+	$uah_munged='!["]https://www[.]uah[.]edu/\\\\[&]quot[;]([^&]*)\\\\[&]quot;["]!'; //\&quot;(.*)\&quot;!';
+	$uah_unmunged='\"$1\"';
+
+	$mirrorHtml = preg_replace(trim($uah_munged), trim($uah_unmunged), $mirrorHtml);
 	return $mirrorHtml;
 }
 
