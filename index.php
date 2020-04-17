@@ -3,12 +3,19 @@
 	require_once("${myDir}/archivedsource.class.php");
 	require_once("${myDir}/mirroredurl.class.php");
 	require_once("${myDir}/snapshotdatetime.class.php");
+
+define('ALACOVDAT_URL', 'browse');
+
+$defaultParams = [
+"date" => null,
+"slug" => null,
+"mirrored" => null,
+"test" => null,
+];
 	
-	$myUrl = parse_url($_SERVER['REQUEST_URI']);
-	$scriptName = basename($_SERVER['PHP_SELF']);
-	if ($myUrl['path'] != '/' and $myUrl['path'] != '/'.$scriptName) :
+	if (is_passthru_request()) :
 		// check for pass-thru
-		$oFile = new MirroredURL(["file" => urldecode($myUrl['path'])]);
+		$oFile = new MirroredURL(["file" => urldecode(my_request_url('path'))]);
 		
 		$passthru=$oFile->get_readable();
 		if (is_readable($passthru)) :
@@ -60,14 +67,22 @@
 			print "<html><head><title>Not Found</title></head><body><h1>Not Found</1><p><code>".$_SERVER['REQUEST_URI']."</code></p></body></html>";
 			exit;
 		endif;
+	elseif (is_browse_request()) :
+		$dirs = array_slice(array_filter(explode("/", my_request_url('path'))), 1);
+		$key = null;
+		foreach ($dirs as $dir) :
+			if (is_null($key)) :
+				$key = $dir;
+			else :
+				if (array_key_exists($key, $defaultParams)) :
+					$defaultParams[$key] = process_request_path_parameter($key, $dir);
+				endif;
+				$key = null;
+			endif;
+		endforeach;
 	endif;
 	
-$params = array_merge([
-"date" => null,
-"slug" => null,
-"mirrored" => null,
-"test" => null,
-], $_REQUEST);
+$params = array_merge($defaultParams, $_REQUEST);
 
 $out = '';
 $sourceUrl = null;
@@ -198,10 +213,95 @@ function get_snapshot_lists ($dir) {
 	
 } /* get_snapshot_lists () */
 
+function my_request_url ($part = null) {
+	$myUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/' . ltrim($_SERVER['REQUEST_URI'], '/');
+	if (is_null($part)) :
+		$ret = $myUrl;
+	else :
+		$myUrl = parse_url($myUrl);
+		$ret = (isset($myUrl[$part]) ? $myUrl[$part] : null);
+	endif;
+	return $ret;
+}
+function my_script_name () { global $_SERVER; return basename($_SERVER['PHP_SELF']); }
+function my_script_path () { global $_SERVER; return "/" . my_script_name(); }
+function is_passthru_request () { return (!is_root_request() and !is_browse_request()); }
+function is_root_request () { return preg_match("\007^/*(".preg_quote(my_script_name()).")?$\007i", my_request_url('path')); }
+function is_browse_request () { return preg_match("\007^/*".preg_quote(ALACOVDAT_URL)."(/.+)?$\007i", my_request_url('path'), $refs); }
 function is_mirrored_url_request () { global $params; return !is_null($params['mirrored']); }
 function is_data_table_request () { global $params; return in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug']); }
 function is_html_request (&$refs) { global $params; return preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs); }
 function is_index_request () { global $params; return is_null($params['date']); }
+function process_request_path_parameter ($key, $value) {
+	if ("slug"==$key) :
+		$value = "/" . trim(str_replace(".", "/", $value), "/");
+	endif;
+	return $value;
+}
+function unprocess_request_path_parameter ($key, $value) {
+	if ("slug"==$key) :
+		$value = str_replace("/", ".", trim($value, '/'));
+	endif;
+	return urlencode($value);
+}
+function make_browse_link ($params) {
+	$a = '<a';
+	foreach ($params as $key => $value) :
+		if ($key != 'text') :
+			$a .= " ".htmlspecialchars($key).'="';
+			if (is_string($value)) :
+				$a .= htmlspecialchars($value);
+			elseif ("href" == $key) :
+				$href = '/'.urlencode(ALACOVDAT_URL);
+				foreach ($value as $param => $paramValue) :
+					$slug = unprocess_request_path_parameter($param, $paramValue);
+					$href .= "/${param}/${slug}";
+				endforeach;
+				$a .= $href;
+			endif;
+			$a .= '"';
+		endif;
+	endforeach;
+	$a .= '>' . (array_key_exists('text', $params) ? $params['text'] : 'link') . '</a>';
+	return $a;
+}
+function make_browse_selector ($params) {
+	$params = array_merge([
+	"action" => "",
+	"method" => "GET",
+	"date" => [],
+	"selected" => null,
+	], $params);
+	
+	$action = htmlspecialchars($params['action']);
+	$method = htmlspecialchars($params['method']);
+	$slug = htmlspecialchars($params['slug']);
+	
+	$aSelectOptions = [];
+	if (is_array($params['date'])) :
+		$oDateTime = $params['selected'];
+		foreach ($params['date'] as $oDT) :
+			$sDt = htmlspecialchars($oDT->datetimecode());
+			$sSelected = (($oDT->datetimecode() == $oDateTime->datetimecode()) ? ' selected="selected"' : '');
+			$sText = htmlspecialchars($oDT->human_readable());
+			$aSelectOptions[] = "<option value=\"${sDt}\"${sSelected}>${sText}</option>";
+		endforeach;
+		$sSelectOptions = implode("\n", $aSelectOptions);
+	endif;
+	
+	ob_start();
+?>
+<form action="<?=$action?>" method="<?=$method?>">
+<input type="hidden" name="slug" value="<?=$slug?>" />
+<select name="date">
+<?=$sSelectOptions?>
+</select>
+<input type="submit" value="see">
+</form>
+<?php
+	$selector = ob_get_clean();
+	return $selector;
+}
 
 $rawDataOut = null;
 $dataTHEAD = null;
@@ -247,7 +347,7 @@ elseif (is_index_request()) :
 		return [
 		$s,
 		$bits[0],
-		'<a href="?slug='.urlencode($s).'">'.htmlspecialchars($bits[1]).'</a>',
+		make_browse_link(["href" => ["slug" => $s], "text" => $bits[1]]),
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
 	]; }, $availableSlugs);
 
@@ -258,9 +358,9 @@ elseif (is_index_request()) :
 		list($slug, $snapType, $link, $ts) = $slugLink;
 		$slugpath = explode("/", $slug);
 		
-		$latestUrl = "/?date=" . $ts . "&slug=" . $slug;
 		$oLatest = new SnapshotDateTime($ts);
-		$latest = "latest: <a href='${latestUrl}'>".$oLatest->human_readable().'</a>';
+		$latestLink = make_browse_link(["href" => ["date" => $ts, "slug" => $slug], "text" => $oLatest->human_readable()]);
+		$latest = "latest: ${latestLink}";
 		
 		if ($slug==$params['slug']) :
 			$metaTable[] = [$snapType, "<strong>".end($slugpath)."</strong>", "<small>${latest}</small>"];
@@ -278,7 +378,10 @@ elseif (is_index_request()) :
 		list($slug, $ts) = $pair;
 		
 		$oDateTime = new SnapshotDateTime($ts);
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => '<a href="?date='.$ts.'&slug='.$slug.'">'.$oDateTime->human_readable().'</a>'];
+		$dataTBODY[] = ["Type" => $slug, "Timestamp" => make_browse_link([
+			"href" => ["slug" => $slug, "date" => $ts],
+			"text" => $oDateTime->human_readable()
+		])];
 	endforeach;
 
 elseif (is_html_request($refs)) :
@@ -297,21 +400,8 @@ elseif (is_html_request($refs)) :
 	
 	$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
 	$allSlugs = $lists['available slugs'];
-	$allTS = get_slug_timestamps($slug, $allSlugs);
-	$selector='<form action="" method="GET">';
-	$selector.='<input type="hidden" name="slug" value="'.htmlspecialchars($slug).'" />';
-	$selector.='<select name="date">';
-	foreach ($allTS as $ts) :
-		$oDT = new SnapshotDateTime($ts);
-		$selector .= '<option value="' . $oDT->datetimecode() . '"';
-		if ($oDT->datetimecode() == $oDateTime->datetimecode()) :
-			$selector .= ' selected="selected"';
-		endif;
-		$selector .= '>'.$oDT->human_readable().'</option>';
-	endforeach;
-	$selector.='</select>';
-	$selector.='<input type="submit"/>';
-	$selector.='</form>';
+	$allTS = array_map(function ($e) { return new SnapshotDateTime($e); }, get_slug_timestamps($slug, $allSlugs));
+	$selector=make_browse_selector(["action" => "/".ALACOVDAT_URL, "slug" => $slug, "date" => $allTS, "selected" => $oDateTime]);
 	
 	$metaTable[] = ["Timestamp", $selector];
 
@@ -395,21 +485,8 @@ elseif (is_data_table_request()) :
 		if (!is_null($oDateTime)) :
 			$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
 			$allSlugs = $lists['available slugs'];
-			$allTS = get_slug_timestamps($slug, $allSlugs);
-			$selector='<form action="" method="GET">';
-			$selector.='<input type="hidden" name="slug" value="'.htmlspecialchars($slug).'" />';
-			$selector.='<select name="date">';
-			foreach ($allTS as $ts) :
-				$oDT = new SnapshotDateTime($ts);
-				$selector .= '<option value="' . $oDT->datetimecode() . '"';
-				if ($oDT->datetimecode() == $oDateTime->datetimecode()) :
-					$selector .= ' selected="selected"';
-				endif;
-				$selector .= '>'.$oDT->human_readable().'</option>';
-			endforeach;
-			$selector.='</select>';
-			$selector.='<input type="submit"/>';
-			$selector.='</form>';
+			$allTS = array_map(function ($e) { return new SnapshotDateTime($e); }, get_slug_timestamps($slug, $allSlugs));
+			$selector=make_browse_selector(["action" => "/".ALACOVDAT_URL, "slug" => $slug, "date" => $allTS, "selected" => $oDateTime]);
 			
 			$metaTable[] = ["Timestamp", $selector];
 		endif;
