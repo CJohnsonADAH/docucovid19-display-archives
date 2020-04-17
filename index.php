@@ -47,7 +47,8 @@
 			
 			if (!$cached) :
 				if ($mime=='text/html' and !preg_match('/[.]orig$/', $passthru)) :
-					$out = $oFile->get_filtered_html();
+					$dependencies = preg_match('!/html/snapshots/!ix', $passthru);
+					$out = $oFile->get_filtered_html($dependencies);
 				else :
 					$out = $oFile->get_contents();
 				endif;
@@ -197,19 +198,6 @@ function get_snapshot_lists ($dir) {
 	
 } /* get_snapshot_lists () */
 
-function getJsonUrl ($slug, $datetime) {
-	if (strlen($slug) > 0) :
-		$capturePrefix = "data/${slug}";
-	else :
-		$capturePrefix = "capture";
-	endif;
-	
-	$dt = $datetime->datetimecode();
-	$captureUrl = "/covid-data/${capturePrefix}-${dt}.json";
-	return $captureUrl;
-
-} /* getJsonUrl () */	
-
 function is_mirrored_url_request () { global $params; return !is_null($params['mirrored']); }
 function is_data_table_request () { global $params; return in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug']); }
 function is_html_request (&$refs) { global $params; return preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs); }
@@ -234,22 +222,7 @@ if (is_mirrored_url_request()) :
 	$oFile = new MirroredURL(["file" => $params['mirrored'], "url" => $mirrorUrl, "ts" => $oDateTime->datetimecode()]);
 
 	if (is_readable($oFile->get_readable())) :
-		$mirrorHtml = $oFile->get_filtered_html();
-		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
-		$dataMirrorUrls = json_decode($jsonMirrorUrls);
-
-		if (is_object($dataMirrorUrls)) :
-
-			$dataMirrorUrls = (array) $dataMirrorUrls;
-			foreach ($dataMirrorUrls as $to => $from) :
-				$mirrorHtml = str_replace(
-					$from, getJsonUrl($to, $oDateTime),
-					$mirrorHtml
-				);
-		
-			endforeach;
-		endif;
-		
+		$mirrorHtml = $oFile->get_filtered_html(/*dependencies=*/ true);
 		echo $mirrorHtml;
 	else :
 		$readable = $oFile->get_readable();

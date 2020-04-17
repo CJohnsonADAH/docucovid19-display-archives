@@ -120,7 +120,7 @@ class MirroredURL {
 		return $replace($munged, $unmunged, $html);
 	}
 	
-	public function get_filtered_html () {
+	public function get_filtered_html ($dependencies = false) {
 		// 0. Add a base[@href] tag for handling relative URIs better, even when
 		// the URL of this page is weirded by the pass-thru mechanism
 		$html = str_replace(
@@ -187,9 +187,47 @@ EOH;
 			$html
 		);
 	
+		if ($dependencies !== false) :
+			$html = $this->resolve_ajax_dependencies($html);
+		endif;
+		
 		return $html;
 	} /* get_filtered_html () */
 
+	public function resolve_ajax_dependencies ($html = null) {
+		if (is_null($html)) :
+			$html = $this->get_contents();
+		endif;
+		
+		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
+		$dataMirrorUrls = json_decode($jsonMirrorUrls);
+
+		if (is_object($dataMirrorUrls)) :
+			$oDateTime = new SnapshotDateTime($this->ts());
+
+			$dataMirrorUrls = (array) $dataMirrorUrls;
+			foreach ($dataMirrorUrls as $to => $from) :
+				$html = str_replace(
+					$from, $this->get_json_url($to, $oDateTime),
+					$html
+				);		
+			endforeach;
+		endif;
+		
+		return $html;
+	}
+	
+	protected function get_json_url ($slug, $datetime) {
+		if (strlen($slug) > 0) :
+			$capturePrefix = "data/${slug}";
+		else :
+			$capturePrefix = "capture";
+		endif;
+	
+		$dt = (is_object($datetime) ? $datetime->datetimecode() : $datetime);
+		$captureUrl = "/covid-data/${capturePrefix}-${dt}.json";
+		return $captureUrl;
+	} /* get_json_url () */	
 
 	protected function to_get_params ($params) {
 		$http_params = [];
