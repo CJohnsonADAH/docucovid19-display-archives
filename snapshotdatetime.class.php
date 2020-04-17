@@ -20,6 +20,14 @@ class SnapshotDateTime {
 		return self::human_datetime($this->_iTs, $fmt);
 	}
 	
+	public function timestamp () {
+		return $this->_iTs;
+	}
+
+	public function datetimecode () {
+		return $this->_sDateTime;
+	}
+	
 	static public function alacovdat_datestamp_regex () {
 		return "/^
 			([0-9]{4})

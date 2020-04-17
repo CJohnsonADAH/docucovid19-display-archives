@@ -69,7 +69,6 @@ $params = array_merge([
 ], $_REQUEST);
 
 $out = '';
-$timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
 
@@ -198,18 +197,15 @@ function get_snapshot_lists ($dir) {
 	
 } /* get_snapshot_lists () */
 
-function getJsonUrl ($slug) {
-	global $params;
-	
-	$DATESTAMP = $params['date'];
-	
+function getJsonUrl ($slug, $datetime) {
 	if (strlen($slug) > 0) :
 		$capturePrefix = "data/${slug}";
 	else :
 		$capturePrefix = "capture";
 	endif;
 	
-	$captureUrl = "/covid-data/${capturePrefix}-${DATESTAMP}.json";
+	$dt = $datetime->datetimecode();
+	$captureUrl = "/covid-data/${capturePrefix}-${dt}.json";
 	return $captureUrl;
 
 } /* getJsonUrl () */	
@@ -227,18 +223,17 @@ $metaInput = [
 ];
 $tableClass = "data";
 
+$oDateTime = (is_null($params['date']) ? null : new SnapshotDateTime($params['date']));
+
 $refs = [];
 if (is_mirrored_url_request()) :
 	$slug = $params['slug'];
-	$DATESTAMP = $params['date'];
 
 	$mirrorFile = dirname(__FILE__) . $params['mirrored'];
 	$mirrorUrl = 'http://' . $_SERVER['HTTP_HOST'] . $params['mirrored'];
-	$oFile = new MirroredURL(["file" => $params['mirrored'], "url" => $mirrorUrl, "ts" => $DATESTAMP]);
+	$oFile = new MirroredURL(["file" => $params['mirrored'], "url" => $mirrorUrl, "ts" => $oDateTime->datetimecode()]);
 
 	if (is_readable($oFile->get_readable())) :
-		$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
-
 		$mirrorHtml = $oFile->get_filtered_html();
 		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
 		$dataMirrorUrls = json_decode($jsonMirrorUrls);
@@ -248,7 +243,7 @@ if (is_mirrored_url_request()) :
 			$dataMirrorUrls = (array) $dataMirrorUrls;
 			foreach ($dataMirrorUrls as $to => $from) :
 				$mirrorHtml = str_replace(
-					$from, getJsonUrl($to),
+					$from, getJsonUrl($to, $oDateTime),
 					$mirrorHtml
 				);
 		
@@ -302,7 +297,7 @@ elseif (is_index_request()) :
 	endforeach;
 
 	$outWhat = "Listing";
-	$timestamp = time();
+	$oDateTime = new SnapshotDateTime(time());
 	
 	$rawDataOut = null;
 	$dataTHEAD = ["Type", "Timestamp"];
@@ -319,10 +314,7 @@ elseif (is_html_request($refs)) :
 	$ext = $refs[1];
 	$site = $refs[3];
 	
-	$DATESTAMP = $params['date'];
-	$oDateTime = new SnapshotDateTime($DATESTAMP);
-	
-	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
+	$arX = new ArchivedSource(["slug" => $slug, "ts" => $oDateTime->datetimecode(), "file type" => $ext]);
 	
 	$sourceUrl = $arX->source_url();
 	if (!is_null($sourceUrl)) :
@@ -366,8 +358,6 @@ elseif (is_html_request($refs)) :
 	
 	header("Content-type: text/html");
 
-	$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
-
 	$html = $arX->payload_contents();
 	$rawDataOut = null;
 	$out = '';
@@ -388,11 +378,9 @@ elseif (is_html_request($refs)) :
 elseif (is_data_table_request()) :
 
 	$slug = $params['slug'];
-	$DATESTAMP = $params['date'];
-	$oDateTime = new SnapshotDateTime($params['date']);
 	$ext = 'json';
 	
-	$arX = new ArchivedSource(["slug" => $slug, "ts" => $DATESTAMP, "file type" => $ext]);
+	$arX = new ArchivedSource(["slug" => $slug, "ts" => $oDateTime->datetimecode(), "file type" => $ext]);
 
 	$metaInput['file'] = $arX->payload_file();
 	$outWhat = "Data Set";
@@ -405,8 +393,6 @@ elseif (is_data_table_request()) :
 		echo $json;
 	else :
 		header("Content-type: text/html");
-
-		$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
 		
 		// URL of snapshot: Get it from the file, if available
 		$sourceUrl = $arX->source_url();
@@ -415,7 +401,7 @@ elseif (is_data_table_request()) :
 			$source = parse_url($sourceUrl);
 			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
 		endif;
-		if (!is_null($timestamp)) :
+		if (!is_null($oDateTime)) :
 			$metaTable[] = ["Timestamp", $oDateTime->human_readable()];
 		endif;
 		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
@@ -439,8 +425,7 @@ endif;
 
 
 if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
-	$oDateTime = new SnapshotDateTime($timestamp);
-	$sTimestamp = $oDateTime->human_readable();
+	$sTimestamp = (is_null($oDateTime) ? null : $oDateTime->human_readable());
 ?>
 <!DOCTYPE html>
 <html>
