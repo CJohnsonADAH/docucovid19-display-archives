@@ -295,7 +295,25 @@ elseif (is_html_request($refs)) :
 		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
 	endif;
 	
-	$metaTable[] = ["Timestamp", $oDateTime->human_readable()];
+	$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
+	$allSlugs = $lists['available slugs'];
+	$allTS = get_slug_timestamps($slug, $allSlugs);
+	$selector='<form action="" method="GET">';
+	$selector.='<input type="hidden" name="slug" value="'.htmlspecialchars($slug).'" />';
+	$selector.='<select name="date">';
+	foreach ($allTS as $ts) :
+		$oDT = new SnapshotDateTime($ts);
+		$selector .= '<option value="' . $oDT->datetimecode() . '"';
+		if ($oDT->datetimecode() == $oDateTime->datetimecode()) :
+			$selector .= ' selected="selected"';
+		endif;
+		$selector .= '>'.$oDT->human_readable().'</option>';
+	endforeach;
+	$selector.='</select>';
+	$selector.='<input type="submit"/>';
+	$selector.='</form>';
+	
+	$metaTable[] = ["Timestamp", $selector];
 
 	$oFile = new MirroredURL(["archive" => $arX]);
 
@@ -375,7 +393,25 @@ elseif (is_data_table_request()) :
 			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
 		endif;
 		if (!is_null($oDateTime)) :
-			$metaTable[] = ["Timestamp", $oDateTime->human_readable()];
+			$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
+			$allSlugs = $lists['available slugs'];
+			$allTS = get_slug_timestamps($slug, $allSlugs);
+			$selector='<form action="" method="GET">';
+			$selector.='<input type="hidden" name="slug" value="'.htmlspecialchars($slug).'" />';
+			$selector.='<select name="date">';
+			foreach ($allTS as $ts) :
+				$oDT = new SnapshotDateTime($ts);
+				$selector .= '<option value="' . $oDT->datetimecode() . '"';
+				if ($oDT->datetimecode() == $oDateTime->datetimecode()) :
+					$selector .= ' selected="selected"';
+				endif;
+				$selector .= '>'.$oDT->human_readable().'</option>';
+			endforeach;
+			$selector.='</select>';
+			$selector.='<input type="submit"/>';
+			$selector.='</form>';
+			
+			$metaTable[] = ["Timestamp", $selector];
 		endif;
 		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
 		
