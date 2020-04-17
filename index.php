@@ -9,19 +9,50 @@
 	if ($myUrl['path'] != '/' and $myUrl['path'] != '/'.$scriptName) :
 		// check for pass-thru
 		$oFile = new MirroredURL(["file" => urldecode($myUrl['path'])]);
-
-		if (is_readable($oFile->get_readable())) :
-			$mime = mime_content_type($oFile->get_readable());
+		
+		$passthru=$oFile->get_readable();
+		if (is_readable($passthru)) :
+			$mime = mime_content_type($passthru);
 			if ($mime !== false) :
-				header("Content-type: ${mime}");
+				$filename=basename($passthru);
+				if (preg_match('![.](js|css)([?@].*)?$!ix', $filename, $ref)) :
+					if (preg_match('!^text/plain!ix', $mime)) :
+						$textType = ["js" => "javascript", "css" => "css"];
+						$mime = 'text/'.$textType[$ref[1]];
+					endif;
+				endif;
+				
+				header("Content-Type: ${mime}");
+			endif;
+			$size = filesize($passthru);
+			if ($size !== false) :
+				header("Content-Length: ${size}");
 			endif;
 			
-			if ($mime=='text/html') :
-				$out = MirrorHTML_filter($oFile, $oFile->ts());
-			else :
-				$out = $oFile->get_contents();
+			$mtime = filemtime($passthru);
+			$cached = false;
+			if ($mtime !== false) :
+				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) :
+					$cachedTime = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+					if (is_numeric($cachedTime)) :
+						if ($cachedTime >= $mtime) :
+							$cached = true;
+							header("HTTP/1.1 304 Not Modified");
+						endif;
+					endif;
+				endif;
+				
+				header("Last-Modified: ".date("r", $mtime));
 			endif;
-			print $out;
+			
+			if (!$cached) :
+				if ($mime=='text/html' and !preg_match('/[.]orig$/', $passthru)) :
+					$out = $oFile->get_filtered_html();
+				else :
+					$out = $oFile->get_contents();
+				endif;
+				print $out;
+			endif;
 			exit;
 		else :
 			header("HTTP/1.1 404 Not Found");
@@ -41,40 +72,6 @@ $out = '';
 $timestamp = null;
 $sourceUrl = null;
 $metaTable = [];
-
-function MirrorHTML_filter ($file, $datestamp) {
-	$mirrorHtml = $file->get_contents();
-	$mirrorHtml = str_replace(
-		"<head>",
-		'<head><base href="' . $file->url() . '" />',
-		$mirrorHtml
-	);
-	$mirrorHtml = str_replace(
-		'Has COVID-19 affected your business? <a href="https://altogetheralabama.org/\&quot;/join-the-list\&quot;"',
-		'Has COVID-19 affected your business? <a href=\"/join-the-list\"',
-		$mirrorHtml
-	);
-	$adph_munged=<<<EOH
-'<a href="https://www.alabamapublichealth.gov/infectiousdiseases/'+&#32;WEBAPPT&#32;+'"
-EOH;
-	$adph_unmunged=<<<EOH
-'<a href="'+ WEBAPPT +'"
-EOH;
-	$mirrorHtml = str_replace(trim($adph_munged), trim($adph_unmunged), $mirrorHtml);
-	$uah_munged=<<<EOH
-<img src="https://www.uah.edu/\&quot;images\/news\/virus_1440.jpg\&quot;"
-EOH;
-	$uah_unmunged=<<<EOH
-<img src=\"images\/news\/virus_1440.jpg\"
-EOH;
-	$mirrorHtml = str_replace(trim($uah_munged), trim($uah_unmunged), $mirrorHtml);
-
-	$uah_munged='!["]https://www[.]uah[.]edu/\\\\[&]quot[;]([^&]*)\\\\[&]quot;["]!'; //\&quot;(.*)\&quot;!';
-	$uah_unmunged='\"$1\"';
-
-	$mirrorHtml = preg_replace(trim($uah_munged), trim($uah_unmunged), $mirrorHtml);
-	return $mirrorHtml;
-}
 
 function get_json_to_table ($hash, $slug) {
 	$data = ['THEAD' => [], 'TBODY' => []];
@@ -242,7 +239,7 @@ if (is_mirrored_url_request()) :
 	if (is_readable($oFile->get_readable())) :
 		$timestamp = SnapshotDateTime::get_the_timestamp($DATESTAMP);
 
-		$mirrorHtml = MirrorHTML_filter($oFile, $DATESTAMP);
+		$mirrorHtml = $oFile->get_filtered_html();
 		$jsonMirrorUrls = file_get_contents(dirname(__FILE__)."/json-mirror-urls.json");
 		$dataMirrorUrls = json_decode($jsonMirrorUrls);
 

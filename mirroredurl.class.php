@@ -109,6 +109,88 @@ class MirroredURL {
 		return file_get_contents($filepath);
 	}
 
+	protected function unmunge_wget_html ($munged, $unmunged, $html) {
+		if (preg_match("/^re:(.*)$/", $munged, $ref)) :
+			$munged = $ref[1];
+			$replace = function ($m, $u, $h) { return preg_replace($m, $u, $h); };
+		else :
+			$replace = function ($m, $u, $h) { return str_replace($m, $u, $h); };
+		endif;
+		
+		return $replace($munged, $unmunged, $html);
+	}
+	
+	public function get_filtered_html () {
+		// 0. Add a base[@href] tag for handling relative URIs better, even when
+		// the URL of this page is weirded by the pass-thru mechanism
+		$html = str_replace(
+			"<head>",
+			'<head><base href="' . $this->url() . '" />',
+			$this->get_contents()
+		);
+		
+		$html = $this->unmunge_wget_html(
+			'<a href="https://altogetheralabama.org/\&quot;/join-the-list\&quot;"',
+			'<a href=\"/join-the-list\"',
+			$html
+		);
+		
+	$adph_munged=<<<EOH
+'<a href="https://www.alabamapublichealth.gov/infectiousdiseases/'+&#32;WEBAPPT&#32;+'"
+EOH;
+	$adph_unmunged=<<<EOH
+'<a href="'+ WEBAPPT +'"
+EOH;
+		$html = $this->unmunge_wget_html(
+			trim($adph_munged),
+			trim($adph_unmunged),
+			$html
+		);
+		
+	$uah_munged=<<<EOH
+<img src="https://www.uah.edu/\&quot;images\/news\/virus_1440.jpg\&quot;"
+EOH;
+	$uah_unmunged=<<<EOH
+<img src=\"images\/news\/virus_1440.jpg\"
+EOH;
+		$html = $this->unmunge_wget_html(
+			trim($uah_munged),
+			trim($uah_unmunged),
+			$html
+		);
+
+	$uah_munged='re:!["]https://www[.]uah[.]edu/\\\\[&]quot[;]([^&]*)\\\\[&]quot;["]!'; //\&quot;(.*)\&quot;!';
+	$uah_unmunged='\"$1\"';
+
+		$html = $this->unmunge_wget_html(
+			trim($uah_munged),
+			trim($uah_unmunged),
+			$html
+		);
+
+	$adph_munged='re:!'.preg_quote('"https://dph1.adph.state.al.us/\\&quot;').'([^"]+)'.preg_quote('\\""').'!';
+	$adph_unmunged='\\"$1\\"';
+	
+		$html = $this->unmunge_wget_html(
+			trim($adph_munged),
+			trim($adph_unmunged),
+			$html
+		);
+	
+		// Sub-Resource Integrity Checks will often fail, because wget has modified the resource
+		$has_integrity='re:!integrity="([^"]+)"!ix';
+		$no_integrity="";
+	
+		$html = $this->unmunge_wget_html(
+			trim($has_integrity),
+			trim($no_integrity),
+			$html
+		);
+	
+		return $html;
+	} /* get_filtered_html () */
+
+
 	protected function to_get_params ($params) {
 		$http_params = [];
 		foreach ($params as $key => $value) :
