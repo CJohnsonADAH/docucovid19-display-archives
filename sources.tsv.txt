@@ -116,7 +116,7 @@
 48	3	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$
 48	3	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*
 48	3	mmi	https://marionmilitary.edu/coronavirus
-48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=1	--random-wait	--include-directories=* --level=2
+48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=0.5	--random-wait	--include-directories=* --level=2
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
 48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
 48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
