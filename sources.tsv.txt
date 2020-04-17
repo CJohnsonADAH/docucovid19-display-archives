@@ -1,6 +1,8 @@
 # State Agencies
-12	10	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
-12	10	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
+48	2	adph	https://www.alabamapublichealth.gov/infectiousdiseases/2019-coronavirus.html
+48	2	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html
+12	3	adphcovid19	http://www.alabamapublichealth.gov/covid19/	--level=2	--span-hosts	--domains=alabamapublichealth.gov,bootstrapcdn.com,sitesearch360.com,addthis.com,addthisedge.com,google-analytics.com,googleapis.com,redcap.link,adph.org
+12	10	adphtable	https://dph1.adph.state.al.us/covid-19	--span-hosts	--domains=adph.state.al.us,telerik.com
 24	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7
 24	3	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes
 24	10	govservealabama	https://www.servealabama.gov/covid19
