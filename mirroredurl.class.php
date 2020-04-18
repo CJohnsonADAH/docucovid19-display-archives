@@ -123,10 +123,17 @@ class MirroredURL {
 	public function get_filtered_html ($dependencies = false) {
 		// 0. Add a base[@href] tag for handling relative URIs better, even when
 		// the URL of this page is weirded by the pass-thru mechanism
-		$html = str_replace(
-			"<head>",
-			'<head><base href="' . $this->url() . '" />',
-			$this->get_contents()
+		$html = $this->get_contents();
+		
+		$html = preg_replace(
+			"!(<base(\s+[^>]+)?>)!ix",
+			"",
+			$html
+		);
+		$html = preg_replace(
+			"!(<head(\s+[^>]*)?>)!ix",
+			'$1<base href="' . $this->url() . '" />',
+			$html
 		);
 		
 		$html = $this->unmunge_wget_html(

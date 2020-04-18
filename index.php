@@ -5,6 +5,7 @@
 	require_once("${myDir}/snapshotdatetime.class.php");
 
 define('ALACOVDAT_URL', 'browse');
+define('ALACOVDAT_SOURCES_TSV', "${myDir}/sources.tsv.txt");
 
 $defaultParams = [
 "date" => null,
@@ -23,7 +24,7 @@ $defaultParams = [
 			if ($mime !== false) :
 				$filename=basename($passthru);
 				if (preg_match('![.](js|css)([?@].*)?$!ix', $filename, $ref)) :
-					if (preg_match('!^text/plain!ix', $mime)) :
+					if (preg_match('!^text/(plain|x-asm)!ix', $mime)) :
 						$textType = ["js" => "javascript", "css" => "css"];
 						$mime = 'text/'.$textType[$ref[1]];
 					endif;
@@ -213,6 +214,94 @@ function get_snapshot_lists ($dir) {
 	
 } /* get_snapshot_lists () */
 
+$gaGetSlugTagsTable = null;
+function is_hash_tag ($s) {
+	return !!preg_match('/^[#]/', $s);
+}
+function get_slug_tags ($slug = null) {
+	global $gaGetSlugTagsTable;
+	
+	if (is_null($slug)) :
+	
+		$lines = [];
+		if (is_readable(ALACOVDAT_SOURCES_TSV)) :
+			$lines = array_map('rtrim', file(ALACOVDAT_SOURCES_TSV));
+		endif;
+		
+		$ret = array_reduce($lines, function ($aSlugTags, $line) {
+			
+			$fields = preg_split("/\t/", $line);
+			if (count($fields) >= 3) :
+				$slug = $fields[2];
+				$hash_tags = array_filter(array_slice($fields, 3), 'is_hash_tag');
+				$tags = array_map(function ($e) { return preg_replace('/^[#]/', '', $e); }, $hash_tags);
+				
+				if (!array_key_exists($slug, $aSlugTags)) :
+					$aSlugTags[$slug] = [];
+				endif;
+				$aSlugTags[$slug] = array_merge($aSlugTags[$slug], $tags);
+			endif;
+			return $aSlugTags;
+		}, []);
+		
+	else :
+		if (is_null($gaGetSlugTagsTable)) :
+			$gaGetSlugTagsTable = get_slug_tags();
+		endif;
+
+		$ret = (array_key_exists($slug, $gaGetSlugTagsTable) ? $gaGetSlugTagsTable[$slug] : []);
+	endif;
+	
+	return $ret;
+}
+
+function do_output_data_table ($table, $htmlClass) {
+	$table = array_merge([
+	"THEAD" => [],
+	"TBODY" => [],
+	], $table);
+	
+	$dataTHEAD = $table['THEAD'];
+	$dataTBODY = $table['TBODY'];
+	$tableClass = (is_numeric($htmlClass) ? 'data' : $htmlClass);
+	
+	if (count($dataTHEAD) > 0) :
+?>
+	<table border="1" class="<?=$tableClass?>">
+	<thead>
+	<tr>
+<?php
+		foreach ($dataTHEAD as $th) :
+			$label = (is_array($th) ? $th[1] : $th);
+			print '<th scope="col">'.$label."</th>";
+		endforeach;
+?>
+	</tr>
+	</thead>
+	
+	<tbody>
+<?php
+		foreach ($dataTBODY as $tr) :
+			print "<tr>";
+			foreach ($dataTHEAD as $th) :
+				if (is_array($th)) :
+					$name = $th[0];
+				else :
+					$name = $th;
+				endif;
+
+				$td = $tr[$name];
+				print "<td>${td}</td>";
+			endforeach;
+			print "</tr>\n";
+		endforeach;
+?>
+	</tbody>
+	</table>
+<?php
+	endif;
+} /* do_output_data_table() */
+
 function my_request_url ($part = null) {
 	$myUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/' . ltrim($_SERVER['REQUEST_URI'], '/');
 	if (is_null($part)) :
@@ -304,12 +393,12 @@ function make_browse_selector ($params) {
 }
 
 $rawDataOut = null;
-$dataTHEAD = null;
-$dataTBODY = null;
+$dataTable = [];
 $metaInput = [
 	'file' => null,
 ];
 $tableClass = "data";
+$all_tags = [];
 
 $oDateTime = (is_null($params['date']) ? null : new SnapshotDateTime($params['date']));
 
@@ -343,47 +432,61 @@ elseif (is_index_request()) :
 	$availableSlugs = array_unique(array_map(function ($e) { return $e[0]; }, $lists['available slugs']));
 	
 	$slugLinks = array_map(function ($s) use ($allSlugs) {
-		$bits = explode("/", trim($s, "/"), 2) + ['', ''];
+		list($type, $siteslug) = explode("/", trim($s, "/"), 2) + ['', ''];
 		return [
-		$s,
-		$bits[0],
-		make_browse_link(["href" => ["slug" => $s], "text" => $bits[1]]),
+		$s,	$type,
+		make_browse_link(["class" => "browse ".$siteslug, "href" => ["slug" => $s], "text" => $siteslug]),
 		get_most_recent_timestamp(get_slug_timestamps($s, $allSlugs)),
+		array_merge([$type], get_slug_tags($siteslug)),
 	]; }, $availableSlugs);
 
 	$oNow = new SnapshotDateTime(time());
-	$metaTable[] = ["Time", $oNow->human_readable(), "now"];
+	$metaTable[] = ["Type", "Source", "Tags", "Latest"];
 
 	foreach ($slugLinks as $slugLink) :
-		list($slug, $snapType, $link, $ts) = $slugLink;
+		list($slug, $snapType, $link, $ts, $tags) = $slugLink;
 		$slugpath = explode("/", $slug);
 		
 		$oLatest = new SnapshotDateTime($ts);
-		$latestLink = make_browse_link(["href" => ["date" => $ts, "slug" => $slug], "text" => $oLatest->human_readable()]);
+		$latestLink = make_browse_link(["class" => "view", "href" => ["date" => $ts, "slug" => $slug], "text" => $oLatest->human_readable()]);
 		$latest = "latest: ${latestLink}";
 		
+		$myLink = $link;
 		if ($slug==$params['slug']) :
-			$metaTable[] = [$snapType, "<strong>".end($slugpath)."</strong>", "<small>${latest}</small>"];
-		else :
-			$metaTable[] = [$snapType, $link, "<small>${latest}</small>"];
+			$myLink = preg_replace('!<a \s+!ix', '<a class="current" ', $myLink);
 		endif;
+		
+		$metaTable[] = [$snapType, $myLink, implode("; ", $tags), "<small>${latest}</small>", "@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)];
+		
+		$all_tags = array_merge($all_tags, $tags);
 	endforeach;
-
+	$all_tags = array_unique($all_tags);
+	
 	$outWhat = "Listing";
 	$oDateTime = new SnapshotDateTime(time());
 	
 	$rawDataOut = null;
-	$dataTHEAD = ["Type", "Timestamp"];
+	
+	$dataTHEAD = [];
+	$dataTBODY = [];
+	$dataTHEAD = ["Source", "Type", "Timestamp"];
 	foreach ($lists['sets'] as $pair) :
 		list($slug, $ts) = $pair;
+		$slugParts = array_filter(explode("/", trim($slug, '/'), 2)) + ['', ''];
+		$slugtype = $slugParts[0]; $slugsource = $slugParts[1];
 		
 		$oDateTime = new SnapshotDateTime($ts);
-		$dataTBODY[] = ["Type" => $slug, "Timestamp" => make_browse_link([
+		
+		if (!array_key_exists("${tableClass} $slugsource", $dataTBODY)) :
+			$dataTBODY["${tableClass} $slugsource"] = [];
+		endif;
+		$dataTBODY["${tableClass} $slugsource"][] = ["Type" => $slugtype, "Source" => $slugsource, "Timestamp" => make_browse_link([
 			"href" => ["slug" => $slug, "date" => $ts],
 			"text" => $oDateTime->human_readable()
 		])];
 	endforeach;
-
+	$dataTable = array_map(function ($e) use ($dataTHEAD) { return ["THEAD" => $dataTHEAD, "TBODY" => $e]; }, $dataTBODY);
+	
 elseif (is_html_request($refs)) :
 
 	$slug = $refs[0];
@@ -493,10 +596,8 @@ elseif (is_data_table_request()) :
 		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
 		
 		$dataTable = get_json_to_table($hash, $params['slug']);
-		$dataTHEAD = $dataTable['THEAD'];
-		$dataTBODY = $dataTable['TBODY'];		
 
-		if (count($dataTHEAD) + count($dataTBODY) > 0) :
+		if (count($dataTable['THEAD']) + count($dataTable['TBODY']) > 0) :
 			$viewOptions = array_merge(
 			['<a href="#view-data-table" class="tab">data table</a>'],
 			$viewOptions);
@@ -510,7 +611,8 @@ elseif (is_data_table_request()) :
 endif;
 
 
-if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
+if (strlen($out) == 0 and count($dataTable)==0) exit;
+
 	$sTimestamp = (is_null($oDateTime) ? null : $oDateTime->human_readable());
 ?>
 <!DOCTYPE html>
@@ -537,7 +639,7 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 	max-width: 100%; height: auto;
 }
 
-.tab.current {
+a.current {
 	font-weight: bold;
 	color: #000;
 	text-decoration: none;
@@ -546,12 +648,21 @@ if (strlen($out) == 0 and is_null($dataTHEAD)) exit;
 table.nav {
 	float: left;
 	margin-right: 20px;
+	margin-bottom: 10px;
+}
+#view-nav-table table.nav {
+	float: none !important;
 }
 
 section {
 	clear: both;
 }
-
+section#view-nav-table {
+	clear: none !important;
+	float: left !important;
+}
+#view-tags ul { display: block; list-style: none; margin: 0; padding: 10px 10px; }
+#view-tags li { display: inline-block; list-style: none; margin: 0; padding: 0 10px 0 0; }
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -563,6 +674,9 @@ function isTabbedInterface () {
 
 function isHTMLSnapshot () {
 	return ($('#html-view-source').length > 0);
+}
+function isNavTableInterface () {
+	return ($('#meta-table').filter('.nav').find('a.browse').length > 0);
 }
 function activateTabFromLink (e) {
 	e.preventDefault();
@@ -582,11 +696,65 @@ function hideSnapshotTabs () {
 		$(tab).show();
 	});
 }
+function filterNavSectionFromLink (e) {
+	
+	let linkClasses = $(e.target).attr('class').split(/\s+/);
+	let activeTable = $('table.nav').filter("." + linkClasses[1]);
+	
+	if (activeTable.length > 0) {
+		e.preventDefault();
+		
+		$('#view-nav-table').find('table.nav').fadeOut({
+			duration: 250
+		}).promise().then( function () {
+			$('a').removeClass('current').promise().then( function () { $(e.target).addClass('current'); } );
+			$(activeTable).fadeIn({
+				duration: 250,
+			}).promise().then( function () {
+				$('html, body').animate({
+					scrollTop: $(activeTable).offset().top
+				}, 500 /*ms*/);
+			});
+		});
+	}
+}
+function filterNavMainFromTagLink (e) {
+	e.preventDefault();
+	
+	let path = e.target.pathname;
+	let dirs = path.trim('/').replace(/^\/+/, '').split(/\/+/);
+	console.log(e.target.href, dirs);
+	
+	if (dirs.length > 1 && dirs[0]=='tag') {
+		let activeTag = dirs[1];
+		
+		$('tr.tagged-html, tr.tagged-data').hide().promise().then( function () {
+				$('tr.tagged-' + dirs[1]).show();
+		});
+		
+		$('a.view-tag').removeClass('current').promise().then(function () {
+			$(e.target).addClass('current');
+		});
+	}
+}
+function setupNavTableTabLinks() {
+	$('#meta-table').filter('.nav').find('a.browse').click( filterNavSectionFromLink );
+	if ($('#view-nav-table').find('table.nav').length > 1) {
+		$('#view-nav-table').find('table.nav').hide();
+	}
+	
+	$('#view-tags').find('a.view-tag').click( filterNavMainFromTagLink );
+	if ($('#view-tags').find('a.view-tag').length > 0) {
+		
+	}
+}
 
 $(document).ready( function () {
 	if (isTabbedInterface()) {
 		setupSnapshotTabLinks();
 		hideSnapshotTabs();
+	} else if (isNavTableInterface()) {
+		setupNavTableTabLinks();
 	} /* if */
 });
 //]>
@@ -596,19 +764,52 @@ $(document).ready( function () {
 <h1><a href="/">Documenting Covid-19: Alabama's Responses</a></h1>
 <h2><?=$outWhat?> Snapshot: <?=$sTimestamp?></h1>
 <?php
+	if (count($all_tags) > 0) :
+?>
+<nav id="view-tags"><ul>
+<?php
+		foreach ($all_tags as $tag) :
+?>
+	<li><a class="view-tag" href="/tag/<?=$tag?>"><?php print $tag; ?></a></li>
+<?php
+		endforeach;
+?>
+</ul></nav>
+<?php
+	endif;
+?>
+
+<?php
 	if (count($metaTable) > 0) :
 ?>
 	<table border="1" id="meta-table" class="<?=$tableClass; ?>">
 	<tbody>
 <?php
+		$isAttrib = function ($e) { return !!preg_match('/^@/', $e); };
+		
 		foreach ($metaTable as $row) :
-			print "<tr>";
+			$attribNames = array_filter(array_keys($row), $isAttrib);
+			$tag = ["tr"];
+			foreach ($attribNames as $attribName) :
+				$key = htmlspecialchars(preg_replace('/^@/', '', $attribName));
+				$value = $row[$attribName];
+				if (is_array($value)) :
+					$value = implode(" ", $value);
+				endif;
+				$value = htmlspecialchars($value);
+				$tag[] = "${key}=\"${value}\"";
+			endforeach;
+			$TR = implode(" ", $tag);
+			
+			print "<${TR}>";
 			$i = 0;
-			foreach ($row as $col) :
-				print ($i>0) ? "<td>" : "<th>";
-				print $col;
-				print ($i>0) ? "</td>" : "</th>";
-				$i++;
+			foreach ($row as $key => $col) :
+				if (!$isAttrib("${key}")) :
+					print ($i>0) ? "<td>" : "<th>";
+					print $col;
+					print ($i>0) ? "</td>" : "</th>";
+					$i++;
+				endif;
 			endforeach;
 			print "</tr>\n";
 		endforeach;
@@ -619,55 +820,19 @@ $(document).ready( function () {
 <?php
 	endif;
 
-	if (count($dataTHEAD) > 0) :
-		if ("nav" != $tableClass) :
-?>
-	<section id="view-data-table">
-<?php
+	if (count($dataTable) > 0) :
+		if (array_key_exists('TBODY', $dataTable)) :
+			$dataTable = [$tableClass => $dataTable];
 		endif;
-?>
-	<table border="1" class="<?=$tableClass?>">
-	<thead>
-	<tr>
-<?php
-		foreach ($dataTHEAD as $th) :
-			if (is_array($th)) :
-				$label = $th[1];
-			else :
-				$label = $th;
-			endif;
-			
-			print '<th scope="col">' . $label . "</th>";
-		endforeach;
-?>
-	</tr>
-	</thead>
-	
-	<tbody>
-<?php
-		foreach ($dataTBODY as $tr) :
-			print "<tr>";
-			foreach ($dataTHEAD as $th) :
-				if (is_array($th)) :
-					$name = $th[0];
-				else :
-					$name = $th;
-				endif;
 
-				$td = $tr[$name];
-				print "<td>${td}</td>";
-			endforeach;
-			print "</tr>\n";
+		$htmlClasses = preg_split('/\s+/', trim($tableClass));
+		$topClass = $htmlClasses[0];
+	
+		print "<section id='view-${topClass}-table'>\n";
+		foreach ($dataTable as $key => $table) :
+			do_output_data_table($table, $key);
 		endforeach;
-?>
-	</tbody>
-	</table>
-<?php
-		if ("nav" != $tableClass) :
-?>
-	</section>	
-<?php
-		endif;
+		print "</section>\n\n";
 	endif;
 	
 	print $out;
