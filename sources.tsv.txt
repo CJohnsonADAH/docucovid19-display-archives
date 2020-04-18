@@ -39,6 +39,7 @@
 48	2	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019
 96	3	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
 48	2	annistonalabama	http://www.annistonal.gov/
+96	2	arabalabama	https://www.arabcity.org/
 24	2	auburnalabama	https://www.auburnalabama.org/coronavirus/
 48	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org
 24	2	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info
@@ -52,8 +53,11 @@
 48	2	eufaulaalabama	https://eufaulaalabama.com/
 48	2	florencealabama	https://florenceal.org/alert_detail.php
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*
+48	2	gulfshoresalabama	https://www.gulfshoresal.gov/1524/COVID-19-Coronavirus	--include-directories=*	--span-hosts	--domains=gulfshoresal.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com
 48	2	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com
+48	2	hooveralabama	https://hooveralabama.gov/1048/COVID-19	--include-directories=*	--span-hosts	--domains=hooveralabama.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com
 24	2	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*
+96	2	jacksonvillealabama	https://www.jacksonville-al.org/
 48	2	jasperalabama	https://www.jaspercity.com/
 96	2	livingstonalabama	https://www.cityoflivingstonal.com/	--span-hosts	--domains=cityoflivingstonal.com,squarespace.com	--wait=1	--random-wait
 96	2	luvernealabama	http://luverne.org/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118
@@ -64,6 +68,8 @@
 96	2	mountainbrookalabama	https://www.mtnbrook.org/
 48	2	oneontaalabama	https://www.cityofoneonta.us/covid-19	--span-hosts	--domains=cityofoneonta.us,parastorage.com,wixstatic.com
 48	2	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251
+48	2	orangebeachalabama	https://orangebeachal.gov/news/covid-19-updates	--include-directories=*	--span-hosts	--domains=orangebeachalabama,jquery.com,google.com,googleapis.com,gstatic.com,twimg.com,jsdelivr.net
+48	2	phenixcityalabama	https://phenixcityal.us/covid19
 24	2	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com
 48	10	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net
 48	2	scottsboroalabama	https://www.cityofscottsboro.com/index.php/frontpagenews/	--include-directories=-	--level=2	--span-hosts	--domains=cityofscottsboro.com,cloudfront.net	--execute=robots=off
@@ -141,3 +147,5 @@
 48	5	pikecococ	http://www.pikecoc.com/covid-19
 96	5	aldemocrats	http://aldemocrats.org/blog
 96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$
+48	5	gulfshorestourism	https://www.gulfshores.com/plan/coronavirus/	--include-directories=*
+
