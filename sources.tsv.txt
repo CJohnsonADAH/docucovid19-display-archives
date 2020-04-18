@@ -8,6 +8,7 @@
 24	10	govservealabama	https://www.servealabama.gov/covid19
 24	5	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2
 24	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf
+24	2	ltgovreopen	https://ltgov.alabama.gov/reopen-alabama-responsibly	--span-hosts
 24	5	sos	https://www.sos.alabama.gov/newsroom
 24	2	alsde	https://www.alsde.edu/covid-19
 24	2	albme	https://www.albme.org/c19.html
