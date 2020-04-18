@@ -127,7 +127,7 @@
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*
 48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*
 48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*
-48	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*
+96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait
 48	3	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*
 48	3	wccselma	http://www.wccs.edu/coronavirus-2
 48	3	wscc	https://www.wallacestate.edu/coronavirus
@@ -135,7 +135,7 @@
 48	3	asu	https://www.alasu.edu/coronavirus-covid-19-updates
 48	3	athensstate	https://www.athens.edu/coronavirus
 
-# Hospitals & Non-Profits
+# Hospitals, Non-Profits, Political Parties...
 48	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/
 48	5	baptisthealth	https://www.baptistfirst.org/patients-and-visitors/coronavirus-covid-19-information
 48	5	jacksonhospital	https://www.jackson.org/news/releases/jackson-hospital-coronavirus-preparedness-and-updates
