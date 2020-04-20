@@ -47,12 +47,14 @@
 48	2	butleralabama	https://www.butleralabama.org/	#city
 48	10	columbianaalabama	https://cityofcolumbiana.com/	#city
 48	10	cullmanalabama	https://cullmanal.gov/covid-19	#city
+48	2	daphnealabama	http://www.daphneal.com/462/COVID-19-Updates	--include-directories=*	#city
 48	2	decaturalabama	https://www.decaturalabamausa.com/covid-19	#city
 48	2	demopoliscityschools	https://www.dcsedu.com/	--domains=dcsedu.com,files.edl.io	#city	#k12
 48	2	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*	#city
 48	2	eufaulaalabama	https://eufaulaalabama.com/	#city
 48	2	florencealabama	https://florenceal.org/alert_detail.php	#city
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*	#city
+48	3	genevaalabama	https://www.cityofgeneva.com/covid-19-information	#city
 48	2	gulfshoresalabama	https://www.gulfshoresal.gov/1524/COVID-19-Coronavirus	--include-directories=*	--span-hosts	--domains=gulfshoresal.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
 48	2	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com	#city
 48	2	hooveralabama	https://hooveralabama.gov/1048/COVID-19	--include-directories=*	--span-hosts	--domains=hooveralabama.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
@@ -69,9 +71,10 @@
 48	2	oneontaalabama	https://www.cityofoneonta.us/covid-19	--span-hosts	--domains=cityofoneonta.us,parastorage.com,wixstatic.com	#city
 48	2	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251	#city
 48	2	orangebeachalabama	https://orangebeachal.gov/news/covid-19-updates	--include-directories=*	--span-hosts	--domains=orangebeachalabama,jquery.com,google.com,googleapis.com,gstatic.com,twimg.com,jsdelivr.net	#city
+48	2	pelhamalabama	https://www.pelhamalabama.gov/149/COVID-19	--include-directories=*	#city
 48	2	phenixcityalabama	https://phenixcityal.us/covid19	#city
 24	2	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com	#city
-48	10	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net	#city
+48	2	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net	#city
 48	2	scottsboroalabama	https://www.cityofscottsboro.com/index.php/frontpagenews/	--include-directories=-	--level=2	--span-hosts	--domains=cityofscottsboro.com,cloudfront.net	--execute=robots=off	#city
 48	5	selmaalabama	https://www.selma-al.gov/	#city
 48	10	tallasseealabama	https://www.tallasseeal.gov/front-page-news	#city
