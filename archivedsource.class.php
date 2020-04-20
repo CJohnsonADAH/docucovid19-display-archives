@@ -4,6 +4,7 @@ class ArchivedSource {
 	private $_sTs;
 	private $_sExt;
 	private $_sDataDir;
+	private $_bInfixTs;
 	
 	public function __construct ($params = []) {
 		$params = array_merge([
@@ -11,20 +12,39 @@ class ArchivedSource {
 		"ts" => null,
 		"file type" => null,
 		"data dir" => dirname(__FILE__) . "/covid-data",
+		"infix ts" => false,
 		], $params);
 
 		$this->_sSlug = $params['slug'];
 		$this->_sTs = $params['ts'];
 		$this->_sExt = $params['file type'];
 		$this->_sDataDir = $params['data dir'];
+		$this->_bInfixTs = $params['infix ts'];
+		
+		if (!is_readable($this->url_file())) :
+			$this->_bInfixTs = !$this->_bInfixTs;
+		endif;
+		
 	} /* ArchivedSource::__construct () */
+
+	protected function infix_ts () {
+		return $this->_bInfixTs;
+	}
 
 	protected function data_dir () {
 		return $this->_sDataDir;
 	}
 	
 	protected function data_prefix ($basedir = null) {
-		return (is_null($basedir) ? $this->data_dir() : $basedir) . "/" . $this->_sSlug . "-";
+		return (is_null($basedir) ? $this->data_dir() : $basedir) . "/" . $this->slug_path() . "-";
+	}
+	
+	public function slug_path () {
+		$path = explode('/', trim($this->slug(), '/'));
+		if ($this->infix_ts()) :
+			$path = array_merge(array_slice($path, 0, 1), [ $this->ts() ], array_slice($path, 1));
+		endif;
+		return '/' . implode('/', $path);
 	}
 	
 	public function slug () {
