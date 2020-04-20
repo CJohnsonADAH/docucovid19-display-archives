@@ -8,6 +8,7 @@ define('ALACOVDAT_URL', 'browse');
 define('ALACOVDAT_SOURCES_TSV', "${myDir}/sources.tsv.txt");
 
 $defaultParams = [
+"tag" => null,
 "date" => null,
 "slug" => null,
 "mirrored" => null,
@@ -454,7 +455,6 @@ elseif (is_index_request()) :
 	]; }, $availableSlugs);
 
 	$oNow = new SnapshotDateTime(time());
-	$metaTable[] = ["Type", "Source", "Tags", "Latest"];
 
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts, $tags) = $slugLink;
@@ -469,10 +469,16 @@ elseif (is_index_request()) :
 			$myLink = preg_replace('!<a \s+!ix', '<a class="current" ', $myLink);
 		endif;
 		
-		$metaTable[] = [$snapType, $myLink, implode("; ", $tags), "<small>${latest}</small>", "@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)];
-		
+		if (is_null($params['tag']) or in_array($params['tag'], $tags)) :
+			$metaTable[] = [$snapType, $myLink, implode("; ", $tags), "<small>${latest}</small>", "@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)];
+		endif;
+	
 		$all_tags = array_merge($all_tags, $tags);
 	endforeach;
+	usort($metaTable, function ($a, $b) { return strcmp(strip_tags($a[1]), strip_tags($b[1])); });
+
+	$metaTable = array_merge([ ["Type", "<b>Source</b>", "<b>Tags</b>", "<b>Latest</b>"] ], $metaTable);
+
 	$all_tags = array_unique($all_tags);
 	
 	$outWhat = "Listing";
@@ -729,7 +735,7 @@ function filterNavSectionFromLink (e) {
 		$('#view-nav-table').find('table.nav').fadeOut({
 			duration: 250
 		}).promise().then( function () {
-			$('a').removeClass('current').promise().then( function () { $(e.target).addClass('current'); } );
+			$('a.browse').removeClass('current').promise().then( function () { $(e.target).addClass('current'); } );
 			$(activeTable).fadeIn({
 				duration: 250,
 			}).promise().then( function () {
@@ -741,22 +747,24 @@ function filterNavSectionFromLink (e) {
 	}
 }
 function filterNavMainFromTagLink (e) {
-	e.preventDefault();
 	
 	let path = e.target.pathname;
 	let dirs = path.trim('/').replace(/^\/+/, '').split(/\/+/);
-	console.log(e.target.href, dirs);
 	
-	if (dirs.length > 1 && dirs[0]=='tag') {
-		let activeTag = dirs[1];
+	if (dirs.length > 2 && dirs[0]=='browse' && dirs[1]=='tag') {
+		let activeTag = dirs[2];
 		
-		$('tr.tagged-html, tr.tagged-data').hide().promise().then( function () {
-				$('tr.tagged-' + dirs[1]).show();
-		});
+		if ($('tr.tagged-'+activeTag).length > 0) {
+			e.preventDefault();
+			
+			$('tr.tagged-html, tr.tagged-data').hide().promise().then( function () {
+				$('tr.tagged-'+activeTag).fadeIn({ duration: 250 /*ms*/ });
+			});
 		
-		$('a.view-tag').removeClass('current').promise().then(function () {
-			$(e.target).addClass('current');
-		});
+			$('a.view-tag').removeClass('current').promise().then(function () {
+				$(e.target).addClass('current');
+			});
+		}
 	}
 }
 function setupNavTableTabLinks() {
@@ -767,7 +775,7 @@ function setupNavTableTabLinks() {
 	
 	$('#view-tags').find('a.view-tag').click( filterNavMainFromTagLink );
 	if ($('#view-tags').find('a.view-tag').length > 0) {
-		
+		$('#view-tags').find('a.view-tag').eq(0).click();
 	}
 }
 
@@ -792,7 +800,7 @@ $(document).ready( function () {
 <?php
 		foreach ($all_tags as $tag) :
 ?>
-	<li><a class="view-tag" href="/tag/<?=$tag?>"><?php print $tag; ?></a></li>
+	<li><a class="view-tag" href="/browse/tag/<?=$tag?>"><?php print $tag; ?></a></li>
 <?php
 		endforeach;
 ?>
