@@ -474,15 +474,21 @@ elseif (is_index_request()) :
 		list($slug, $ts) = $pair;
 		$slugParts = array_filter(explode("/", trim($slug, '/'), 2)) + ['', ''];
 		$slugtype = $slugParts[0]; $slugsource = $slugParts[1];
+		$ext = ($slugtype=='html' ? 'html' : 'json');
 		
 		$oDateTime = new SnapshotDateTime($ts);
+
+		$arX = new ArchivedSource(["slug" => $slug, "ts" => $oDateTime->datetimecode(), "file type" => $ext]);
 		
 		if (!array_key_exists("${tableClass} $slugsource", $dataTBODY)) :
 			$dataTBODY["${tableClass} $slugsource"] = [];
 		endif;
+
+		$checksum = $arX->payload_checksum();
 		$dataTBODY["${tableClass} $slugsource"][] = ["Type" => $slugtype, "Source" => $slugsource, "Timestamp" => make_browse_link([
 			"href" => ["slug" => $slug, "date" => $ts],
-			"text" => $oDateTime->human_readable()
+			"text" => $oDateTime->human_readable(),
+			"title" => is_null($checksum) ? "source: ".$arX->source_url() : "checksum: ".$arX->payload_checksum(),
 		])];
 	endforeach;
 	$dataTable = array_map(function ($e) use ($dataTHEAD) { return ["THEAD" => $dataTHEAD, "TBODY" => $e]; }, $dataTBODY);
@@ -507,7 +513,10 @@ elseif (is_html_request($refs)) :
 	$selector=make_browse_selector(["action" => "/".ALACOVDAT_URL, "slug" => $slug, "date" => $allTS, "selected" => $oDateTime]);
 	
 	$metaTable[] = ["Timestamp", $selector];
-
+	if (!is_null($checksum=$arX->payload_checksum())) :
+		$metaTable[] = ["Checksum", $checksum];
+	endif;
+	
 	$oFile = new MirroredURL(["archive" => $arX]);
 
 	$mirrorUrl = $oFile->get_mirror_url();

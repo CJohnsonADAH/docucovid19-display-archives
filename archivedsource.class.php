@@ -122,4 +122,18 @@ class ArchivedSource {
 		endif;
 		return $url;
 	}
+	
+	public function payload_checksum_file () {
+		return $this->capture_file($this->_sExt.".sha512");
+	}
+
+	public function payload_checksum () {
+		$checksum = (is_readable($this->payload_checksum_file()) ? file_get_contents($this->payload_checksum_file()) : null);
+		if (!is_null($checksum)) :
+			if (preg_match('|^([A-Z0-9_-]+) \s* [^=]* = \s* (\S+)\s*$|x', $checksum, $m)) :
+				$checksum = $m[2] . ' (' . $m[1] . ')';
+			endif;
+		endif;
+		return $checksum;
+	}
 } /* class ArchivedSource */
