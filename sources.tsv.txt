@@ -34,6 +34,8 @@
 24	2	bnk	http://banking.alabama.gov/Covid_info.aspx	#state
 96	2	ago	https://www.alabamaag.gov/citycounty	#state
 24	2	vet	https://va.alabama.gov/covid-19	#state
+96	1	bce	http://chiro.alabama.gov/COVID_Info.aspx	#state
+48	5	tou	https://alabama.travel/my-trip/staying-safe	--span-hosts	--domains=alabama.travel,buttercms.com,websitealive.com,swiftype.com,swiftypecdn.com	#state
 
 # City Governments & Agencies
 48	2	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019	#city
@@ -150,7 +152,7 @@
 48	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19	#medical
 48	5	helenkellerhospital	https://www.helenkeller.com/	#medical
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/	#nonprofit
-48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	#nonprofit
+48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit
 48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit
 96	5	aldemocrats	http://aldemocrats.org/blog	#party
 96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$		#party
