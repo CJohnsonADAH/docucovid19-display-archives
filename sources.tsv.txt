@@ -40,9 +40,11 @@
 96	3	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#city
 48	2	annistonalabama	http://www.annistonal.gov/	#city
 96	2	arabalabama	https://www.arabcity.org/	#city
+48	2	atmorealabama	https://welcometoatmore.com/covid-19-information	--span-hosts --domains=welcometoatmore.com,googleapis.com	#city
 24	2	auburnalabama	https://www.auburnalabama.org/coronavirus/	#city
 48	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org	#city
 24	2	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info	#city
+48	5	bessemeralabama	https://www.bessemeral.org/covid-19-bessemer-updates	--span-hosts	--domains=bessemeral.org,unpkg.com,cloudflare.com,googleapis.com,gstatic.com	#city
 24	10	birminghamalabama	https://www.birminghamal.gov/coronavirus	#city
 48	2	butleralabama	https://www.butleralabama.org/	#city
 48	10	columbianaalabama	https://cityofcolumbiana.com/	#city
@@ -53,6 +55,7 @@
 48	2	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*	#city
 48	2	eufaulaalabama	https://eufaulaalabama.com/	#city
 48	2	florencealabama	https://florenceal.org/alert_detail.php	#city
+48	2	foleyalabama	https://cityoffoley.org/	#city
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*	#city
 48	3	genevaalabama	https://www.cityofgeneva.com/covid-19-information	#city
 48	2	gulfshoresalabama	https://www.gulfshoresal.gov/1524/COVID-19-Coronavirus	--include-directories=*	--span-hosts	--domains=gulfshoresal.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
@@ -147,6 +150,7 @@
 48	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19	#medical
 48	5	helenkellerhospital	https://www.helenkeller.com/	#medical
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/	#nonprofit
+48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	#nonprofit
 48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit
 96	5	aldemocrats	http://aldemocrats.org/blog	#party
 96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$		#party
