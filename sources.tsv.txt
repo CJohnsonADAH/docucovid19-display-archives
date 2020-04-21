@@ -3,7 +3,7 @@
 48	2	adphproviders	https://alabamapublichealth.gov/infectiousdiseases/cov-healthcare.html	#state
 12	3	adphcovid19	http://www.alabamapublichealth.gov/covid19/	--level=2	--span-hosts	--domains=alabamapublichealth.gov,bootstrapcdn.com,sitesearch360.com,addthis.com,addthisedge.com,google-analytics.com,googleapis.com,redcap.link,adph.org	#state
 12	10	adphtable	https://dph1.adph.state.al.us/covid-19	--span-hosts	--domains=adph.state.al.us,telerik.com	#state
-24	30	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7	#state
+24	90	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7	#state
 24	3	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes	#state
 24	10	govservealabama	https://www.servealabama.gov/covid19	#state
 24	5	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2	#state
@@ -36,12 +36,16 @@
 24	2	vet	https://va.alabama.gov/covid-19	#state
 96	1	bce	http://chiro.alabama.gov/COVID_Info.aspx	#state
 48	5	tou	https://alabama.travel/my-trip/staying-safe	--span-hosts	--domains=alabama.travel,buttercms.com,websitealive.com,swiftype.com,swiftypecdn.com	#state
+96	3	oit	https://oit.alabama.gov/telecommuting-faq/	#state
 
 # City Governments & Agencies
 48	2	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019	#city
+48	2	alabasteralabama	http://cityofalabaster.com/482/COVID-19	--include-directories=*	--span-hosts	--domains=cityofalabaster.com,jquery.com,gstatic.com,googleapis.com,google.com	#city
+96	3	albertville	https://www.cityofalbertville.com/community/news-list	--include-directories=*	--span-hosts	--domains=cityofalbertville.com,visioninternet.com,google.com,googleapis.com,gstatic.com	#city
 96	3	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#city
 48	2	annistonalabama	http://www.annistonal.gov/	#city
 96	2	arabalabama	https://www.arabcity.org/	#city
+48	2	ashlandalabama	https://www.cityofashlandal.com/	--include-directories=*	--span-hosts	--domains=cityofashlandal.com,wix.com,wixstatic.com,parastorage.com,googleapis.com	#city
 48	2	atmorealabama	https://welcometoatmore.com/covid-19-information	--span-hosts --domains=welcometoatmore.com,googleapis.com	#city
 24	2	auburnalabama	https://www.auburnalabama.org/coronavirus/	#city
 48	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org	#city
@@ -49,6 +53,7 @@
 48	5	bessemeralabama	https://www.bessemeral.org/covid-19-bessemer-updates	--span-hosts	--domains=bessemeral.org,unpkg.com,cloudflare.com,googleapis.com,gstatic.com	#city
 24	10	birminghamalabama	https://www.birminghamal.gov/coronavirus	#city
 48	2	butleralabama	https://www.butleralabama.org/	#city
+48	2	chatomalabama	https://chatom.org/	--include-directories=*	--span-hosts	--domains=chatom.org,wp.com,gravatar.com,wordpress.com,typekit.net,googleapis.com,gstatic.com,google.com	#city
 48	10	columbianaalabama	https://cityofcolumbiana.com/	#city
 48	10	cullmanalabama	https://cullmanal.gov/covid-19	#city
 48	2	daphnealabama	http://www.daphneal.com/462/COVID-19-Updates	--include-directories=*	#city
@@ -56,11 +61,14 @@
 48	2	demopoliscityschools	https://www.dcsedu.com/	--domains=dcsedu.com,files.edl.io	#city	#k12
 48	2	dothanalabama	https://www.dothan.org/677/Coronavirus	--include-directories=*	#city
 48	2	eufaulaalabama	https://eufaulaalabama.com/	#city
+48	2	fairhopealabama	https://www.fairhopeal.gov/services/city-of-fairhope-covid-19-precautions-and-updates/-fsiteid-1	--include-directories=*	--span-hosts	--domains=fairhopeal.gov,govdelivery.com,gstatic.com,googletagmanager.com,googleapis.com	#city
 48	2	florencealabama	https://florenceal.org/alert_detail.php	#city
 48	2	foleyalabama	https://cityoffoley.org/	#city
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*	#city
 48	3	genevaalabama	https://www.cityofgeneva.com/covid-19-information	#city
+48	2	greenvillealabama	https://www.greenvilleal.gov/365/COVID-19-CORONAVIRUS	--include-directories=*	--span-hosts	--domains=greenvilleal.gov,jquery.com,msecnd.net,gstatic.com,googleapis.com,civicplus.com	#city
 48	2	gulfshoresalabama	https://www.gulfshoresal.gov/1524/COVID-19-Coronavirus	--include-directories=*	--span-hosts	--domains=gulfshoresal.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
+48	2	guntersvillealabama	https://guntersvilleal.org/urgent-public-notice	--include-directories=*	--span-hosts	--domains=guntersvilleal.org,bootstrapcdn.com,googleapis.com,gstatic.com	#city
 48	2	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com	#city
 48	2	hooveralabama	https://hooveralabama.gov/1048/COVID-19	--include-directories=*	--span-hosts	--domains=hooveralabama.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
 24	2	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*	#city
@@ -68,6 +76,7 @@
 48	2	jasperalabama	https://www.jaspercity.com/	#city
 96	2	livingstonalabama	https://www.cityoflivingstonal.com/	--span-hosts	--domains=cityoflivingstonal.com,squarespace.com	--wait=1	--random-wait	#city
 96	2	luvernealabama	http://luverne.org/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#city
+48	2	madisonalabama	https://www.madisonal.gov/CivicAlerts.aspx?AID=1098	--include-directories=*	--span-hosts	--domains=madisonal.gov,msecnd.net,jquery.com,gstatic.com,civicplus.com	#city
 24	2	mobilealabama	https://www.cityofmobile.org/COVID-19	#city
 24	2	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19	#city
 24	2	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus	#city
@@ -75,8 +84,10 @@
 96	2	mountainbrookalabama	https://www.mtnbrook.org/	#city
 48	2	oneontaalabama	https://www.cityofoneonta.us/covid-19	--span-hosts	--domains=cityofoneonta.us,parastorage.com,wixstatic.com	#city
 48	2	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251	#city
+48	2	oppalabama	http://www.cityofopp.com/index.php/2020	--include-directories=*	--span-hosts	--domains=cityofopp.com,googleapis.com	#city
 48	2	orangebeachalabama	https://orangebeachal.gov/news/covid-19-updates	--include-directories=*	--span-hosts	--domains=orangebeachalabama,jquery.com,google.com,googleapis.com,gstatic.com,twimg.com,jsdelivr.net	#city
 48	2	pelhamalabama	https://www.pelhamalabama.gov/149/COVID-19	--include-directories=*	#city
+48	2	pellcityalabama	https://pell-city.com/covid-19	--include-directories=*	--span-hosts	--domains=pell-city.com,ctctcdn.com,gstatic.com,twimg.com,twitter.com,wp.com	#city
 48	2	phenixcityalabama	https://phenixcityal.us/covid19	#city
 24	2	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com	#city
 48	2	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net	#city
@@ -94,7 +105,7 @@
 # County Governments & Agencies
 24	3	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate	#county
 24	3	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate	#county
-24	20	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/	#county
+24	90	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/	#county
 96	2	leeco	http://www.leeco.us/covid-19_information/index.php	#county
 48	2	marengoco	http://marengocountyal.com/public-notice	#county
 24	2	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates	#county
@@ -102,46 +113,49 @@
 24	2	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org	--span-hosts	#county
 48	2	baldwinco	https://baldwincountyal.gov/covid19	#county
 48	2	baldwincoema	https://baldwincountyal.gov/departments/EMA	#county
-24	20	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html	#county
-24	20	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/	#county
+24	90	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html	#county
+24	90	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/	#county
 96	2	elmorecoema	https://elmorecoema.com/	#county
 24	20	elmorecodash	https://coronavirus-response-elmorecounty.hub.arcgis.com/	#county
 48	2	tuscaloosaco	https://www.tuscco.com/covid19	#county
 
 # Colleges & Universities
+48	3	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html	#college
+48	3	asu	https://www.alasu.edu/coronavirus-covid-19-updates	#college
+48	3	athensstate	https://www.athens.edu/coronavirus	#college
 48	3	aub	https://ocm.auburn.edu/news/coronavirus/	#college
 48	3	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts	#college
+48	3	aum	http://www.aum.edu/coronavirus	#college
+48	3	bsc	https://www.bsc.edu/coronavirus.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
+48	3	bscemergency	https://www.bsc.edu/emergency/index.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
+48	3	bscc	https://www.bscc.edu/coronavirus	#college
+48	3	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$	#college
+48	2	drakestate	https://www.drakestate.edu/student-and-employee-information	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com	#college
+48	3	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms	#college
+48	3	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*	#college
+48	3	jsu	http://www.jsu.edu/coronavirus	#college
+48	3	judsoncollege	https://www.judson.edu/coronavirus	#college
+48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*	#college
+48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*	#college
+48	3	mmi	https://marionmilitary.edu/coronavirus	#college
+48	3	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/	#college
+48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=0.5	--random-wait	--include-directories=* --level=2	#college
+48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*	#college
+48	3	suscc	https://www.suscc.edu/covid.cms	#college
+96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
+48	3	tsk	https://www.tuskegee.edu/coronavirus-resources	#college
+48	3	troy	https://www.troy.edu/coronavirus/	#college
 48	3	ua	https://healthinfo.ua.edu/	#college
 48	3	uab	https://www.uab.edu/news/coronavirus/	#college
 24	5	uabfight	https://www.uab.edu/fightcovid19/	#college
 24	30	uabhelpbeat	https://www.helpbeatcovid19.org/	#college
 48	3	uah	https://www.uah.edu/news/news/coronavirus-precaution	--include-directories=*	#college
-48	3	tsk	https://www.tuskegee.edu/coronavirus-resources	#college
-48	3	troy	https://www.troy.edu/coronavirus/	#college
-48	3	aum	http://www.aum.edu/coronavirus	#college
-48	3	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/	#college
-48	3	jsu	http://www.jsu.edu/coronavirus	#college
-48	3	judsoncollege	https://www.judson.edu/coronavirus	#college
 48	3	una	https://www.una.edu/university-communications/covid-19.html	#college
 48	3	usa	https://www.southalabama.edu/coronavirus	#college
 48	3	uwa	https://www.uwa.edu/coronavirus	#college
-48	3	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms	#college
-48	3	suscc	https://www.suscc.edu/covid.cms	#college
-48	3	bscc	https://www.bscc.edu/coronavirus	#college
-48	3	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$	#college
-48	3	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*	#college
-48	3	mmi	https://marionmilitary.edu/coronavirus	#college
-48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=0.5	--random-wait	--include-directories=* --level=2	#college
-48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*	#college
-48	3	lawsonstate	http://www.lawsonstate.edu/email_announcements/coronavirus_info.aspx --include-directories=*	#college
-48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*	#college
-96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
 48	3	wcc	https://www.wallace.edu/about_wcc/coronavirus_information.aspx --include-directories=*	#college
 48	3	wccselma	http://www.wccs.edu/coronavirus-2	#college
 48	3	wscc	https://www.wallacestate.edu/coronavirus	#college
-48	3	alaam	https://www.aamu.edu/campus-life/student-support/health-services/coronavirus/index.html	#college
-48	3	asu	https://www.alasu.edu/coronavirus-covid-19-updates	#college
-48	3	athensstate	https://www.athens.edu/coronavirus	#college
 
 # Hospitals, Non-Profits, Political Parties...
 48	5	eamc	https://www.eamc.org/patient-and-guests/covid-19-information/	#medical
@@ -153,6 +167,7 @@
 48	5	helenkellerhospital	https://www.helenkeller.com/	#medical
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/	#nonprofit
 48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit
+48	2	oppcoc	http://www.oppcoc.net/?page_id=631	--span-hosts	--domains=oppcoc.net,googleapis.com,gstatic.com,vimeo.com,vimeocdn.com	#nonprofit
 48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit
 96	5	aldemocrats	http://aldemocrats.org/blog	#party
 96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$		#party
