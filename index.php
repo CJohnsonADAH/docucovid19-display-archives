@@ -45,7 +45,7 @@ $defaultParams = [
 			if ($mime !== false) :
 				$filename=basename($passthru);
 				if (preg_match('![.](js|css)([?@].*)?$!ix', $filename, $ref)) :
-					if (preg_match('!^text/(plain|x-asm)!ix', $mime)) :
+					if (preg_match('!^text/!ix', $mime)) :
 						$textType = ["js" => "javascript", "css" => "css"];
 						$mime = 'text/'.$textType[$ref[1]];
 					endif;
