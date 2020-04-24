@@ -213,6 +213,7 @@
 48	5	crestwoodmedcenter	https://www.crestwoodmedcenter.com/covid-19	#medical
 48	5	helenkellerhospital	https://www.helenkeller.com/	#medical
 48	5	dalemedicalcenter	http://dmc.fastcommand.com/getpage.php?name=Coronavirus	--span-hosts=dmc.fastcommand.com,fastcommand.com,dhs.gov	#medical
+24	5	alabamamedicine	https://alabamamedicine.org/coronavirus/	--level=2	--span-hosts	--domains=alabamamedicine.org,gstatic.com	#medical	#nonprofit	#tradeprocom
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/	#nonprofit
 48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit
 48	2	oppcoc	http://www.oppcoc.net/?page_id=631	--span-hosts	--domains=oppcoc.net,googleapis.com,gstatic.com,vimeo.com,vimeocdn.com	#nonprofit
