@@ -21,6 +21,7 @@
 24	2	cortesting	http://www.doc.alabama.gov/covid19testing	#state
 48	2	adah	https://archives.alabama.gov/	#state
 48	5	adahhistoryhome	http://www.alabamahistoryhome.org/	#state
+48	2	ache	https://ache.edu/COVID19.aspx	--span-hosts	--domains=ache.edu,googleapis.com	#state
 24	2	accs	https://www.accs.edu/coronavirus/	#state
 24	2	commadeinalabama	https://www.madeinalabama.com/why-alabama/covid-19-resources/	#state
 24	2	comalabamaworks	https://alabamaworks.com/coronavirus/	#state
@@ -37,7 +38,8 @@
 96	1	bce	http://chiro.alabama.gov/COVID_Info.aspx	#state
 48	5	sbcatlas	https://atlasalabama.gov/	--span-hosts	--domains=atlasalabama.gov,googleapis.com	#state
 48	5	tou	https://alabama.travel/my-trip/staying-safe	--span-hosts	--domains=alabama.travel,buttercms.com,websitealive.com,swiftype.com,swiftypecdn.com	#state
-96	3	oit	https://oit.alabama.gov/telecommuting-faq/	#state
+96	3	oit	https://oit.alabama.gov/telecommuting-faq/	#state	#@arafinwe
+48	3	bmt	http://www.almtbd.alabama.gov/News.aspx	--span-hosts	--domains=almtbd.alabama.gov,oit.alabama.gov,googleapis.com	#state
 
 # City Governments & Agencies
 48	2	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019	#city
