@@ -606,7 +606,10 @@ elseif (is_index_request()) :
 		endif;
 
 		$checksum = $arX->payload_checksum();
-		$dataTBODY["${tableClass} $slugsource"][] = ["Type" => $slugtype, "Source" => $slugsource, "Timestamp" => make_browse_link([
+		$dataTBODY["${tableClass} $slugsource"][] = [
+			"Type" => $slugtype,
+			"Source" => $slugsource,
+			"Timestamp" => make_browse_link([
 			"href" => ["slug" => $slug, "date" => $ts],
 			"text" => $oDateTime->human_readable(),
 			"title" => is_null($checksum) ? "source: ".$arX->source_url() : "checksum: ".$arX->payload_checksum(),
@@ -748,7 +751,7 @@ if (strlen($out) == 0 and count($dataTable)==0) exit;
 <!DOCTYPE html>
 <html>
 <head>
-<title>Documenting Covid-19: Alabama's Responses</title>
+<title>Documenting Covid-19: Alabama's Responses (Development/Test Site)</title>
 <style type="text/css">
 #html-view-source pre {
 	padding: 1.0em;
