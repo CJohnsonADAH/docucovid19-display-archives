@@ -215,18 +215,25 @@
 48	5	dalemedicalcenter	http://dmc.fastcommand.com/getpage.php?name=Coronavirus	--span-hosts=dmc.fastcommand.com,fastcommand.com,dhs.gov	#medical
 24	5	alabamamedicine	https://alabamamedicine.org/coronavirus/	--level=2	--span-hosts	--domains=alabamamedicine.org,gstatic.com	#medical	#nonprofit	#tradeprocom
 24	5	unitedwaytwooneone	http://www.211connectsalabama.org/covid19/	#nonprofit
-48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit
-48	2	oppcoc	http://www.oppcoc.net/?page_id=631	--span-hosts	--domains=oppcoc.net,googleapis.com,gstatic.com,vimeo.com,vimeocdn.com	#nonprofit
-48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit
+96	3	sylacaugalibrary	http://www.bbcomerlibrary.net/	--span-hosts	--domains=%s,paypalobjects.com,wp.com	#nonprofit	#library
+48	5	alexcitycoc	https://www.alexcitychamber.com/covid19support	--span-hosts	--domains=alexcitychamber.com,typekit.net,squarespace.com,squarespace-cdn.com	#nonprofit	#tradeprocomm
+48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit	#tradeprocomm
+48	2	oppcoc	http://www.oppcoc.net/?page_id=631	--span-hosts	--domains=oppcoc.net,googleapis.com,gstatic.com,vimeo.com,vimeocdn.com	#nonprofit	#tradeprocomm
+48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit	#tradeprocomm
+48	2	sylacaugacoc	http://www.sylacaugachamber.com/covid-19-closures-and-cancellations	--span-hosts	--domains=%s,cloudflare.com,ctctcdn.com,bootstrapcdn.com,constantcontact.com	#nonprofit	#tradeprocomm
+48	2	eji	https://eji.org/news/	#nonprofit	#advocacy
+48	2	ejimusem	https://museumandmemorial.eji.org/news/	#nonprofit
+48	2	splc	https://www.splcenter.org/	#nonprofit	#advocacy
+48	2	affj	https://alabamafairjustice.org/covid19	--span-hosts	--domains=alabamafairjustice.org,typekit.net,squarespace.com,docs.google.com,googleapis.com	#nonprofit	#advocacy
 96	5	aldemocrats	http://aldemocrats.org/blog	#party
 96	5	algop	https://algop.org/category/press-releases/	--include-directories=*	--exclude-directories=our-party,take-action,capitol-club	--reject-regex=wp-content/cache/thumbnails/201[0-9]/.*$		#party
-48	5	gulfshorestourism	https://www.gulfshores.com/plan/coronavirus/	--include-directories=*	#nonprofit
-48	5	standupalabama	https://standupalabama.com/	--span-hosts	#advocacy
-48	5	alabamaeagleforum	https://alabamaeagle.org/action	--span-hosts	--domains=alabamaeagle.org,googleapis.com,gstatic.com,gravatar.com,wordpress.com #advocacy
-48	5	alarise	https://www.alarise.org/blog	--span-hosts	--domains=alarise.org,salsalabs.org,googletagmanager.com,jquery.com	#advocacy
-48	5	alabamapolicyinstitute	https://www.alabamapolicy.org/	--span-hosts	--domains=alabamapolicy.org,stripe.com,gstatic.com,google.com	#advocacy
-48	5	yellowhammerfund	https://yellowhammerfund.org/blog	--span-hosts	--domains=yellowhammerfund.org,gstatic.com,cloudfront.net,ngpvan.com,everyaction.com
-48	5	acij	https://www.alimmigrant.org/copy-of-census-2020	--span-hosts	--domains=alimmigrant.org,wix.com,parastorage.com,gstatic.com	#advocacy
-48	5	aclualabama	https://www.aclualabama.org/	#advocacy
-48	5	alaflcio	https://www.alaflcio.com/	--span-hosts	--domains=alaflcio.com,google.com,amazonaws.com,googletagmanager.com	#advocacy
+48	5	gulfshorestourism	https://www.gulfshores.com/plan/coronavirus/	--include-directories=*	#nonprofit	#tradeprocomm
+48	5	standupalabama	https://standupalabama.com/	--span-hosts	#nonprofit	#advocacy
+48	5	alabamaeagleforum	https://alabamaeagle.org/action	--span-hosts	--domains=alabamaeagle.org,googleapis.com,gstatic.com,gravatar.com,wordpress.com #nonprofit	#advocacy
+48	5	alarise	https://www.alarise.org/blog	--span-hosts	--domains=alarise.org,salsalabs.org,googletagmanager.com,jquery.com	#nonprofit	#advocacy
+48	5	alabamapolicyinstitute	https://www.alabamapolicy.org/	--span-hosts	--domains=alabamapolicy.org,stripe.com,gstatic.com,google.com	#nonprofit	#advocacy
+48	5	yellowhammerfund	https://yellowhammerfund.org/blog	--span-hosts	--domains=yellowhammerfund.org,gstatic.com,cloudfront.net,ngpvan.com,everyaction.com	#nonprofit	#advocacy
+48	5	acij	https://www.alimmigrant.org/copy-of-census-2020	--span-hosts	--domains=alimmigrant.org,wix.com,parastorage.com,gstatic.com	#nonprofit	#advocacy
+48	5	aclualabama	https://www.aclualabama.org/	#nonprofit	#advocacy
+48	5	alaflcio	https://www.alaflcio.com/	--span-hosts	--domains=alaflcio.com,google.com,amazonaws.com,googletagmanager.com	#nonprofit	#advocacy
 24	10	alcomcoronavirusdata	https://www.al.com/coronavirus/data	--span-hosts	--domains=al.com,condenastdigital.com,polyfill.io,cookielaw.org,dwcdn.net,cannotwin.com,gigya.com,advance.net,crwdcntrl.net	#news
