@@ -214,25 +214,44 @@ EOH;
 
 			$dataMirrorUrls = (array) $dataMirrorUrls;
 			foreach ($dataMirrorUrls as $to => $from) :
-				$html = str_replace(
-					$from, $this->get_json_url($to, $oDateTime),
-					$html
-				);		
+				$oldHtml = $html;
+				$sub = $this->get_json_url($to, $oDateTime);
+				if (!is_null($sub)) :
+					$html = str_replace(
+						$from, $sub,
+						$html
+					);
+				endif;
 			endforeach;
+		else :
+			echo "DataMirrorURLs: JSON Encoding Error."; exit;
 		endif;
-		
 		return $html;
 	}
 	
 	protected function get_json_url ($slug, $datetime) {
+		$dt = (is_object($datetime) ? $datetime->datetimecode() : $datetime);
+		
 		if (strlen($slug) > 0) :
 			$capturePrefix = "data/${slug}";
+			$captureDtPrefix = "data/${dt}/${slug}";
 		else :
 			$capturePrefix = "capture";
 		endif;
-	
-		$dt = (is_object($datetime) ? $datetime->datetimecode() : $datetime);
-		$captureUrl = "/covid-data/${capturePrefix}-${dt}.json";
+		
+		$testUrls = [
+			"/covid-data/${capturePrefix}-${dt}.json",
+			"/covid-data/${captureDtPrefix}-${dt}.json",
+		];
+		
+		$docRoot = $_SERVER['DOCUMENT_ROOT'];
+		$captureUrl = null;
+		foreach ($testUrls as $test) :
+			if (is_readable($docRoot . $test)) :
+				$captureUrl = $test;
+				break;
+			endif;
+		endforeach;
 		return $captureUrl;
 	} /* get_json_url () */	
 
