@@ -45,23 +45,28 @@
 48	2	abbevillealabama	http://www.cityofabbeville.org/news-events-2/	--include-directories=news-events-2,wp-content,wp-includes,2020,2019	#city
 48	2	alabasteralabama	http://cityofalabaster.com/482/COVID-19	--include-directories=*	--span-hosts	--domains=cityofalabaster.com,jquery.com,gstatic.com,googleapis.com,google.com	#city
 96	3	albertville	https://www.cityofalbertville.com/community/news-list	--include-directories=*	--span-hosts	--domains=cityofalbertville.com,visioninternet.com,google.com,googleapis.com,gstatic.com	#city
+96	3	alexcityschools	http://www.alexcityschools.net/?DivisionID=24331&ToggleSideNav=ShowAll|http://www.alexcityschools.net/?DivisionID=24313&ToggleSideNav=ShowAll	--span-hosts	--domains=pcmac.org,google.com,googleapis.com,static.addtoany.com,gstatic.com,syndication.twitter.com,platform.twitter.com,twimg.com	#city	#k12
 96	3	andalusiaalabama	http://www.cityofandalusia.com/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#city
-48	2	annistonalabama	http://www.annistonal.gov/	#city
+96	2	annistonalabama	http://www.annistonal.gov/	#city
 96	2	arabalabama	https://www.arabcity.org/	#city
 48	2	ashlandalabama	https://www.cityofashlandal.com/	--include-directories=*	--span-hosts	--domains=cityofashlandal.com,wix.com,wixstatic.com,parastorage.com,googleapis.com	#city
+48	2	ashvillealabama	http://www.cityofashville.org/	--span-hosts	--domains=cityofashville.org,aspnetcdn.com,googleapis.com,jquerytools.org,gstatic.com	#city
 48	2	athensalabamanewsflash	https://athensalabama.us/CivicAlerts.aspx?CID=1	--include-directories=*	--span-hosts	--domains=athensalabama.us,jquery.com,googleapis.com,civicplus.com	#city
 48	2	athensalabamacitycourt	https://athensalabama.us/408/Public-NoticeCOVID-19-NEWS	--include-directories=*	--span-hosts	--domains=athensalabama.us,jquery.com,googleapis.com,civicplus.com	#city
 48	2	atmorealabama	https://welcometoatmore.com/covid-19-information	--span-hosts --domains=welcometoatmore.com,googleapis.com	#city
-24	2	auburnalabama	https://www.auburnalabama.org/coronavirus/	#city
+48	2	auburnalabama	https://www.auburnalabama.org/coronavirus/	#city
 48	5	auburnalabamanews	https://news.auburnalabama.org/list/COVID-19	--include-directories=*	--span-hosts	--domains=auburnalabama.org	#city
-24	2	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info	#city
+48	2	bayminettealabama	http://www.cityofbayminette.org/Covid-19-Info	#city
 48	5	bessemeralabama	https://www.bessemeral.org/covid-19-bessemer-updates	--span-hosts	--domains=bessemeral.org,unpkg.com,cloudflare.com,googleapis.com,gstatic.com	#city
 24	10	birminghamalabama	https://www.birminghamal.gov/coronavirus	#city
 48	2	boazalabama	https://www.cityofboaz.org/AlertCenter.aspx?AID=COVID19-Information-Resources-8	--include-directories=*	--span-hosts	--domains=cityofboaz.org,jquery.com,msecnd.net,gstatic.com,googleapis.com,civicplus.com	#city
 48	2	butleralabama	https://www.butleralabama.org/	#city
-48	2	chatomalabama	https://chatom.org/	--include-directories=*	--span-hosts	--domains=chatom.org,wp.com,gravatar.com,wordpress.com,typekit.net,googleapis.com,gstatic.com,google.com	#city
+96	2	centerpointalabama	http://www.thecityofcenterpoint.org/covid-19_news	--span-hosts	--domains=%s	#city
+96	2	chatomalabama	https://chatom.org/	--include-directories=*	--span-hosts	--domains=chatom.org,wp.com,gravatar.com,wordpress.com,typekit.net,googleapis.com,gstatic.com,google.com	#city
+48	2	chickasawalabama	https://cityofchickasaw.org/	--span-hosts	--domains=cityofchickasaw.org,willyweather.com,ytimg.com	#city
 48	10	columbianaalabama	https://cityofcolumbiana.com/	#city
-48	10	cullmanalabama	https://cullmanal.gov/covid-19	#city
+48	5	cullmanalabama	https://cullmanal.gov/covid-19	#city
+48	2	dadevillealabama	http://cityofdadevilleal.org/public-notice	--include-directories=*	--span-hosts=cityofdadevilleal.org,google.com,googleapis.com,gstatic.com	#city
 48	2	daphnealabama	http://www.daphneal.com/462/COVID-19-Updates	--include-directories=*	#city
 48	2	decaturalabama	https://www.decaturalabamausa.com/covid-19	#city
 48	2	demopoliscityschools	https://www.dcsedu.com/	--domains=dcsedu.com,files.edl.io	#city	#k12
@@ -70,24 +75,29 @@
 48	2	eufaulaalabama	https://eufaulaalabama.com/	--wait=0.5	--random-wait	#city
 48	2	fairhopealabama	https://www.fairhopeal.gov/services/city-of-fairhope-covid-19-precautions-and-updates/-fsiteid-1	--include-directories=*	--span-hosts	--domains=fairhopeal.gov,govdelivery.com,gstatic.com,googletagmanager.com,googleapis.com	#city
 48	2	florencealabama	https://florenceal.org/alert_detail.php	#city
-48	2	foleyalabama	https://cityoffoley.org/	#city
+48	2	foleyalabama	https://cityoffoley.org/|https://www.cityoffoley.org/coronavirus	--span-hosts	--domains=cityoffoley.org,www.cityoffoley.org,googleapis.com	#city
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*	#city
 48	3	genevaalabama	https://www.cityofgeneva.com/covid-19-information	#city
+48	3	glencoealabama	http://www.cityofglencoe.net/news	--span-hosts	--domains=cityofglencoe.net,typekit.net,googleapis.com,widernet.co,jquery.com,bootstrapcdn.com	#city
+48	1	gordoalabama	http://www.townofgordo.org/	--span-hosts	--domains=townofgordo.org,googleapis.com	#city
 48	2	greenvillealabama	https://www.greenvilleal.gov/365/COVID-19-CORONAVIRUS	--include-directories=*	--span-hosts	--domains=greenvilleal.gov,jquery.com,msecnd.net,gstatic.com,googleapis.com,civicplus.com	#city
 48	3	grovehillalabama	https://grovehillalabama.com/index.php/en-us/news-events	--include-directories=*	--span-hosts	--domains=grovehillalabama.com,gstatic.com,googleapis.com,google.com	#city
 48	2	gulfshoresalabama	https://www.gulfshoresal.gov/1524/COVID-19-Coronavirus	--include-directories=*	--span-hosts	--domains=gulfshoresal.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
 48	2	guntersvillealabama	https://guntersvilleal.org/urgent-public-notice	--include-directories=*	--span-hosts	--domains=guntersvilleal.org,bootstrapcdn.com,googleapis.com,gstatic.com	#city
 48	2	homewoodalabama	https://www.cityofhomewood.com/	--level=1	--span-hosts	--domains=cityofhomewood.com,multiscreensite.com	#city
 48	2	hooveralabama	https://hooveralabama.gov/1048/COVID-19	--include-directories=*	--span-hosts	--domains=hooveralabama.gov,jquery.com,google.com,googleapis.com,gstatic.com,civicplus.com	#city
-24	2	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*	#city
+48	2	huntsvillealabama	https://www.huntsvilleal.gov/coronavirus-disease-2019-response-and-information/	--include-directories=*	#city
 96	2	irondalealabama	https://cityofirondaleal.gov/	--span-hosts	--domains=cityofirondaleal.gov,bootstrapcdn.net,googletagmanager.com,typekit.net,jquery.com	#city
 96	2	jacksonvillealabama	https://www.jacksonville-al.org/	#city
 48	2	jasperalabama	https://www.jaspercity.com/	#city
 96	2	livingstonalabama	https://www.cityoflivingstonal.com/	--span-hosts	--domains=cityoflivingstonal.com,squarespace.com	--wait=1	--random-wait	#city
+48	2	lafayettealabama	https://cityoflafayetteal.com/	--span-hosts	--domains=cityoflafayetteal.com,googleapis.com,gstatic.com	#city
+48	2	lanettalabama	http://www.cityoflanett.com/	--span-hosts	--domains=cityoflanett.com,googletagmanager.com,googleapis.com	#city
 96	2	luvernealabama	http://luverne.org/	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#city
 48	2	madisonalabama	https://www.madisonal.gov/CivicAlerts.aspx?AID=1098	--include-directories=*	--span-hosts	--domains=madisonal.gov,msecnd.net,jquery.com,gstatic.com,civicplus.com	#city
 24	2	mobilealabama	https://www.cityofmobile.org/COVID-19	#city
 24	2	mobilealabamaworkwith	https://workwith.cityofmobile.org/Covid19	#city
+48	2	montevalloalabama	http://www.cityofmontevallo.com/414/COVID-19	--include-directories=*	--span-hosts	--domains=cityofmontevallo.com,jquery.com,googleapis.com,gstatic.com,civicplus.com	#city
 24	2	montgomeryalabama	https://www.montgomeryal.gov/live/coronavirus	#city
 96	2	monroevillealabama	https://www.monroevilleal.gov/	--span-hosts	--domains=monroevilleal.gov,multiscreensite.com	#city
 96	2	mountainbrookalabama	https://www.mtnbrook.org/	#city
@@ -96,19 +106,24 @@
 48	2	opelikaalabama	https://www.opelika-al.gov/CivicAlerts.aspx?AID=251	#city
 48	2	oppalabama	http://www.cityofopp.com/index.php/2020	--include-directories=*	--span-hosts	--domains=cityofopp.com,googleapis.com	#city
 48	2	orangebeachalabama	https://orangebeachal.gov/news/covid-19-updates	--include-directories=*	--span-hosts	--domains=orangebeachalabama,jquery.com,google.com,googleapis.com,gstatic.com,twimg.com,jsdelivr.net	#city
+48	2	ozarkcityschools	https://www.ozarkcityschools.net/site/default.aspx?PageType=3&DomainID=4&ModuleInstanceID=28&ViewID=6446EE88-D30C-497E-9316-3F8874B3E108&RenderLoc=0&FlexDataID=1408&PageID=1	--include-directories=*	--span-hosts	--domains=ozarkcityschools.net,googleapis.com,schoolwires.com,google.com	#city	#k12
 48	2	pelhamalabama	https://www.pelhamalabama.gov/149/COVID-19	--include-directories=*	#city
 48	2	pellcityalabama	https://pell-city.com/covid-19	--include-directories=*	--span-hosts	--domains=pell-city.com,ctctcdn.com,gstatic.com,twimg.com,twitter.com,wp.com	#city
 48	2	phenixcityalabama	https://phenixcityal.us/covid19	#city
-24	2	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com	#city
+96	2	pikeroadalabama	https://www.pikeroad.us/covid-19-info-updates/	--no-parent	--span-hosts	--domains=www.pikeroad.us,bit.ly,filesusr.com	#city
 48	2	prattvillealabama	http://prattvilleal.gov/news/covid-19-information-updates.html	--span-hosts	--domains=prattvilleal.gov,readspeaker.com,pingdom.net	#city
 48	2	prichardalabama	https://www.thecityofprichard.org/coronavirus-covid-19	--span-hosts	--domains=thecityofprichard.org,googleapis.com,cloudfront.net,gstatic.com	#city
 48	2	scottsboroalabama	https://www.cityofscottsboro.com/index.php/frontpagenews/	--include-directories=-	--level=2	--span-hosts	--domains=cityofscottsboro.com,cloudfront.net	--execute=robots=off	#city
 48	5	selmaalabama	https://www.selma-al.gov/	#city
+48	2	smithsstationalabama	https://www.smithsstational.gov/	--span-hosts	--domains=smithsstational.gov,wp.com,gravatar.com,googleapis.com,wp.com,gstatic.com	#city
+48	1	sulligentalabama	https://sulligent.org/	--span-hosts	--domains=sulligent.org,wsimg.com	#city
+48	2	sylacaugacityschools	https://www.scsboe.org/site/Default.aspx?PageID=439	--span-hosts	--domains=%s&schoolwires	#city	#k12
 48	10	tallasseealabama	https://www.tallasseeal.gov/front-page-news	#city
 48	2	troyalabama	https://www.troyal.gov/Coronavirus	#city
 24	2	tuscaloosaalabama	https://www.tuscaloosa.com/covid19	#city
 96	2	tuscumbiacityschools	http://www.tuscumbia.k12.al.us/?DivisionID=24322	#city
 48	2	tuskegeealabama	https://www.tuskegeealabama.gov/home/news/coronavirus-covid-19	--include-directories=home,node,sites	--level=1	#city
+48	2	valleyalabama	http://www.cityofvalley.com/	#city
 48	2	vestaviahillsalabama	https://vhal.org/alert-center	#city
 48	2	warrioralabama	https://cityofwarrior.ning.com/	--span-hosts	--domains=cityofwarrior.ning.com,ning.com,googleapis.com,google-analytics.com	#city
 48	2	wetumpkaalabama	http://www.cityofwetumpka.com/	--span-hosts	--domains=cityofwetumpka.com,googleapis.com,google-analytics.com,elocallink.tv	#city
