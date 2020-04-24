@@ -129,20 +129,38 @@
 48	2	wetumpkaalabama	http://www.cityofwetumpka.com/	--span-hosts	--domains=cityofwetumpka.com,googleapis.com,google-analytics.com,elocallink.tv	#city
 
 # County Governments & Agencies
-24	3	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate	#county
-24	3	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate	#county
-24	90	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/	#county
-96	2	leeco	http://www.leeco.us/covid-19_information/index.php	#county
-48	2	marengoco	http://marengocountyal.com/public-notice	#county
-24	2	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates	#county
-24	2	mobilecohealth	http://mchd.org/	--domains=mchd.org	#county
-24	2	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org	--span-hosts	#county
+48	2	autaugaco	http://www.autaugaco.org/Default.asp?ID=16&pg=County+News	--include-directories=*	--span-hosts	--domains=autaugaco.org,googleapis.com,jquery.com,cloudflare.com,gstatic.com	#county
 48	2	baldwinco	https://baldwincountyal.gov/covid19	#county
 48	2	baldwincoema	https://baldwincountyal.gov/departments/EMA	#county
 24	90	baldwincoemadash	https://baldwincountyal.gov/EMADASHBOARD.html	#county
 24	90	baldwincodash	https://coronavirus-response-baldwincounty.hub.arcgis.com/	#county
+48	2	calhounco	https://www.calhouncounty.org/admin/covid19.html	#county
+48	2	calhouncoema	http://www.calhounema.org/idtf	--span-hosts	--domains=%s&wix	#county
+48	2	chambersco	https://www.chamberscountyal.gov/	--span-hosts	--domains=chamberscountyal.gov,juicer.io,fontawesome.com,imgur.com	#county
+48	2	chiltonco	https://chiltoncounty.org/covid-update	--span-hosts	--domains=chiltoncounty.org,googleapis.com,fontawesome.com,elocallink.tv,gstatic.com,hellonetcdn.com	#county
 96	2	elmorecoema	https://elmorecoema.com/	#county
 24	20	elmorecodash	https://coronavirus-response-elmorecounty.hub.arcgis.com/	#county
+48	2	etowahco	https://etowahcounty.org/	--span-hosts	--domains=etowahcounty.org,netdna-ssl.com,googleapis.com	#county
+48	2	etowahcoema	http://gecema.com/announcements/infectious-disease-update/	--include-directories=*	--span-hosts	--domains=gecema.com,googleapis.com,wpengine.com,secdn.net	#county
+48	2	houstonco	https://www.houstoncounty.org/	--span-hosts	--domains=%s,google.com,dothan.com,openweathermap.org	#county
+48	2	houstoncoema	https://dothanhoustoncountyema.org/covid-19-updates	--span-hosts	--domains=%s,userway.org,ggpht.com,ytimg.com,bootstrapcdn.com	#county
+24	3	jeffco	https://www.jccal.org/Default.asp?ID=2058&pg=JeffCo+Communications+Center	--no-check-certificate	#county
+24	3	jeffcofaq	https://www.jccal.org/Default.asp?ID=2066&pg=COVID19+FAQ	--no-check-certificate	#county
+24	90	jeffcodash	https://jefferson-county-dept-of-health-coronavirus-response-jcdh.hub.arcgis.com/	#county
+96	5	lauderdaleco	https://lauderdalecountyal.gov/	--span-hosts	--domains=%s,elocallink.tv	#county
+96	2	leeco	http://www.leeco.us/covid-19_information/index.php	#county
+96	2	limestoneco	https://limestonecounty-al.gov/covid-19-information	--span-hosts	--domains=%s	#county
+48	2	madisonco	https://www.madisoncountyal.gov/	--span-hosts	--domains=madisoncountyal.gov,google.com,googleapis.com,gstatic.com,alabamapublichealth.gov,cdc.gov,bootstrapcdn.com,sitesearch360.com	#county
+48	2	marshallco	https://www.marshallco.org/covid19.html|https://www.marshallco.org/	#county
+48	2	marengoco	http://marengocountyal.com/public-notice	#county
+24	2	mobileco	https://www.mobilecountyal.gov/the-mobile-county-commission-wants-you-to-stay-healthy-visit-the-cdc-website-at-cdcgov-for-covid-19-updates	#county
+24	2	mobilecohealth	http://mchd.org/	--domains=mchd.org	#county
+24	2	montgomeryco	https://www.mc-ala.org/services/emergency-management-agency/coronavirus-covid-19	--include-directories=*	--domains=mc-ala.org	--span-hosts	#county
+96	2	morganco	http://www.co.morgan.al.us/	--span-hosts	--domains=morgan.al.us,googleapis.com,google.com,elocallink.tv,gstatic.com,platform.twitter.com,syndication.twitter.com,twimg.com,accuweather.com	#county
+48	2	morgancoema	https://www.morgancoema.com/	--span-hosts	--domains=morgancoema.com,morgan.al.us,squarespace.com,typekit.net,platform.twitter.com,syndication.twitter.com,weatherwidget.io,accuweather.com,squarespace-cdn.com,twimg.com,forecast7.com	#county
+48	2	shelbyco	https://www.shelbyal.com/987/COVID-19-Information	--include-directories=*	--span-hosts	--domains=shelbyal.com,jquery.com,msecnd.net,googleapis.com,ggpht.com,ytimg.com,civicplus.com	#county
+48	2	stclairco	https://www.stclairco.com/CivicAlerts.aspx?CID=1	--include-directories=*	--span-hosts	--domains=stclairco.com,jquery.com,msecnd.net,googleapis.com,ggpht.com,ytimg.com,civicplus.com	#county
+48	90	stclaircodash	https://st-clair-county-al-covid-19-stclair.hub.arcgis.com/	#county
 48	2	tuscaloosaco	https://www.tuscco.com/covid19	#county
 
 # Colleges & Universities
