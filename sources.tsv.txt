@@ -172,10 +172,13 @@
 48	3	aum	http://www.aum.edu/coronavirus	#college
 48	3	bsc	https://www.bsc.edu/coronavirus.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
 48	3	bscemergency	https://www.bsc.edu/emergency/index.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
-48	3	bscc	https://www.bscc.edu/coronavirus	#college
+48	3	bscc	https://www.bscc.edu/coronavirus	--span-hosts	--domains=%s,brandcdn.com #college
+48	3	calhouncc	https://calhoun.edu/coronavirus-information|https://calhoun.edu/coronavirus-information/coronavirus-student-information/|https://calhoun.edu/coronavirus-information/coronavirus-faq/	--include-directories=*	--span-hosts	--domains=%s,brandcdn.com,fontawesome.com	#college
 48	3	cvcc	https://www.cv.edu/covid-19-general-updates	--reject=mov,MOV	--reject-regex=wp-content/uploads/201[0-9]/.*[.][Pp][Dd][Ff]$	#college
 48	2	drakestate	https://www.drakestate.edu/student-and-employee-information	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com	#college
+48	2	faulkner	https://www.faulkner.edu/coronavirus-update	--span-hosts	--domains=%s	#college
 48	3	gadsdenstatecc	https://www.gadsdenstate.edu/about-us/coronavirus.cms	#college
+48	3	huntingdon	https://www.huntingdon.edu/campus-life/health-wellness/covid-19/	--include-directories=*	#college
 48	3	jeffersonstatecc	https://www.jeffersonstate.edu/covid-19info/	--include-directories=*	#college
 48	3	jsu	http://www.jsu.edu/coronavirus	#college
 48	3	judsoncollege	https://www.judson.edu/coronavirus	#college
@@ -183,7 +186,7 @@
 48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*	#college
 48	3	mmi	https://marionmilitary.edu/coronavirus	#college
 48	3	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/	#college
-48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update	--wait=0.5	--random-wait	--include-directories=* --level=2	#college
+48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update|https://www.nacc.edu/news/	--wait=0.5	--random-wait	--include-directories=* #college
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*	#college
 48	3	suscc	https://www.suscc.edu/covid.cms	#college
 96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
