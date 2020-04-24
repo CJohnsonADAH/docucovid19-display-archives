@@ -4,8 +4,28 @@
 	require_once("${myDir}/mirroredurl.class.php");
 	require_once("${myDir}/snapshotdatetime.class.php");
 
+define('ALACOVDAT_DATA_DIR', "${myDir}/covid-data");
 define('ALACOVDAT_URL', 'browse');
+define('ALACOVDAT_REQUEST_URL', '(archive)');
 define('ALACOVDAT_SOURCES_TSV', "${myDir}/sources.tsv.txt");
+
+if (!is_readable(ALACOVDAT_DATA_DIR."/data")) :
+	header("HTTP/1.1 500 Internal Server Error");
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Documenting Covid-19 is off-line for a minute.</title>
+</head>
+<body>
+<h1>500 Internal Server Error</h1>
+<p>The site is off-line for a minute due to temporary maintenance or a technical issue.
+BRB, hopefully..</p>
+</body>
+</html>
+<?php
+	exit;
+endif;
 
 $defaultParams = [
 "tag" => null,
