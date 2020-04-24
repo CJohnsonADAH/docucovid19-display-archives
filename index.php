@@ -89,6 +89,25 @@ $defaultParams = [
 			print "<html><head><title>Not Found</title></head><body><h1>Not Found</1><p><code>".$_SERVER['REQUEST_URI']."</code></p></body></html>";
 			exit;
 		endif;
+	elseif (is_archive_request()) :
+		$urls = explode("/", trim(my_request_url('path'), '/'), 2);
+		$url = urldecode($urls[1]);
+		$url = urldecode($url);
+		
+		$services = [
+			"archive.today" => sprintf('https://archive.today?run=1&url=%s', urlencode($url)),
+			"archive.org" => sprintf('https://web.archive.org/save/%s', $url)
+		];
+		
+		foreach ($services as $shortname => $service) :
+			$iframeSrc = htmlspecialchars($service);
+?>
+<h1><?=$shortname?></h1>
+<iframe src="<?=$iframeSrc?>">
+</iframe>
+<?php
+		endforeach;
+		exit;
 	elseif (is_browse_request()) :
 		$dirs = array_slice(array_filter(explode("/", my_request_url('path'))), 1);
 		$key = null;
@@ -109,6 +128,48 @@ $params = array_merge($defaultParams, $_REQUEST);
 $out = '';
 $sourceUrl = null;
 $metaTable = [];
+
+function get_archive_request_url ($part = null) {
+	return my_request_url($part, 'archive');
+}
+
+function get_archive_service_link ($serviceUrl, $url = null, $text = null) {
+	$html = '';
+	$imgSrc = "/assets/images/icon_savePage.png";
+	$imgAlt = 'add to';
+	$aHref = $serviceUrl;
+	
+	$serviceParts = parse_url($serviceUrl);
+	$url = (is_null($url) ? '' : urlencode($url));
+	
+	$aHrefPattern="%s#%s";
+	if ($serviceUrl == 'https://archive.today/') :
+		if (is_null($text)) :
+			$text = $serviceParts['host'];
+		endif;
+	elseif ($serviceUrl == 'https://archive.org/') :
+		if (is_null($text)) :
+			$text = 'Internet Archive';
+		endif;
+	elseif ($serviceUrl == get_archive_request_url()) :
+		if (is_null($text)) :
+			$text = 'all';
+		endif;
+		$aHrefPattern="%s/%s";
+		$url = urlencode($url); // double-encode to end-around apache
+	else :
+		if (is_null($text)) :
+			$text = $serviceParts['host'];
+		endif;
+	endif;
+	
+	$aHref = htmlspecialchars(sprintf($aHrefPattern, $serviceUrl, $url));
+	$aText = htmlspecialchars($text);
+	$imgSrc = htmlspecialchars($imgSrc);
+	$imgAlt = htmlspecialchars($imgAlt);
+	$html = "<a class='archive-service' style='font-size: 10px; vertical-align: bottom;' href=\"${aHref}\"><img style='vertical-align: bottom; height: 16px; width: auto;' src='${imgSrc}' alt='${imgAlt}' /> ${aText}</a>";
+	return $html;
+}
 
 function get_json_to_table ($hash, $slug) {
 	$data = ['THEAD' => [], 'TBODY' => []];
@@ -336,8 +397,12 @@ function do_output_data_table ($table, $htmlClass) {
 	endif;
 } /* do_output_data_table() */
 
-function my_request_url ($part = null) {
+function my_request_url ($part = null, $path = null) {
 	$myUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/' . ltrim($_SERVER['REQUEST_URI'], '/');
+	if (!is_null($path)) :
+		$myUrl = rtrim($myUrl, '/') . '/' . $path;
+	endif;
+	
 	if (is_null($part)) :
 		$ret = $myUrl;
 	else :
@@ -348,9 +413,10 @@ function my_request_url ($part = null) {
 }
 function my_script_name () { global $_SERVER; return basename($_SERVER['PHP_SELF']); }
 function my_script_path () { global $_SERVER; return "/" . my_script_name(); }
-function is_passthru_request () { return (!is_root_request() and !is_browse_request()); }
+function is_passthru_request () { return (!is_root_request() and !is_browse_request() and !is_archive_request()); }
 function is_root_request () { return preg_match("\007^/*(".preg_quote(my_script_name()).")?$\007i", my_request_url('path')); }
 function is_browse_request () { return preg_match("\007^/*".preg_quote(ALACOVDAT_URL)."(/.+)?$\007i", my_request_url('path'), $refs); }
+function is_archive_request () { return preg_match("\007^/*".ALACOVDAT_REQUEST_URL."(/.+)?$\007i", my_request_url('path'), $refs); }
 function is_mirrored_url_request () { global $params; return !is_null($params['mirrored']); }
 function is_data_table_request () { global $params; return in_array($params['slug'], ["capture", "testsites"]) or preg_match('|^/?data[_/].*$|i', $params['slug']); }
 function is_html_request (&$refs) { global $params; return preg_match("|^/*(html)([_/](.*))?$|i", $params['slug'], $refs); }
@@ -478,19 +544,35 @@ elseif (is_index_request()) :
 
 	foreach ($slugLinks as $slugLink) :
 		list($slug, $snapType, $link, $ts, $tags) = $slugLink;
-		$slugpath = explode("/", $slug);
+		$slugpath = explode("/", trim($slug, '/'));
 		
 		$oLatest = new SnapshotDateTime($ts);
 		$latestLink = make_browse_link(["class" => "view", "href" => ["date" => $ts, "slug" => $slug], "text" => $oLatest->human_readable()]);
 		$latest = "latest: ${latestLink}";
-		
+		$ext = ($slugpath[0]=='html' ? 'html' : 'json');
+
 		$myLink = $link;
 		if ($slug==$params['slug']) :
 			$myLink = preg_replace('!<a \s+!ix', '<a class="current" ', $myLink);
 		endif;
 		
 		if (is_null($params['tag']) or in_array($params['tag'], $tags)) :
-			$metaTable[] = [$snapType, $myLink, implode("; ", $tags), "<small>${latest}</small>", "@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)];
+			$arX = new ArchivedSource([
+				"slug" => $slug,
+				"ts" => $oLatest->datetimecode(),
+				"file type" => $ext
+			]);
+			$metaTable[] = [
+				$snapType,
+				$myLink
+				. ' <span class="archive-services">'
+				. get_archive_service_link(get_archive_request_url(), $arX->source_url(), 'all')
+				. ' ' . get_archive_service_link('https://archive.today/', $arX->source_url(), 'archive.today: '.$arX->source_url('host'))
+				. ' ' . get_archive_service_link('https://archive.org/', $arX->source_url(), 'Internet Archive: '.$arX->source_url('host')) . '</span>',
+				implode("; ", $tags),
+				"<small>${latest}</small>",
+				"@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)
+			];
 		endif;
 	
 		$all_tags = array_merge($all_tags, $tags);
@@ -711,6 +793,18 @@ section#view-nav-table {
 }
 #view-tags ul { display: block; list-style: none; margin: 0; padding: 10px 10px; }
 #view-tags li { display: inline-block; list-style: none; margin: 0; padding: 0 10px 0 0; }
+
+.archive-services {
+	display: none;
+}
+h2:hover .archive-services, th:hover .archive-services, td:hover .archive-services {
+	display: block;
+	position: absolute;
+	background-color: #eeeea0;
+	color: black;
+	border-radius: 2px;
+}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -797,8 +891,49 @@ function setupNavTableTabLinks() {
 	if ($('#view-tags').find('a.view-tag').length > 0) {
 		$('#view-tags').find('a.view-tag').eq(0).click();
 	}
+	
+	$('.archive-service').click( activateArchiveBookmarkletFromLink );
+	
 }
 
+const myArchiveUrl = <?=json_encode(get_archive_request_url())?>;
+const myArchiveUrlHost = <?=json_encode(get_archive_request_url('host'))?>;
+function activateArchiveBookmarkletFromLink (e) {
+	let link=e.currentTarget;
+	let service = link.hostname;
+	let services = {
+	"*": function (url) {
+		for (var service in services) {
+			if (service != myArchiveUrlHost && service != '*') {
+				services[service](url);
+			} /* if */
+		} /* for */
+	},
+	"archive.today": function (url) { window.open('https://archive.today?run=1&url='+url); },
+	"archive.org": function (url) { window.open('https://web.archive.org/save/'+decodeURIComponent(url)) }
+	};
+	services[myArchiveUrlHost] = services['*'];
+	
+	if (typeof(services[service]) != 'undefined') {
+		e.preventDefault();
+
+		let url=link.href;
+		if (link.hash.length > 0) {
+			url=link.hash.slice(1);
+		} else {
+			url = link.href.replace(myArchiveUrl, "").replace(/^\/+/, '');
+			url = decodeURIComponent(url);
+			url = decodeURIComponent(url);
+		}
+		
+		if ( url.length == 0 ) {
+			url=window.location.href;
+		}
+		console.log(service, url);
+		services[service](url);
+	} /* if */
+}
+	
 $(document).ready( function () {
 	if (isTabbedInterface()) {
 		setupSnapshotTabLinks();
@@ -812,7 +947,14 @@ $(document).ready( function () {
 </head>
 <body>
 <h1><a href="/">Documenting Covid-19: Alabama's Responses</a></h1>
-<h2><?=$outWhat?> Snapshot: <?=$sTimestamp?></h1>
+<p>development and test site for web archiving project</p>
+<h2><?=$outWhat?> Snapshot: <?=$sTimestamp?>
+<span class="archive-services"><?php
+	print get_archive_service_link(get_archive_request_url());
+	print get_archive_service_link('https://archive.today/');
+	print get_archive_service_link('https://archive.org/');
+?></span>
+</h2>
 <?php
 	if (count($all_tags) > 0) :
 ?>
