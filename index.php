@@ -133,6 +133,29 @@ function get_archive_request_url ($part = null) {
 	return my_request_url($part, 'archive');
 }
 
+function get_all_archive_services_links ($url = null, $text = null) {
+	if (is_object($url) and method_exists($url, 'source_url')) :
+		$host = $url->source_url('host');
+		$url = $url->source_url();
+	elseif (is_string($url)) :
+		$parts = parse_url($url);
+		$host = $parts['host'];
+	elseif (is_null($url)) :
+		$host = 'this page';
+	else :
+		throw new Exception("This parameter sucks: ".json_encode($url));
+	endif;
+
+	$links = [];
+	$links[] = get_archive_service_link(get_archive_request_url(), $url, 'all');
+	$links[] = get_archive_service_link('https://archive.today/', $url, 'archive.today: '.$host);
+	$links[] = get_archive_service_link('https://archive.org/', $url, 'Internet Archive: '.$host);
+	
+	$wrapperHtml = '<span class="archive-services">%s</span>';
+	$linksHtml = implode(" ", $links);
+	return sprintf($wrapperHtml, $linksHtml);
+} /* get_all_archive_services_links () */
+
 function get_archive_service_link ($serviceUrl, $url = null, $text = null) {
 	$html = '';
 	$imgSrc = "/assets/images/icon_savePage.png";
@@ -562,13 +585,10 @@ elseif (is_index_request()) :
 				"ts" => $oLatest->datetimecode(),
 				"file type" => $ext
 			]);
+			$arXservices = get_all_archive_services_links(/*url=*/ $arX);
 			$metaTable[] = [
 				$snapType,
-				$myLink
-				. ' <span class="archive-services">'
-				. get_archive_service_link(get_archive_request_url(), $arX->source_url(), 'all')
-				. ' ' . get_archive_service_link('https://archive.today/', $arX->source_url(), 'archive.today: '.$arX->source_url('host'))
-				. ' ' . get_archive_service_link('https://archive.org/', $arX->source_url(), 'Internet Archive: '.$arX->source_url('host')) . '</span>',
+				$myLink . ' ' . $arXservices,
 				implode("; ", $tags),
 				"<small>${latest}</small>",
 				"@class" => array_map(function ($e) { return 'tagged-'.$e; }, $tags)
@@ -624,11 +644,12 @@ elseif (is_html_request($refs)) :
 	$site = $refs[3];
 	
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $oDateTime->datetimecode(), "file type" => $ext]);
-	
+	$arXservices = get_all_archive_services_links($arX);
+
 	$sourceUrl = $arX->source_url();
 	if (!is_null($sourceUrl)) :
 		$host = $arX->source_url('host');
-		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'];
+		$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$host.'</a>'.$arXservices];
 	endif;
 	
 	$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
@@ -716,7 +737,11 @@ elseif (is_data_table_request()) :
 		
 		if (!is_null($sourceUrl)) :
 			$source = parse_url($sourceUrl);
-			$metaTable[] = ["Source", '<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'];
+			$metaTable[] = [
+				"Source",
+				'<a href="'.htmlspecialchars($sourceUrl).'">'.$source['host'].'</a>'
+					.get_all_archive_services_links($arX),
+			];
 		endif;
 		if (!is_null($oDateTime)) :
 			$lists = get_snapshot_lists(dirname(__FILE__) . "/covid-data");
@@ -895,8 +920,6 @@ function setupNavTableTabLinks() {
 		$('#view-tags').find('a.view-tag').eq(0).click();
 	}
 	
-	$('.archive-service').click( activateArchiveBookmarkletFromLink );
-	
 }
 
 const myArchiveUrl = <?=json_encode(get_archive_request_url())?>;
@@ -916,7 +939,7 @@ function activateArchiveBookmarkletFromLink (e) {
 	"archive.org": function (url) { window.open('https://web.archive.org/save/'+decodeURIComponent(url)) }
 	};
 	services[myArchiveUrlHost] = services['*'];
-	
+
 	if (typeof(services[service]) != 'undefined') {
 		e.preventDefault();
 
@@ -944,6 +967,9 @@ $(document).ready( function () {
 	} else if (isNavTableInterface()) {
 		setupNavTableTabLinks();
 	} /* if */
+
+	$('.archive-service').click( activateArchiveBookmarkletFromLink );
+	
 });
 //]>
 </script>
@@ -952,11 +978,7 @@ $(document).ready( function () {
 <h1><a href="/">Documenting Covid-19: Alabama's Responses</a></h1>
 <p>development and test site for web archiving project</p>
 <h2><?=$outWhat?> Snapshot: <?=$sTimestamp?>
-<span class="archive-services"><?php
-	print get_archive_service_link(get_archive_request_url());
-	print get_archive_service_link('https://archive.today/');
-	print get_archive_service_link('https://archive.org/');
-?></span>
+<?=get_all_archive_services_links();?>
 </h2>
 <?php
 	if (count($all_tags) > 0) :
