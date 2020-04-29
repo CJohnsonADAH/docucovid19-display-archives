@@ -374,13 +374,13 @@ function get_slug_tags ($slug = null) {
 }
 
 function do_output_data_table ($table, $htmlClass) {
-	$table = array_merge([
+	$tHeadBody = array_merge([
 	"THEAD" => [],
 	"TBODY" => [],
 	], $table);
 	
-	$dataTHEAD = $table['THEAD'];
-	$dataTBODY = $table['TBODY'];
+	$dataTHEAD = $tHeadBody['THEAD'];
+	$dataTBODY = $tHeadBody['TBODY'];
 	$tableClass = (is_numeric($htmlClass) ? 'data' : $htmlClass);
 	
 	if (count($dataTHEAD) > 0) :
@@ -410,6 +410,43 @@ function do_output_data_table ($table, $htmlClass) {
 
 				$td = $tr[$name];
 				print "<td>${td}</td>";
+			endforeach;
+			print "</tr>\n";
+		endforeach;
+?>
+	</tbody>
+	</table>
+<?php
+	else :
+?>
+	<table border="1" id="meta-table" class="<?=$tableClass; ?>">
+	<tbody>
+<?php
+		$isAttrib = function ($e) { return !!preg_match('/^@/', $e); };
+		
+		foreach ($table as $row) :
+			$attribNames = array_filter(array_keys($row), $isAttrib);
+			$tag = ["tr"];
+			foreach ($attribNames as $attribName) :
+				$key = htmlspecialchars(preg_replace('/^@/', '', $attribName));
+				$value = $row[$attribName];
+				if (is_array($value)) :
+					$value = implode(" ", $value);
+				endif;
+				$value = htmlspecialchars($value);
+				$tag[] = "${key}=\"${value}\"";
+			endforeach;
+			$TR = implode(" ", $tag);
+			
+			print "<${TR}>";
+			$i = 0;
+			foreach ($row as $key => $col) :
+				if (!$isAttrib("${key}")) :
+					print ($i>0) ? "<td>" : "<th>";
+					print $col;
+					print ($i>0) ? "</td>" : "</th>";
+					$i++;
+				endif;
 			endforeach;
 			print "</tr>\n";
 		endforeach;
@@ -685,43 +722,7 @@ if (strlen($out) == 0 and count($dataTable)==0) exit;
 
 <?php
 	if (count($metaTable) > 0) :
-?>
-	<table border="1" id="meta-table" class="<?=$tableClass; ?>">
-	<tbody>
-<?php
-		$isAttrib = function ($e) { return !!preg_match('/^@/', $e); };
-		
-		foreach ($metaTable as $row) :
-			$attribNames = array_filter(array_keys($row), $isAttrib);
-			$tag = ["tr"];
-			foreach ($attribNames as $attribName) :
-				$key = htmlspecialchars(preg_replace('/^@/', '', $attribName));
-				$value = $row[$attribName];
-				if (is_array($value)) :
-					$value = implode(" ", $value);
-				endif;
-				$value = htmlspecialchars($value);
-				$tag[] = "${key}=\"${value}\"";
-			endforeach;
-			$TR = implode(" ", $tag);
-			
-			print "<${TR}>";
-			$i = 0;
-			foreach ($row as $key => $col) :
-				if (!$isAttrib("${key}")) :
-					print ($i>0) ? "<td>" : "<th>";
-					print $col;
-					print ($i>0) ? "</td>" : "</th>";
-					$i++;
-				endif;
-			endforeach;
-			print "</tr>\n";
-		endforeach;
-?>
-	</tbody>
-	</table>
-	
-<?php
+		do_output_data_table($metaTable, $tableClass);
 	endif;
 
 	if (count($dataTable) > 0) :
