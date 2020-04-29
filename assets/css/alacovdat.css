@@ -1,0 +1,55 @@
+#html-view-source pre {
+	padding: 1.0em;
+	background-color: #eee;
+	color: #000;
+	width: 96%;
+	overflow: auto;
+}
+
+#meta-table {
+	margin-bottom: 1.0em;
+}
+
+#html-view-screenshot div {
+	margin: 10px; border: 1px dotted black;
+}
+#html-view-screenshot img {
+	max-width: 100%; height: auto;
+}
+
+a.current {
+	font-weight: bold;
+	color: #000;
+	text-decoration: none;
+}
+
+table.nav {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+#view-nav-table table.nav {
+	float: none !important;
+}
+
+section {
+	clear: both;
+}
+section#view-nav-table {
+	clear: none !important;
+	float: left !important;
+}
+#view-tags ul { display: block; list-style: none; margin: 0; padding: 10px 10px; }
+#view-tags li { display: inline-block; list-style: none; margin: 0; padding: 0 10px 0 0; }
+
+.archive-services {
+	display: none;
+}
+h2:hover .archive-services, th:hover .archive-services, td:hover .archive-services {
+	display: block;
+	position: absolute;
+	background-color: #eeeea0;
+	color: black;
+	border-radius: 2px;
+}
+
