@@ -189,7 +189,6 @@
 48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update|https://www.nacc.edu/news/	--wait=0.5	--random-wait	--include-directories=* #college
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*	#college
 48	3	suscc	https://www.suscc.edu/covid.cms	#college
-96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
 48	3	tsk	https://www.tuskegee.edu/coronavirus-resources	#college
 48	3	troy	https://www.troy.edu/coronavirus/	#college
 48	3	ua	https://healthinfo.ua.edu/	#college
@@ -237,3 +236,5 @@
 48	5	aclualabama	https://www.aclualabama.org/	#nonprofit	#advocacy
 48	5	alaflcio	https://www.alaflcio.com/	--span-hosts	--domains=alaflcio.com,google.com,amazonaws.com,googletagmanager.com	#nonprofit	#advocacy
 24	10	alcomcoronavirusdata	https://www.al.com/coronavirus/data	--span-hosts	--domains=al.com,condenastdigital.com,polyfill.io,cookielaw.org,dwcdn.net,cannotwin.com,gigya.com,advance.net,crwdcntrl.net	#news
+
+96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
