@@ -10,20 +10,7 @@ define('ALACOVDAT_REQUEST_URL', '(archive)');
 define('ALACOVDAT_SOURCES_TSV', "${myDir}/sources.tsv.txt");
 
 if (!is_readable(ALACOVDAT_DATA_DIR."/data")) :
-	header("HTTP/1.1 500 Internal Server Error");
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Documenting Covid-19 is off-line for a minute.</title>
-</head>
-<body>
-<h1>500 Internal Server Error</h1>
-<p>The site is off-line for a minute due to temporary maintenance or a technical issue.
-BRB, hopefully..</p>
-</body>
-</html>
-<?php
+	require_once("${myDir}/template-data-dir-missing-500.php");
 	exit;
 endif;
 
@@ -85,8 +72,7 @@ $defaultParams = [
 			endif;
 			exit;
 		else :
-			header("HTTP/1.1 404 Not Found");
-			print "<html><head><title>Not Found</title></head><body><h1>Not Found</1><p><code>".$_SERVER['REQUEST_URI']."</code></p></body></html>";
+			require_once("${myDir}/template-passthru-404.php");
 			exit;
 		endif;
 	elseif (is_archive_request()) :
