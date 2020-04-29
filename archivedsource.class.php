@@ -72,11 +72,20 @@ class ArchivedSource {
 		return $sourceUrl;
 	}
 	
-	public function capture_file ($type) {
-		return $this->data_prefix().$this->ts().".".$type;
+	public function capture_file ($type, $basedir = null) {
+		$types = array_reverse(explode("|", $type));
+		$readable = null;
+		foreach ($types as $ext) :
+			$file = $this->data_prefix($basedir).$this->ts().".".$ext;
+			if (is_readable($file)) :
+				$readable = $file;
+			endif;
+		endforeach;
+		
+		return (is_null($readable) ? $file : $readable);
 	}
 	public function capture_url ($type) {
-		return $this->data_prefix('/covid-data').$this->ts().".".$type;
+		return $this->capture_file($type, '/covid-data');
 	}
 	
 	public function url_file () {
@@ -124,7 +133,8 @@ class ArchivedSource {
 	}
 	
 	public function payload_checksum_file () {
-		return $this->capture_file($this->_sExt.".sha512");
+		$file = $this->capture_file($this->_sExt);
+		return $file . ".sha512";
 	}
 
 	public function payload_checksum () {

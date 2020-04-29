@@ -753,7 +753,7 @@ if (strlen($out) == 0 and count($dataTable)==0) exit;
 			print " (<code>".htmlspecialchars(basename($metaInput['file']))."</code>) ";
 		endif;
 		print ":</h2>\n";
-		echo "<pre><code>"; echo json_encode($rawDataOut, JSON_PRETTY_PRINT); echo "</code></pre>";
+		echo "<pre><code>"; echo (is_string($rawDataOut) ? $rawDataOut : json_encode($rawDataOut, JSON_PRETTY_PRINT)); echo "</code></pre>";
 ?>
 </section>
 <?php

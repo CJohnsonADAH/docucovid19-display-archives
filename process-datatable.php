@@ -7,7 +7,7 @@
 	global $rawDataOut;
 	
 	$slug = $params['slug'];
-	$ext = 'json';
+	$ext = 'json|csv';
 	
 	$arX = new ArchivedSource(["slug" => $slug, "ts" => $oDateTime->datetimecode(), "file type" => $ext]);
 
@@ -17,10 +17,49 @@
 	$json = $arX->payload_contents();
 
 	$hash = json_decode($json);
+	$haveTable = false;
 	if (is_null($hash)) :
-		header("Content-type: text/plain");
-		echo $json;
+		$lines = preg_split("/[\r\n]+/", $json);
+		$firstLine = array_shift($lines);
+		$firstRow = str_getcsv($firstLine);
+		if (count($firstRow) > 0) :
+			$sourceType = 'csv';
+			$dataTable['THEAD'] = $firstRow;
+		
+			foreach ($lines as $line) :
+				$csv = str_getcsv($line);
+				if (is_array($csv)) :
+					if (count($csv) > 1) :
+						$row = [];
+						foreach ($csv as $idx => $td) :
+							if (array_key_exists($idx, $dataTable['THEAD'])) :
+								$th = $dataTable['THEAD'][$idx];
+							else :
+								$th = "Col-${idx}";
+								$dataTable['THEAD'][] = $th;
+							endif;
+							
+							$row[$th] = $td;
+						endforeach;
+						$dataTable['TBODY'][] = $row;
+					endif;
+				endif;
+			endforeach;
+		endif;
+		
+		if (count($dataTable) > 0) :
+			$haveTable = true;
+			$dataTable = ["data" => $dataTable];
+		endif;
+
+		$rawDataOut = $json;
 	else :
+		$sourceType = 'json';
+		$haveTable = true;
+		$dataTable = get_json_to_table($hash, $params['slug']);	
+		$rawDataOut = $hash;
+	endif;
+	
 		header("Content-type: text/html");
 		
 		// URL of snapshot: Get it from the file, if available
@@ -42,11 +81,9 @@
 			
 			$metaTable[] = ["Timestamp", $selector];
 		endif;
-		$viewOptions = ['<a href="#view-json-source" class="tab">json source</a>'];
+		$viewOptions = ['<a href="#view-json-source" class="tab">'.$sourceType.' source</a>'];
 		
-		$dataTable = get_json_to_table($hash, $params['slug']);
-
-		if (count($dataTable['THEAD']) + count($dataTable['TBODY']) > 0) :
+		if ($haveTable) :
 			$viewOptions = array_merge(
 			['<a href="#view-data-table" class="tab">data table</a>'],
 			$viewOptions);
@@ -54,5 +91,3 @@
 		
 		$metaTable[] = ["View",  implode(" / ", $viewOptions)];
 
-		$rawDataOut = $hash;
-	endif;
