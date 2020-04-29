@@ -60,9 +60,13 @@
 48	5	bessemeralabama	https://www.bessemeral.org/covid-19-bessemer-updates	--span-hosts	--domains=bessemeral.org,unpkg.com,cloudflare.com,googleapis.com,gstatic.com	#city
 24	10	birminghamalabama	https://www.birminghamal.gov/coronavirus	#city
 48	2	boazalabama	https://www.cityofboaz.org/AlertCenter.aspx?AID=COVID19-Information-Resources-8	--include-directories=*	--span-hosts	--domains=cityofboaz.org,jquery.com,msecnd.net,gstatic.com,googleapis.com,civicplus.com	#city
+48	2	brentalabama	http://www.cityofbrentalabama.com/	--span-hosts	--domains=%s,prnx.net	#city
 48	2	butleralabama	https://www.butleralabama.org/	#city
+48	2	caleraalabama	https://www.cityofcalera.org/CivicAlerts.aspx?CID=1|https://www.cityofcalera.org/CivicAlerts.aspx?AID=719|https://www.cityofcalera.org/AlertCenter.aspx?AID=Municipal-Court-Date-Changes-for-City-of-19	--span-hosts	--domains=%s&civicplus	#city
 96	2	centerpointalabama	http://www.thecityofcenterpoint.org/covid-19_news	--span-hosts	--domains=%s	#city
 96	2	chatomalabama	https://chatom.org/	--include-directories=*	--span-hosts	--domains=chatom.org,wp.com,gravatar.com,wordpress.com,typekit.net,googleapis.com,gstatic.com,google.com	#city
+48	2	chelseaalabama	https://www.cityofchelsea.com/304/COVID-19-Virus-Updates	--include-directories=*	--span-hosts	--domains=%s,covid19healthbot.cdc.gov,botframework.com,msecnd.net&civicplus	#city
+48	2	centrevillealabama	https://cityofcentreville.com/notices	--span-hosts	--domains=%s	#city
 48	2	chickasawalabama	https://cityofchickasaw.org/	--span-hosts	--domains=cityofchickasaw.org,willyweather.com,ytimg.com	#city
 48	10	columbianaalabama	https://cityofcolumbiana.com/	#city
 48	5	cullmanalabama	https://cullmanal.gov/covid-19	#city
@@ -76,7 +80,9 @@
 48	2	fairhopealabama	https://www.fairhopeal.gov/services/city-of-fairhope-covid-19-precautions-and-updates/-fsiteid-1	--include-directories=*	--span-hosts	--domains=fairhopeal.gov,govdelivery.com,gstatic.com,googletagmanager.com,googleapis.com	#city
 48	2	florencealabama	https://florenceal.org/alert_detail.php	#city
 48	2	foleyalabama	https://cityoffoley.org/|https://www.cityoffoley.org/coronavirus	--span-hosts	--domains=cityoffoley.org,www.cityoffoley.org,googleapis.com	#city
+48	3	fortpaynealabama	https://fortpayne.org/category/announcements/	--span-hosts	--domains=%s	#coty
 48	2	gadsdenalabama	https://www.cityofgadsden.com/548/COVID-19-Information	--include-directories=*	#city
+48	2	gardendalealabama	https://cityofgardendale.com/site/	--include-directories=*	--span-hosts	--domains=%s,elocallink.tv,ggpht.com,ytimg.com	#city
 48	3	genevaalabama	https://www.cityofgeneva.com/covid-19-information	#city
 48	3	glencoealabama	http://www.cityofglencoe.net/news	--span-hosts	--domains=cityofglencoe.net,typekit.net,googleapis.com,widernet.co,jquery.com,bootstrapcdn.com	#city
 48	1	gordoalabama	http://www.townofgordo.org/	--span-hosts	--domains=townofgordo.org,googleapis.com	#city
@@ -217,7 +223,9 @@
 96	3	sylacaugalibrary	http://www.bbcomerlibrary.net/	--span-hosts	--domains=%s,paypalobjects.com,wp.com	#nonprofit	#library
 48	5	alexcitycoc	https://www.alexcitychamber.com/covid19support	--span-hosts	--domains=alexcitychamber.com,typekit.net,squarespace.com,squarespace-cdn.com	#nonprofit	#tradeprocomm
 48	5	arabcoc	http://www.arab-chamber.org/covid-19.html	--execute=use_proxy=yes	--execute=http_proxy=http://localhost:8118	#nonprofit	#tradeprocomm
+48	2	claycococ	https://alabamaclaycounty.com/	--span-hosts	--domains=%s	#nonprofit	#tradeprocomm
 48	2	oppcoc	http://www.oppcoc.net/?page_id=631	--span-hosts	--domains=oppcoc.net,googleapis.com,gstatic.com,vimeo.com,vimeocdn.com	#nonprofit	#tradeprocomm
+48	5	ozarkdaleedc	http://odedc.com/ozark-dale-county-edc-covid-19-resources	--span-hosts	--domains=%s&wordpress	#tradeprocomm
 48	5	pikecococ	http://www.pikecoc.com/covid-19	#nonprofit	#tradeprocomm
 48	2	sylacaugacoc	http://www.sylacaugachamber.com/covid-19-closures-and-cancellations	--span-hosts	--domains=%s,cloudflare.com,ctctcdn.com,bootstrapcdn.com,constantcontact.com	#nonprofit	#tradeprocomm
 48	2	eji	https://eji.org/news/	#nonprofit	#advocacy
