@@ -4,10 +4,12 @@
 12	3	adphcovid19	http://www.alabamapublichealth.gov/covid19/	--level=2	--span-hosts	--domains=alabamapublichealth.gov,bootstrapcdn.com,sitesearch360.com,addthis.com,addthisedge.com,google-analytics.com,googleapis.com,redcap.link,adph.org	#state
 12	10	adphtable	https://dph1.adph.state.al.us/covid-19	--span-hosts	--domains=adph.state.al.us,telerik.com	#state
 24	90	adphdash	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/6d2771faa9da4a2786a509d82c8cf0f7	#state
+24	90	adphdashriskmap	https://alpublichealth.maps.arcgis.com/apps/opsdashboard/index.html#/b585b67ef4074bb2b4443975bf14f77d	#state
 24	3	gov	https://governor.alabama.gov/newsroom/covid-19/	--include-directories=assets,css,img,js,modules,newsroom,wp-content,wp-includes	#state
 24	10	govservealabama	https://www.servealabama.gov/covid19	#state
 24	5	govaltogether	https://altogetheralabama.org/	--span-hosts	--domains=altogetheralabama.org,squarespace.com	--level=2	#state
 24	10	govcovid19hub	https://covid19.alabama.gov/	--mirror	--level=inf	#state
+24	10	govcaresact	https://app.powerbi.com/view?r=eyJrIjoiMzFiODg4ODItZmQzNy00YWUzLTg1Y2ItMmI1ZThiOTY4YWNhIiwidCI6IjJlZmQ5NmZkLTAyNzUtNDc2Ni1hZjJjLTYyMjAyODQ3ODE4YyJ9	--span-hosts	--level=2	--domains=%s,content.powerapps.com,wabi-us-central-a-primary-api.analysis.windows.net,dc.services.visualstudio.com	#state
 24	2	ltgovreopen	https://ltgov.alabama.gov/reopen-alabama-responsibly	--span-hosts	#state
 24	5	sos	https://www.sos.alabama.gov/newsroom	#state
 24	2	alsde	https://www.alsde.edu/covid-19	#state
@@ -174,7 +176,9 @@
 48	3	asu	https://www.alasu.edu/coronavirus-covid-19-updates	#college
 48	3	athensstate	https://www.athens.edu/coronavirus	#college
 48	3	aub	https://ocm.auburn.edu/news/coronavirus/	#college
-48	3	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts	#college
+48	3	aubfrontline	https://ocm.auburn.edu/news/coronavirus/experts	--span-hosts	--domains=%s,auburn.edu,cdn.auburn.edu	#college
+48	3	aubcampusspecific	http://www.auburn.edu/administration/campus-safety/covid-campuses.html		--span-hosts	--domains=%s,cdn.auburn.edu	#college
+48	3	aubcovidresource	http://auburn.edu/covid-resource-center/		--span-hosts	--domains=%s,cdn.auburn.edu,typekit.com	#college
 48	3	aum	http://www.aum.edu/coronavirus	#college
 48	3	bsc	https://www.bsc.edu/coronavirus.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
 48	3	bscemergency	https://www.bsc.edu/emergency/index.html 	--span-hosts	--domains=drakestate.edu,googleapis.com,gstatic.com,googletagmanager.com,cloudfront.net	#college
@@ -192,7 +196,7 @@
 48	3	lbwcc	https://www.lbwcc.edu/about-lbwcc/updates	--include-directories=*	#college
 48	3	mmi	https://marionmilitary.edu/coronavirus	#college
 48	3	montevallo	https://www.montevallo.edu/about-um/marcomm/coronavirus-information/	#college
-48	3	neacc	https://www.nacc.edu/news/covid-19-campus-update|https://www.nacc.edu/news/	--wait=0.5	--random-wait	--include-directories=* #college
+96	3	neacc	https://www.nacc.edu/news/covid-19-campus-update|https://www.nacc.edu/news/	--wait=0.5	--random-wait	--include-directories=* #college
 48	3	nwscc	https://www.nwscc.edu/coronavirus-covid-19-information	--include-directories=*	#college
 48	3	suscc	https://www.suscc.edu/covid.cms	#college
 48	3	tsk	https://www.tuskegee.edu/coronavirus-resources	#college
@@ -244,5 +248,11 @@
 48	5	aclualabama	https://www.aclualabama.org/	#nonprofit	#advocacy
 48	5	alaflcio	https://www.alaflcio.com/	--span-hosts	--domains=alaflcio.com,google.com,amazonaws.com,googletagmanager.com	#nonprofit	#advocacy
 24	10	alcomcoronavirusdata	https://www.al.com/coronavirus/data	--span-hosts	--domains=al.com,condenastdigital.com,polyfill.io,cookielaw.org,dwcdn.net,cannotwin.com,gigya.com,advance.net,crwdcntrl.net	#news
+48	5	leecobounceback	https://www.leecountybounceback.com/	--span-hosts	--domains=%s	#private	#tradeprocomm
 
-96	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
+# Private donors
+192	10	fosterdickson	https://fosterdickson.com/tag/coronavirus/	--span-hosts	--include-directories=*	--level=1	--page-requisites	#private	#collectingacrisis
+192	10	cssalabama	https://cssalabama.blogspot.com/	--span-hosts	--include-directories=*	--domains=%s&blogspot	--level=3	--page-requisites	#private	#review
+
+192	3	trenholmstate	https://www.trenholmstate.edu/college-information/coronavirus	--include-directories=*	--wait=0.5	--random-wait	#college
+

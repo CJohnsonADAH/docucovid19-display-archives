@@ -45,3 +45,7 @@ csv	alcomcoronavirusdataY1wux	https://static.dwcdn.net/data/Y1wuX.csv
 csv	alcomcoronavirusdataAeRy5	https://static.dwcdn.net/data/AeRy5.csv
 csv	alcomcoronavirusdataTaobw	https://static.dwcdn.net/data/Taobw.csv
 json	alcomcoronavirusdatacontent	https://4d.condenastdigital.com/content?url=https%3A%2F%2Fwww.al.com%2Fcoronavirus%2Fdata%2F
+
+json	govcaresact1	https://wabi-us-central-a-primary-api.analysis.windows.net/public/reports/31b88882-fd37-4ae3-85cb-2b5e8b968aca/modelsAndExploration?preferReadOnlySession=true
+json	govcaresact2	https://wabi-us-central-a-primary-api.analysis.windows.net/public/reports/31b88882-fd37-4ae3-85cb-2b5e8b968aca/conceptualschema
+json	govcaresact3	https://app.powerbi.com/13.0.14254.53/sharedresources/BaseThemes/CY19SU12.json
