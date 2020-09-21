@@ -14,6 +14,13 @@ if (!is_readable(ALACOVDAT_DATA_DIR."/data")) :
 	exit;
 endif;
 
+if (array_key_exists('test', $_REQUEST)) :
+	if ($_REQUEST['test']=='phpinfo') :
+		phpinfo();
+		exit;
+	endif;
+endif;
+
 $defaultParams = [
 "tag" => null,
 "date" => null,
