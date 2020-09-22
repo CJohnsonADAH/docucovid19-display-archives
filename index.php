@@ -3,7 +3,9 @@
 	require_once("${myDir}/archivedsource.class.php");
 	require_once("${myDir}/mirroredurl.class.php");
 	require_once("${myDir}/snapshotdatetime.class.php");
-
+	require_once("${myDir}/includes/archiveservices.class.php");
+	require_once("${myDir}/includes/get_json_to_table.function.php");
+	
 define('ALACOVDAT_DATA_DIR', "${myDir}/covid-data");
 define('ALACOVDAT_URL', 'browse');
 define('ALACOVDAT_REQUEST_URL', '(archive)');
@@ -121,140 +123,6 @@ $params = array_merge($defaultParams, $_REQUEST);
 $out = '';
 $sourceUrl = null;
 $metaTable = [];
-
-function get_archive_request_url ($part = null) {
-	return my_request_url($part, 'archive');
-}
-
-function get_all_archive_services_links ($url = null, $text = null) {
-	if (is_object($url) and method_exists($url, 'source_url')) :
-		$host = $url->source_url('host');
-		$url = $url->source_url();
-	elseif (is_string($url)) :
-		$parts = parse_url($url);
-		$host = $parts['host'];
-	elseif (is_null($url)) :
-		$host = 'this page';
-	else :
-		throw new Exception("This parameter sucks: ".json_encode($url));
-	endif;
-
-	$links = [];
-	$links[] = get_archive_service_link(get_archive_request_url(), $url, 'all');
-	$links[] = get_archive_service_link('https://archive.today/', $url, 'archive.today: '.$host);
-	$links[] = get_archive_service_link('https://archive.org/', $url, 'Internet Archive: '.$host);
-	
-	$wrapperHtml = '<span class="archive-services">%s</span>';
-	$linksHtml = implode(" ", $links);
-	return sprintf($wrapperHtml, $linksHtml);
-} /* get_all_archive_services_links () */
-
-function get_archive_service_link ($serviceUrl, $url = null, $text = null) {
-	$html = '';
-	$imgSrc = "/assets/images/icon_savePage.png";
-	$imgAlt = 'add to';
-	$aHref = $serviceUrl;
-	
-	$serviceParts = parse_url($serviceUrl);
-	$url = (is_null($url) ? '' : urlencode($url));
-	
-	$aHrefPattern="%s#%s";
-	if ($serviceUrl == 'https://archive.today/') :
-		if (is_null($text)) :
-			$text = $serviceParts['host'];
-		endif;
-	elseif ($serviceUrl == 'https://archive.org/') :
-		if (is_null($text)) :
-			$text = 'Internet Archive';
-		endif;
-	elseif ($serviceUrl == get_archive_request_url()) :
-		if (is_null($text)) :
-			$text = 'all';
-		endif;
-		$aHrefPattern="%s/%s";
-		$url = urlencode($url); // double-encode to end-around apache
-	else :
-		if (is_null($text)) :
-			$text = $serviceParts['host'];
-		endif;
-	endif;
-	
-	$aHref = htmlspecialchars(sprintf($aHrefPattern, $serviceUrl, $url));
-	$aText = htmlspecialchars($text);
-	$imgSrc = htmlspecialchars($imgSrc);
-	$imgAlt = htmlspecialchars($imgAlt);
-	$html = "<a class='archive-service' style='font-size: 10px; vertical-align: bottom;' href=\"${aHref}\"><img style='vertical-align: bottom; height: 16px; width: auto;' src='${imgSrc}' alt='${imgAlt}' /> ${aText}</a>";
-	return $html;
-}
-
-function get_json_to_table ($hash, $slug) {
-	$data = ['THEAD' => [], 'TBODY' => []];
-	
-	$props[$slug] = null;
-	$props = array_merge($props, [
-		"capture" => ["CNTYNAME", "CNTYFIPS", "ADPHDistrict", "CONFIRMED", "DIED", "REPORTED_DEATH"],
-		"testsites" => null,
-	]);
-	
-	if (property_exists($hash, "fields")) :
-		foreach ($hash->fields as $field) :
-		if (is_null($props[$slug]) or in_array($field->name, $props[$slug])) :
-			$data['THEAD'][] = [$field->name, $field->alias];
-		endif;
-		endforeach;
-
-		foreach ($hash->features as $feat) :
-		$tr = [];
-		foreach ($feat->attributes as $key => $value) :
-			if (is_null($props[$slug]) or in_array($key, $props[$slug])) :
-				$tr[$key] = $value;
-			endif;
-		endforeach;		
-		$data['TBODY'][] = $tr;
-		endforeach;
-	elseif (property_exists($hash, 'type') and "FeatureCollection" == $hash->type) :
-	
-		if (property_exists($hash, "features")) :
-			$props = array_reduce($hash->features, function ($carry, $feat) {
-				$props = $carry;
-				if (property_exists($feat, "properties")) :
-					$props = array_merge($props, array_map(function ($e) { return "properties." . $e; }, array_keys((array) $feat->properties)));
-				endif;
-				if (property_exists($feat, "geometry")) :
-					$props[] = 'geometry';
-				endif;
-				return array_unique($props);
-			}, []);
-
-			$data['THEAD'] = array_map(function ($e) { $al = explode(".", $e, 2); return [$e, end($al)]; }, $props);
-
-			$data['TBODY'] = array_reduce($hash->features, function ($table, $feat) use ($props) {
-				foreach ($props as $prop) :
-					$obj = $feat;
-					$path = explode(".", $prop, 2);
-					foreach ($path as $part) :
-						$obj = $obj->{$part};
-					endforeach;
-					
-					$row[$prop] = (is_object($obj) ? json_encode($obj) : $obj);
-				endforeach;
-				$table[] = $row;
-				return $table;
-			}, []);
-		endif;
-	
-	else :
-		
-		$data['THEAD'] = ["Property", "Value"];
-		foreach ($hash as $prop => $value) :
-			$data['TBODY'][] = ["Property" => $prop, "Value" => "<pre>".htmlspecialchars(json_encode($value, JSON_PRETTY_PRINT))."</pre>"];
-		endforeach;
-
-	endif;
-	
-	return $data;
-
-} /* get_json_to_table () */
 
 function get_most_recent_timestamp ($timestamps) {
 	rsort($timestamps);
