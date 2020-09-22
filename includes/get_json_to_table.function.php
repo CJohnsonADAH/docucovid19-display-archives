@@ -8,7 +8,7 @@ function get_json_to_table ($hash, $slug) {
 		"testsites" => null,
 	]);
 	
-	if (property_exists($hash, "fields")) :
+	if (is_object($hash) and property_exists($hash, "fields")) :
 		foreach ($hash->fields as $field) :
 		if (is_null($props[$slug]) or in_array($field->name, $props[$slug])) :
 			$data['THEAD'][] = [$field->name, $field->alias];
@@ -24,7 +24,7 @@ function get_json_to_table ($hash, $slug) {
 		endforeach;		
 		$data['TBODY'][] = $tr;
 		endforeach;
-	elseif (property_exists($hash, 'type') and "FeatureCollection" == $hash->type) :
+	elseif (is_object($hash) and property_exists($hash, 'type') and "FeatureCollection" == $hash->type) :
 	
 		if (property_exists($hash, "features")) :
 			$props = array_reduce($hash->features, function ($carry, $feat) {
